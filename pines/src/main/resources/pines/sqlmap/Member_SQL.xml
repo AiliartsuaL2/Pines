@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MemberSpace">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/> <!-- 출력시(select) 필요한  list를 담는 변수 -->
+	<typeAlias  alias="memberVO" type="pines.service.MemberVO"/> <!-- 출력시(select) 필요한 변수 -->
+
+	<insert id="memberDAO.insertMember">
+		INSERT INTO MEMBER( userId
+							,pass
+							,name
+							,birth
+							,phone
+							,zipCode
+							,address
+							,dormant_state
+							,point
+							,admin_rights
+							,seller_type	
+							)
+					VALUES(
+							#userId#
+							,#pass#
+							,#name#
+							,#birth#
+							,#phone#
+							,#zipCode#
+							,#address#
+							,'N'
+							, 0
+							,'N'
+							,'common'
+							)
+	</insert>
+    <select id="memberDAO.selectMemberCount" resultClass = "java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE userId = #userId#
+		   AND pass = #pass#
+	</select>
+</sqlMap>
