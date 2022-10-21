@@ -57,7 +57,7 @@ a { text-decoration:none }
 <%@ include file="../include/topMenu.jsp" %>
 	<table class ="table_title">
 		<tr>
-			<th>식물</th>
+			<th>꽃/화환</th>
 		</tr>
 	</table>
 	
@@ -65,7 +65,7 @@ a { text-decoration:none }
 	<c:set var="i" value="0" />
 	<c:set var="j" value="3" />
 	<table class = "table_product" width="850">
-	  <c:forEach items="${plantList}" var="result">
+	  <c:forEach items="${flowerList}" var="result">
 	    <c:if test="${i%j == 0 }">
 	    <tr>
 	    </c:if>

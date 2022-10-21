@@ -21,10 +21,17 @@
 	margin-top:100px;
 	margin-left:50px;
 }
+.button1{
+	margin : 0px;
+	border : 0;
+	outline : 0;
+	cursor:pointer;
+	background-color : white;
+}
 </style>
 <body>
 		<div class="div1">
-		<button type="button" onclick= "location='productList.do'"><img src="images/pines.JPG" alt="" width="100px" height="100px"></button>
+		<button type="button" class="button1" onclick= "location='productList.do'" ><img src="images/pines.JPG" width="100px" height="100px"></button>
 		</div>
 		<div class="div2">
 		<form name="searchFrm" method="post" action="productList.do">
@@ -32,7 +39,7 @@
 				<option value="product_name"  style="height:50px; ">상품명 </option>
 				<option value="store_id" style="height:50px;">판매처 </option>
 			</select>
-			<input type="text" name="searchText"id="" placeholder="찾으시는 상품을 입력해주세요"style="width:500px; height:45px; border:solid 2px #FA6A6A; ">
+			<input type="text" name="searchText"id="searchText" placeholder="찾으시는 상품을 입력해주세요"style="width:500px; height:45px; border:solid 2px #FA6A6A; ">
 			<button type="submit" style="height:48px; border:solid 2px #FA6A6A; ">검색</button>
 		</form>
 		</div>

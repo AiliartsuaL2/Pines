@@ -3,8 +3,26 @@
 <sqlMap namespace="MemberSpace">
 
 	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/> <!-- 출력시(select) 필요한  list를 담는 변수 -->
-	<typeAlias  alias="memberVO" type="pines.service.MemberVO"/> <!-- 출력시(select) 필요한 변수 -->
-
+	 <typeAlias  alias="memberVO" type="pines.service.MemberVO"/> <!--출력시(select) 필요한 변수 -->
+	
+	<resultMap id="memRe" class="memberVO" >
+		<result property = "userId" column="userId" nullValue="empty"/>
+	</resultMap>
+	
+<!-- 	<resultMap id="memberResult" class="memberVO" >
+		<result property="userId" column="userid" nullValue="empty" />
+		<result property="pass" column="pass" nullValue="empty"/>
+		<result property="name" column="name" nullValue="empty"/>
+		<result property="birth" column="birth" nullValue="empty"/>
+		<result property="phone" column="phone" nullValue="empty"/>
+		<result property="zipCode" column="zipcode" nullValue="empty"/>
+		<result property="address" column="address" nullValue="empty"/>
+		<result property="dormantState" column="dormant_state" nullValue="empty"/>
+		<result property="point" column="point" nullValue="0"/>
+		<result property="adminRights" column="admin_rights" nullValue="empty"/>
+		<result property="sellerType" column="seller_type" nullValue="empty"/>
+	</resultMap>  -->
+	
 	<insert id="memberDAO.insertMember">
 		INSERT INTO MEMBER( userId
 							,pass
@@ -16,7 +34,6 @@
 							,dormant_state
 							,point
 							,admin_rights
-							,seller_type	
 							)
 					VALUES(
 							#userId#
@@ -29,7 +46,6 @@
 							,'N'
 							, 0
 							,'N'
-							,'common'
 							)
 	</insert>
     <select id="memberDAO.selectMemberCount" resultClass = "java.lang.Integer">
@@ -38,4 +54,42 @@
 		 WHERE userId = #userId#
 		   AND pass = #pass#
 	</select>
+	<select id="memberDAO.selectIdFindCount" resultClass = "java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE name = #name#
+		   AND phone = #phone#
+		   AND birth = #birth#
+	</select>
+	
+	<select id="memberDAO.selectIdFind"  resultMap="memRe" >
+		SELECT userId
+		  FROM MEMBER
+		 WHERE name = #name#
+		   AND phone = #phone#
+		   AND birth = #birth#	
+	</select>
+	
+	<select id="memberDAO.selectMemberIdCheck" resultClass = "java.lang.Integer">
+		SELECT COUNT(*) 
+		  FROM MEMBER 
+	     WHERE userId = #userId#
+	</select>
+	
+	<select id="memberDAO.selectPwFindCount" resultClass = "java.lang.Integer">
+		SELECT COUNT(*) 
+		  FROM MEMBER 
+	     WHERE userId = #userId#
+	       AND name = #name#
+	       AND phone = #phone#
+	       AND birth = #birth#
+	</select>
+	
+	<update id="memberDAO.updateMemberPw">
+		UPDATE MEMBER 
+		   SET pass = #pass# 
+		 WHERE USERID = #userId#
+	</update>
+	
+	
 </sqlMap>

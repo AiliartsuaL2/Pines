@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인 화면</title>
+<title>Pines</title>
+<link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
 <script>
@@ -58,7 +59,13 @@ $(function(){
 	margin: 0;
 	padding:0;
 }
-
+.button1{
+	margin : 0px;
+	border : 0;
+	outline : 0;
+	cursor:pointer;
+	background-color : white;
+}
 /* 화면 전체 렙 */
 .wrapper{
 	width: 1900px;	
@@ -92,7 +99,6 @@ $(function(){
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
 }
 
 
@@ -110,7 +116,6 @@ $(function(){
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
 }
 .find_button_wrap{
 	font-size : 10px;
@@ -144,8 +149,7 @@ $(function(){
 	width: 64%;
     height: 80px;
     background-color: #FA6A6A;
-    font-size: 40px;
-    font-weight: 900;
+    font-size: 30px;
     color: white;
     margin : auto;
     cursor:pointer;
@@ -159,8 +163,7 @@ $(function(){
 	width: 64%;
     height: 80px;
     background-color: #FFFFFF;
-    font-size: 40px;
-    font-weight: 900;
+    font-size: 30px;
     color: #FA6A6A;
     margin : auto;
     cursor:pointer;
@@ -199,12 +202,9 @@ $(function(){
 
 <form name="frm" id="frm">
 <div class="wrapper">
-	
 	<div class="wrap">
 		<div class="logo_wrap">
-			<span>
-			<img src="images/pines.JPG" alt=""  width="150px" height="150px"/>
-			</span>
+		<button type="button" class="button1" onclick= "location='productList.do'" ><img src="images/pines.JPG" width="150px" height="150px"></button>
 		</div>
 		<div class="login_wrap"> 
 			<div class="id_wrap">
@@ -219,8 +219,8 @@ $(function(){
 			</div>
 	
 			<div class="find_button_wrap">
-				<input type="button" class="find_pw_button"  value="비밀번호 재설정" >
-				<input type="button" class="find_id_button"  value="아이디 찾기">
+				<input onClick="location.href='pwFind.do'" type="button" class="find_pw_button"  value="비밀번호 재설정" >
+				<input onClick="location.href='idFind.do'" type="button" class="find_id_button"  value="아이디 찾기">
 			</div>		
 			
 			<div class="login_button_wrap">

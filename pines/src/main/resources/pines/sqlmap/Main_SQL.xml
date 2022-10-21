@@ -4,7 +4,28 @@
 	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/> <!-- 출력시(select) 필요한  list를 담는 변수 -->
 	<typeAlias  alias="mainVO" type="pines.service.MainVO"/> <!-- 출력시(select) 필요한 변수 -->
 
-<select id="mainDAO.selectProductList" resultClass="egovMap">
+	<select id="mainDAO.selectProductList" resultClass="egovMap">
+	   SELECT b.*
+   	     FROM ( 
+   			    SELECT ROWNUM rn, a.*
+   			      FROM (SELECT product_id
+   			                 , store_id
+   			                 , product_name
+   			                 , product_description
+   			                 , product_price
+   			                 , image1
+   			                 , discount_rate
+   			              FROM PRODUCT
+         		<isNotNull property="searchGubun">
+           			<isNotNull property="searchText">
+              			 WHERE $searchGubun$ like '%$searchText$%'
+           			</isNotNull>
+         		</isNotNull>
+                )a)  b
+       WHERE rn BETWEEN 1 AND 20
+	</select>
+	
+	<select id="mainDAO.selectPlantList" resultClass = "egovMap">
 	   SELECT product_id
 		    , store_id
 		    , product_name
@@ -13,5 +34,18 @@
 		    , image1
 		    , discount_rate
 		 FROM PRODUCT
+		WHERE category_id='식물'
+	</select>
+	
+	<select id="mainDAO.selectFlowerList" resultClass = "egovMap">
+	   SELECT product_id
+		    , store_id
+		    , product_name
+		    , product_description
+		    , product_price
+		    , image1
+		    , discount_rate
+		 FROM PRODUCT
+		WHERE category_id='꽃/화환'
 	</select>
 </sqlMap>

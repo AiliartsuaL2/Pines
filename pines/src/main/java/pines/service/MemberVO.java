@@ -8,14 +8,16 @@ public class MemberVO {
 	private String phone;
 	private String zipCode;
 	private String address;
+	private String dormantState;
 	private int point;
 	private String adminRights;
-	private String reg;
 
 	public String getUserId() {
+		System.out.println("getUserId : "+userId);	
 		return userId;
 	}
 	public void setUserId(String userId) {
+		System.out.println("SetUserId : "+userId);	
 		this.userId = userId;
 	}
 	public String getPass() {
@@ -54,12 +56,6 @@ public class MemberVO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getReg() {
-		return reg;
-	}
-	public void setReg(String reg) {
-		this.reg = reg;
-	}
 	public int getPoint() {
 		return point;
 	}
@@ -71,6 +67,12 @@ public class MemberVO {
 	}
 	public void setAdminRights(String adminRights) {
 		this.adminRights = adminRights;
+	}
+	public String getDormantState() {
+		return dormantState;
+	}
+	public void setDormantState(String dormantState) {
+		this.dormantState = dormantState;
 	}
 	
 }

@@ -23,11 +23,19 @@ public class MainController {
 		System.out.println("list : "+ list);
 		return "main/productList";
 	}
+	
 	@RequestMapping("/plantList.do")
 	public String selectPlantList(MainVO vo, ModelMap model) throws Exception{
-		List<?> list = mainService.selectProductList(vo);
-		model.addAttribute("resultList",list);
+		List<?> list = mainService.selectPlantList(vo);
+		model.addAttribute("plantList",list);
 		System.out.println("list : "+ list);
 		return "product/plantList";
+	}
+	@RequestMapping("/flowerList.do")
+	public String selectFlowerList(MainVO vo, ModelMap model) throws Exception{
+		List<?> list = mainService.selectFlowerList(vo);
+		model.addAttribute("flowerList",list);
+		System.out.println("list : "+ list);
+		return "product/flowerList";
 	}
 }
