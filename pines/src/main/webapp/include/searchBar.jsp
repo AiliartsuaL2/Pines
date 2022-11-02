@@ -7,6 +7,10 @@
 <title>Insert title here</title>
 </head>
 <style>
+.div_Wrap{
+  display: flex;
+  justify-content: center;
+}
 .div1{
 	width : 100px;
 	height : 100px;
@@ -28,10 +32,48 @@
 	cursor:pointer;
 	background-color : white;
 }
+.btn_search{
+	position: absolute;
+    border: 0;
+    outline : 0;
+    float: right;
+    font-size: 14px;  
+    line-height: 40px;
+    text-align : center;
+    font-weight: 900;
+    color: #BFBFBF;
+    background-color: #FFFFFF;
+    cursor: pointer;	
+    margin-left : 460px;
+	margin-top : 10px;
+	}
+.btn_seller{
+    cursor: pointer;	
+    margin-top : 30px;
+    margin-left : 10px;
+	height:35px;
+	width:100px;
+	font-weight : bold; 
+	border:solid 2px #FA6A6A;
+    background-color: #FFFFFF;
+}.btn_cart{
+    cursor: pointer;	
+    margin-top : 30px;
+    margin-left : 10px;
+	height:35px;
+	width:100px;
+	font-weight : bold; 
+	border:solid 2px #FA6A6A;
+    background-color: #FFFFFF;
+}
 </style>
 <body>
+<%
+	String sessionId = (String) session.getAttribute("SessionUserID");
+%>
+<div class = "div_Wrap">
 		<div class="div1">
-		<button type="button" class="button1" onclick= "location='productList.do'" ><img src="images/pines.JPG" width="100px" height="100px"></button>
+		<button type="button" class="button1" onclick= "location='mainList.do'" ><img src="images/pines.JPG" width="100px" height="100px"></button>
 		</div>
 		<div class="div2">
 		<form name="searchFrm" method="post" action="productList.do">
@@ -39,9 +81,26 @@
 				<option value="product_name"  style="height:50px; ">상품명 </option>
 				<option value="store_id" style="height:50px;">판매처 </option>
 			</select>
+			<button type="submit" class="btn_search"><img src="images/search_icon.JPG" width="30px" height="30px"></button>
 			<input type="text" name="searchText"id="searchText" placeholder="찾으시는 상품을 입력해주세요"style="width:500px; height:45px; border:solid 2px #FA6A6A; ">
-			<button type="submit" style="height:48px; border:solid 2px #FA6A6A; ">검색</button>
 		</form>
 		</div>
+		<div>
+			    <%
+			    if(sessionId == null){ // 로그인 안했을경우	
+			    %>
+			    		<button type="submit" class="btn_cart" onclick= "alert('로그인이 필요한 서비스입니다.');return location='loginWrite.do';">장바구니</button>
+				 		<button type="submit" class="btn_seller" onclick= "alert('로그인이 필요한 서비스입니다.');return location='loginWrite.do';">판매자 페이지</button>
+				<%
+				} else { // 로그인 성공시
+				%>
+						<button type="submit" class="btn_cart" onclick= "location='selectCart.do'">장바구니</button>
+						<button type="submit" class="btn_seller" onclick= "location='sellerCheck.do'">판매자 페이지</button>
+				<%
+				}
+				%>
+		</div>
+</div>
+		
 </body>
 </html>

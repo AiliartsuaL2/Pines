@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
   $( function() {
@@ -20,18 +21,23 @@
       changeYear: true
     });
 
-    $("#address_button").click(function(){
-    	var w = 500;
-    	var h = 100;
-    	var url = "post1.do";
-    	window.open(url,'zipCode','width='+w,'height'+h);
-    	
-    });
+  	window.onload = function(){
+        document.getElementById("address_button").addEventListener("click", function(){ //주소입력칸을 클릭하면
+            //카카오 주소 발생
+            new daum.Postcode({
+                oncomplete: function(data) { //선택시 입력값 세팅
+                    document.getElementById("zipCode").value = data.address; // 주소 넣기
+                    document.querySelector("input[name=address]").focus(); //상세입력 포커싱
+                }
+            }).open();
+        });
+    }
     $("#btn_idcheck").click(function(){
       var userId = $("#userId").val();
       userId = $.trim(userId);
 	  if(userId == ""){
 		  alert("아이디를 입력해주세요.");
+
 		  $("#userId").focus();
 		  return false;
 	  } // idcheck.do로 데이터 전송 ,, ajax방식
@@ -341,6 +347,11 @@
 }
 
 
+.whole_wrap{
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
 /* float 속성 해제 */
 .clearfix{
 	clear: both;
@@ -348,6 +359,7 @@
 </style>
 <body>
 
+<div class = "whole_wrap">
 
 <form name ="frm" id="frm">
 <div class="wrapper">
@@ -411,7 +423,7 @@
 		</div>
 </div>
 </form>
-
+</div>
 
 </body>
 </html>

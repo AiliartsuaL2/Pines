@@ -224,21 +224,30 @@
     cursor:pointer;
 }
 
+.button1{
+	border : 0;
+	outline : 0;
+	cursor:pointer;
+}
 
+.whole_wrap{
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
 /* float 속성 해제 */
 .clearfix{
 	clear: both;
 }
 </style>
 <body>
+<div class = "whole_wrap">
 
 <form name ="frm" id="frm" action="pwSub.do" >
 <div class="wrapper">
 	<div class="wrap">
 			<div class="subjecet">
-			<span>
-				<img src="images/pines.JPG" alt=""  width="100px" height="100px"/>
-			</span>
+				<button type="button" class="button1" onclick= "location='mainList.do'" ><img src="images/pines.JPG" width="100px" height="100px"></button>
 			</div>
 
 			<div class="find_title_wrap">
@@ -273,7 +282,7 @@
 		</div>
 </div>
 </form>
-
+</div>
 
 </body>
 </html>

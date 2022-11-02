@@ -11,6 +11,7 @@ public class MemberVO {
 	private String dormantState;
 	private int point;
 	private String adminRights;
+	
 
 	public String getUserId() {
 		System.out.println("getUserId : "+userId);	

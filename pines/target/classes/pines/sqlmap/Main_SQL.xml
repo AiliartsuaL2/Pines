@@ -21,8 +21,9 @@
               			 WHERE $searchGubun$ like '%$searchText$%'
            			</isNotNull>
          		</isNotNull>
-                )a)  b
-       WHERE rn BETWEEN 1 AND 20
+                ORDER BY REG_DATE DESC )a)  b
+        WHERE rn >= #startIndex#  
+          AND rn <![CDATA[<=]]> #endIndex#
 	</select>
 	
 	<select id="mainDAO.selectPlantList" resultClass = "egovMap">
@@ -37,7 +38,7 @@
 		WHERE category_id='식물'
 	</select>
 	
-	<select id="mainDAO.selectFlowerList" resultClass = "egovMap">
+	<select id="mainDAO.selectFlowerList" resultClass = "egovMap" >
 	   SELECT product_id
 		    , store_id
 		    , product_name
@@ -48,4 +49,125 @@
 		 FROM PRODUCT
 		WHERE category_id='꽃/화환'
 	</select>
+	
+	<select id="mainDAO.selectMainList" resultClass="egovMap">
+	   SELECT b.*
+   	     FROM ( 
+   			    SELECT ROWNUM rn, a.*
+   			      FROM (SELECT product_id
+   			                 , store_id
+   			                 , product_name
+   			                 , product_description
+   			                 , product_price
+   			                 , image1
+   			                 , discount_rate
+   			              FROM PRODUCT
+         		<isNotNull property="searchGubun">
+           			<isNotNull property="searchText">
+              			 WHERE $searchGubun$ like '%$searchText$%'
+           			</isNotNull>
+         		</isNotNull>
+                ORDER BY REG_DATE DESC )a)  b
+       WHERE rn BETWEEN 1 AND 3
+	</select>
+	<select id="mainDAO.selectDiscountList" resultClass="egovMap">
+	   SELECT b.*
+   	     FROM ( 
+   			    SELECT ROWNUM rn, a.*
+   			      FROM (SELECT product_id
+   			                 , store_id
+   			                 , product_name
+   			                 , product_description
+   			                 , product_price
+   			                 , image1
+   			                 , discount_rate
+   			              FROM PRODUCT
+   			              WHERE discount_rate BETWEEN 1 AND 100
+   		                    AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE 
+                		  )a)  b
+       WHERE rn BETWEEN 1 AND 20
+	</select>
+		
+	<select id="mainDAO.selectProductTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
+		  FROM PRODUCT
+		<isNotNull property="searchGubun">
+					<isNotNull property="searchText">
+					WHERE $searchGubun$ like '%$searchText$%'
+					</isNotNull>
+				</isNotNull>
+	</select>
+	
+	<select id="mainDAO.selectPlantTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
+		  FROM PRODUCT
+		WHERE category_id='식물'
+	</select>
+	
+	<select id="mainDAO.selectFlowerTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
+		  FROM PRODUCT
+		WHERE category_id='꽃/화환'
+	</select>
+	
+	<select id="mainDAO.selectDiscountTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
+		  FROM PRODUCT
+   		 WHERE discount_rate BETWEEN 1 AND 100
+   		   AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE 
+	</select>
+	
+	<select id="mainDAO.selectSellerProductList" resultClass="egovMap">
+	  SELECT p.PRODUCT_ID 
+           , p.PRODUCT_NAME 
+           , p.IMAGE1
+           , to_char(p.REG_DATE,'yy-mm-dd') reg_Date 
+           , to_char(p.PRODUCT_PRICE, '999,999,999,999,999') PRODUCT_PRICE
+           , p.DISCOUNT_RATE
+           , to_char(p.PRODUCT_PRICE-(p.PRODUCT_PRICE * p.DISCOUNT_RATE/100), '999,999,999,999,999') DISCOUNT_PRICE
+           , p.PRODUCT_STOCK
+           , p.REG_STATE
+           , to_char(p.DISCOUNT_PERIOD,'yy-mm-dd') DISCOUNT_PERIOD
+        FROM PRODUCT p
+           , STORE s
+       WHERE s.USER_ID = #userId#
+       	 AND p.REG_STATE = '판매중'
+         AND s.STORE_ID = p.STORE_ID
+	</select>
+	
+	
+	<select id="mainDAO.selectProductSearchList" resultClass="egovMap">
+	  SELECT p.PRODUCT_ID 
+           , p.PRODUCT_NAME 
+           , p.IMAGE1
+           , to_char(p.REG_DATE,'yy-mm-dd') reg_Date 
+           , to_char(p.PRODUCT_PRICE, '999,999,999,999,999') PRODUCT_PRICE
+           , p.DISCOUNT_RATE
+           , to_char(p.PRODUCT_PRICE-(p.PRODUCT_PRICE * p.DISCOUNT_RATE/100), '999,999,999,999,999') DISCOUNT_PRICE
+           , p.PRODUCT_STOCK
+           , p.REG_STATE
+           , to_char(p.DISCOUNT_PERIOD,'yy-mm-dd') DISCOUNT_PERIOD
+        FROM PRODUCT p
+           , STORE s
+       WHERE s.USER_ID = #userId#
+         AND $searchGubun$ like '%$searchText$%'
+         AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regState">#regState[]#</iterate>
+         AND s.STORE_ID = p.STORE_ID
+	</select>
+	<select id="mainDAO.selectParentCategory" resultClass="egovMap">
+	  SELECT CATEGORY_NAME
+	  	   , CATEGORY_ID
+        FROM CATEGORY
+       WHERE PARENT_CATEGORY_ID = 'none'
+	</select>
+	
+	
+	<select id="mainDAO.selectCategoryList" resultClass="egovMap">
+	  SELECT CATEGORY_NAME
+	  	   , CATEGORY_ID
+	  	   , PARENT_CATEGORY_NAME
+        FROM CATEGORY
+       WHERE PARENT_CATEGORY_ID = #categoryId#
+	</select>
+	
 </sqlMap>

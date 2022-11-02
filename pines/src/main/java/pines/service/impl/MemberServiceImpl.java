@@ -1,6 +1,5 @@
 package pines.service.impl;
 
-import java.sql.SQLException;
 
 import javax.annotation.Resource;
 
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import pines.service.MemberService;
 import pines.service.MemberVO;
+import pines.service.OrderVO;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService{
@@ -54,5 +54,17 @@ public class MemberServiceImpl implements MemberService{
 	public int updateMemberPw(MemberVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return (int) memberDAO.updateMemberPw(vo);
+	}
+
+	@Override
+	public OrderVO selectMemberOrder(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return (OrderVO) memberDAO.selectMemberOrder(vo);
+	}
+
+	@Override
+	public int selectSellerCheck(MemberVO memberVO) throws Exception {
+		// TODO Auto-generated method stub
+		return (int) memberDAO.selectSellerCheck(memberVO);
 	}
 }

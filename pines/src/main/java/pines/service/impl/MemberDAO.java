@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
 import pines.service.MemberVO;
+import pines.service.OrderVO;
 
 @Repository("memberDAO")
 public class MemberDAO extends EgovAbstractDAO{
@@ -40,5 +41,15 @@ public class MemberDAO extends EgovAbstractDAO{
 	public int updateMemberPw(MemberVO vo) {
 		// TODO Auto-generated method stub
 		return (int) update("memberDAO.updateMemberPw",vo);
+	}
+
+	public OrderVO selectMemberOrder(MemberVO vo) {
+			
+		return (OrderVO) select("memberDAO.selectMemberOrder");
+	}
+
+	public int selectSellerCheck(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		return (int) select("memberDAO.selectSellerCheck",memberVO);
 	}
 }

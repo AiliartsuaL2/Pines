@@ -39,7 +39,7 @@ $(function(){
     		success: function(result) {
     			if(result == "ok") {
     				alert(userId+"님 로그인 되었습니다.");
-    				location="productList.do";
+    				location="mainList.do";
     			} else {
     				alert("로그인 정보를 다시 확인해주세요.");
     			}
@@ -168,6 +168,11 @@ $(function(){
     margin : auto;
     cursor:pointer;
 }
+.whole_wrap{
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
 /* float 속성 해제 */
 .clearfix{
 	clear: both;
@@ -175,36 +180,14 @@ $(function(){
 </style>
 
 <body>
+<div class = "whole_wrap">
 
-<!-- <form name="frm" id="frm">
-<table>
-	<caption>로그인</caption>
-	<tr>
-		<th><label for="userId">아이디</label></th>
-		<td>
-		<input type="text" name="userId" id="userId" placeholder="아이디입력">
-		</td>
-	</tr>
-	<tr>
-		<th><label for="pass">암호</label></th>
-		<td>
-		<input type="password" name="pass" id="pass">
-		</td>
-	</tr>
-</table>
-
-<div class="div_button">
-	<button type="button" id="btn_submit">로그인</button>
-	<button type="reset">취소</button>
-</div>
-</form>
- -->
 
 <form name="frm" id="frm">
 <div class="wrapper">
 	<div class="wrap">
 		<div class="logo_wrap">
-		<button type="button" class="button1" onclick= "location='productList.do'" ><img src="images/pines.JPG" width="150px" height="150px"></button>
+		<button type="button" class="button1" onclick= "location='mainList.do'" ><img src="images/pines.JPG" width="150px" height="150px"></button>
 		</div>
 		<div class="login_wrap"> 
 			<div class="id_wrap">
@@ -234,7 +217,7 @@ $(function(){
 	</div>
 </div>
 </form>
-
+</div>
 </body>
 </html>
 

@@ -1,5 +1,7 @@
 package pines.web;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,17 +13,20 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import pines.service.MainService;
+import pines.service.MainVO;
 import pines.service.MemberService;
 import pines.service.MemberVO;
+import pines.service.OrderVO;
 
 @Controller
 public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-	public String result = "";
 	
 	@Resource(name="memberService")
 	public MemberService memberService;
-
+	@Resource(name="mainService")
+	public MainService mainService;
 	/*
 	 * 회원 등록 프로그램
 	 */
@@ -35,7 +40,7 @@ public class MemberController {
 	@ResponseBody
 	public String memberWriteSave(MemberVO vo) throws Exception{
 		String message = "";
-		
+		String result = "";
 		result = memberService.insertMember(vo);
 		
 		if(result == null){ // 성공
@@ -95,7 +100,7 @@ public class MemberController {
 	public String logout(HttpSession session){
 		session.removeAttribute("SessionUserID");
 		logger.info("로그아웃");
-		return "redirect:/productList.do";
+		return "redirect:/mainList.do";
 	}
 	
 	@RequestMapping("/idFind.do")
@@ -151,5 +156,36 @@ public class MemberController {
 		}
 		System.out.println(count);
 		return message;
+	}
+	@RequestMapping("/memberOrder.do")
+	public String selectMemberOrder(MemberVO vo, ModelMap model) throws Exception{
+		OrderVO orderVO = memberService.selectMemberOrder(vo);
+		model.addAttribute("memberVO ",orderVO);
+		return "myPage/memberOrder";
+	}
+	
+	
+	@RequestMapping("/sellerCheck.do")
+	public String sellerCheck(MemberVO vo , HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		vo.setUserId((String) session.getAttribute("SessionUserID"));
+		int tmp = 0;
+		if(vo.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "member/loginWrite";
+		}
+		else{ // 로그인 된경우
+			tmp = memberService.selectSellerCheck(vo);
+			if(tmp == 1){ // 판매자일경우
+				
+				List<?> list = mainService.selectSellerProductList(vo);
+				model.addAttribute("resultList",list);
+				return "seller/sellerMain";
+			}
+			else{ // 판매자가 아닐경우
+				return "seller/sellerWrite";	
+			}		
+		}
 	}
 }

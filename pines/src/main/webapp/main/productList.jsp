@@ -13,6 +13,11 @@
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
 </head>
 <style>
+.div_Wrap{
+  display: flex;
+  justify-content: center;
+   width:1920px;
+}
 .table_product{ 
 	border: solid 1px #D5D5D5;
 	text-align: center;
@@ -20,32 +25,39 @@
 }
 
 .div3{
+	margin-left:5%;
 	text-align:center;
 	font-size:12pt;
 	margin-top:10px;
-	margin-left:100px;
 }
 header {
-	margin-left:150px;
     height: 215px;
 }
 main {
-	margin-left:150px;
 }
 footer {
     height: 310px;
 }
 a { text-decoration:none }
 .table_title{
+	margin-left:31%;
 	margin-top:20px;
-	margin-left:100px;
 	font-size:15pt;
 	font-weight:bold;
     height: 50px;
 }
+.div_table_title{
+	width : 1920px;
+}
 
+.whole_wrap{
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
 </style>
 <body>
+<div class = "whole_wrap">
 
 <br>
 <!-- 번호, 제목, 글쓴이, 등록일 , 조회수 -->
@@ -55,12 +67,15 @@ a { text-decoration:none }
 </header>
 <main>
 <%@ include file="../include/topMenu.jsp" %>
+
+<div class = "div_table_title">
 	<table class ="table_title">
 		<tr>
 			<th>검색 상품</th>
 		</tr>
 	</table>
-	
+</div>
+	<div class = "div_Wrap">
 	<div class="div3">
 	<c:set var="i" value="0" />
 	<c:set var="j" value="3" />
@@ -78,8 +93,14 @@ a { text-decoration:none }
 	  </c:forEach>
 	</table>
 </div>
+</div>
 </main>
 <footer>
+	<div style="width:600px;margin-top:5px; text-align:center;">
+		<c:forEach var="i" begin="1" end="${totalPage}">
+			<a href="productList.do?viewPage=${i}">${i}</a>
+		</c:forEach>
+	</div>
 </footer>
 
 
@@ -87,6 +108,6 @@ a { text-decoration:none }
 <div style="width:600px;margin-top:5px; text-align:right;">
 	<button type="button" onclick= "location='boardWrite.do'">글쓰기</button>
 </div> -->
-
+</div>
 </body>
 </html>

@@ -14,4 +14,9 @@ public interface MemberService {
 	public int selectPwFindCount(MemberVO vo) throws Exception;
 
 	public int updateMemberPw(MemberVO vo) throws Exception;
+
+	public OrderVO selectMemberOrder(MemberVO vo) throws Exception;
+
+	public int selectSellerCheck(MemberVO memberVO) throws Exception;
+
 }
