@@ -81,6 +81,24 @@ public class MainServiceImpl implements MainService {
 		return mainDAO.selectCategoryList(mainVO);
 	}
 
+	@Override
+	public String insertProduct(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return (String) mainDAO.insertProduct(mainVO);
+	}
+
+	@Override
+	public List<?> selectProductModify(String productId) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectProductModify(productId);
+	}
+
+	@Override
+	public int updateProduct(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.updateProduct(mainVO);
+	}
+
 
 
 

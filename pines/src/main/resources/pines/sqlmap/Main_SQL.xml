@@ -27,15 +27,19 @@
 	</select>
 	
 	<select id="mainDAO.selectPlantList" resultClass = "egovMap">
-	   SELECT product_id
-		    , store_id
-		    , product_name
-		    , product_description
-		    , product_price
-		    , image1
-		    , discount_rate
-		 FROM PRODUCT
-		WHERE category_id='식물'
+	   SELECT p.product_id
+		    , p.store_id
+		    , p.product_name
+		    , p.product_description
+		    , p.product_price
+		    , p.image1
+		    , p.discount_rate
+		 FROM PRODUCT p
+  		WHERE (
+         		SELECT PARENT_CATEGORY_ID
+          		  FROM CATEGORY c 
+          		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
+          		) = 'plant'
 	</select>
 	
 	<select id="mainDAO.selectFlowerList" resultClass = "egovMap" >
@@ -46,8 +50,12 @@
 		    , product_price
 		    , image1
 		    , discount_rate
-		 FROM PRODUCT
-		WHERE category_id='꽃/화환'
+	     FROM PRODUCT p
+  		WHERE (
+         		SELECT PARENT_CATEGORY_ID
+          		  FROM CATEGORY c 
+          		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
+          		) = 'flower'
 	</select>
 	
 	<select id="mainDAO.selectMainList" resultClass="egovMap">
@@ -100,14 +108,24 @@
 	
 	<select id="mainDAO.selectPlantTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
-		  FROM PRODUCT
-		WHERE category_id='식물'
+		  FROM PRODUCT p
+  		WHERE (
+         		SELECT PARENT_CATEGORY_ID
+          		  FROM CATEGORY c 
+          		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
+          		) = 'plant'
+	
 	</select>
 	
 	<select id="mainDAO.selectFlowerTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
-		  FROM PRODUCT
-		WHERE category_id='꽃/화환'
+		  FROM PRODUCT p
+  		 WHERE (
+         		SELECT PARENT_CATEGORY_ID
+          		  FROM CATEGORY c 
+          		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
+          		) = 'flower'
+	
 	</select>
 	
 	<select id="mainDAO.selectDiscountTotal" resultClass="java.lang.Integer">
@@ -151,7 +169,7 @@
            , STORE s
        WHERE s.USER_ID = #userId#
          AND $searchGubun$ like '%$searchText$%'
-         AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regState">#regState[]#</iterate>
+         AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regStateList">#regStateList[]#</iterate>
          AND s.STORE_ID = p.STORE_ID
 	</select>
 	<select id="mainDAO.selectParentCategory" resultClass="egovMap">
@@ -169,5 +187,127 @@
         FROM CATEGORY
        WHERE PARENT_CATEGORY_ID = #categoryId#
 	</select>
+	
+	<insert id="mainDAO.insertProduct">
+		INSERT INTO PRODUCT( 
+							PRODUCT_ID
+						  , STORE_ID
+						  , PRODUCT_NAME
+						  , PRODUCT_PRICE
+						  , PRODUCT_DESCRIPTION
+						  , REG_Y_N
+						  , REG_STATE
+						  , CATEGORY_ID
+						  , PRODUCT_STOCK
+						  , DISCOUNT_RATE
+						  <isNotNull property="image1">
+						  , IMAGE1
+		  	              </isNotNull>
+		  	              <isNotNull property="image2">
+						  , IMAGE2
+		  	              </isNotNull>
+						  <isNotNull property="image3">
+						  , IMAGE3
+		  	              </isNotNull>
+						  <isNotNull property="image4">
+						  , IMAGE4
+		  	              </isNotNull>
+						  , MIN_PURCHASE
+						  , MAX_PURCHASE
+						  , SHIPPING_COST
+						  , FREE_SHIPPING_PRICE
+						  , REG_DATE
+						  , DISCOUNT_PERIOD
+						)
+					VALUES(
+						  PRODUCT_SEQ.NEXTVAL
+						  , (SELECT STORE_ID
+						  	   FROM STORE
+						  	  WHERE USER_ID = #userId#)   <!-- 판매자 id -->
+						  , #productName#
+						  , #productPrice#
+						  , #productDescription# 
+						  , 'Y'
+						  , '판매중'
+						  , #categoryId#
+						  , #productStock#
+						  , #discountRate#
+						  <isNotNull property="image1">
+						  , #image1#
+		  	              </isNotNull>
+						  <isNotNull property="image2">
+						  , #image2#
+		  	              </isNotNull>
+						  <isNotNull property="image3">
+						  , #image3#
+		  	              </isNotNull>
+						  <isNotNull property="image4">
+						  , #image4#
+		  	              </isNotNull>
+						  , #minPurchase#
+						  , #maxPurchase#
+						  , #shippingCost#
+						  , #freeShippingPrice#
+						  , SYSDATE
+						  , '2022-11-05'
+						)
+	</insert>
+	
+	<select id="mainDAO.selectProductModify" resultClass="egovMap">
+		SELECT PRODUCT_ID
+			 , STORE_ID
+			 , PRODUCT_NAME
+			 , PRODUCT_PRICE
+			 , PRODUCT_DESCRIPTION
+			 , REG_STATE
+			 , CATEGORY_ID
+			 , (
+			    SELECT CATEGORY_NAME
+        		  FROM CATEGORY c 
+       			 WHERE c.CATEGORY_ID = p.CATEGORY_ID 
+       			) AS CATEGORY_NAME
+			 , PRODUCT_STOCK
+			 , DISCOUNT_RATE
+			 , IMAGE1
+			 , IMAGE2
+			 , IMAGE3
+			 , IMAGE4
+			 , MIN_PURCHASE
+			 , MAX_PURCHASE
+			 , SHIPPING_COST
+			 , FREE_SHIPPING_PRICE
+			 , to_char(DISCOUNT_PERIOD,'yyyy-mm-dd') DISCOUNT_PERIOD
+		FROM PRODUCT p
+		WHERE p.PRODUCT_ID = #productId#
+	</select>
+	
+	<update id = "mainDAO.updateProduct">
+		UPDATE PRODUCT
+		   SET PRODUCT_NAME = #productName#
+		 	 , PRODUCT_PRICE = #productPrice#
+		 	 , PRODUCT_DESCRIPTION = #productDescription#
+		 	 , REG_STATE = #regState#
+			 , PRODUCT_STOCK = #productStock#
+			 , DISCOUNT_RATE = #discountRate#
+			 <isNotNull property="image1">
+			 , IMAGE1 = #image1#
+		  	 </isNotNull>
+		  	 <isNotNull property="image2">
+			 , IMAGE2 = #image2#
+		  	 </isNotNull>
+			 <isNotNull property="image3">
+			 , IMAGE3 = #image3#
+		  	 </isNotNull>
+			 <isNotNull property="image4">
+			 , IMAGE4 = #image4# 
+		  	 </isNotNull>
+			 , MIN_PURCHASE = #minPurchase#
+			 , MAX_PURCHASE = #maxPurchase#
+			 , SHIPPING_COST = #shippingCost#
+			 , FREE_SHIPPING_PRICE = #freeShippingPrice#
+			 , REG_DATE = SYSDATE
+			 , DISCOUNT_PERIOD = #discountPeriod# 
+	   WHERE PRODUCT_ID = #productId#
+	</update>
 	
 </sqlMap>

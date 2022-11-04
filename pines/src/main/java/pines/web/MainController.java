@@ -36,6 +36,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import pines.service.ImageVO;
 import pines.service.MainService;
 import pines.service.MainVO;
+import pines.service.MemberVO;
 
 @Controller
 public class MainController {
@@ -138,7 +139,7 @@ public class MainController {
 	}
 	
 	@RequestMapping("uploadAjaxAction.do")
-	public ModelAndView uploadAjaxActionPost(@RequestParam MultipartFile[] uploadFile){
+	public ModelAndView uploadAjaxActionPost(@RequestParam List<MultipartFile> uploadFile){
 		logger.info("uploadAjaxActionPOST..........");		
 		/* 이미지 파일 체크 */
 		for(MultipartFile multipartFile: uploadFile) {
@@ -152,7 +153,9 @@ public class MainController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+			if(type == null){
+				break;
+			}	
 			if(!type.startsWith("image")) {
 				ModelAndView mv = new ModelAndView();
 				mv.addObject("obj1", HttpStatus.BAD_REQUEST); 
@@ -171,20 +174,34 @@ public class MainController {
 		if(uploadPath.exists() == false) {
 			uploadPath.mkdirs();
 		}
-
 		List<ImageVO> list = new ArrayList();
 		
+		
 		for(MultipartFile multipartFile : uploadFile) {
+
+			// 널값 들어오면 (4개중 1~3개 이미지만 등록시)
+			File checkfile = new File(multipartFile.getOriginalFilename());
+			String type = null;
+			
+			try {
+				type = Files.probeContentType(checkfile.toPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(type == null){
+				continue;
+			}	
+			// 루프 끝냄
+			
+			logger.info("파일 추가1");
+			
 			/* 이미지 정보 객체*/
 			ImageVO vo = new ImageVO();
-			
-			
 			
 			/* 파일 이름 */
 			String uploadFileName = multipartFile.getOriginalFilename();	
 			vo.setFileName(uploadFileName);
 			vo.setUploadPath(datePath);
-			
 			
 			String uuid = UUID.randomUUID().toString();
 			vo.setUuid(uuid);
@@ -219,6 +236,48 @@ public class MainController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("obj1", list); 
 	    mv.setViewName("jsonView");
+	    System.out.println("list"+list);
 	    return mv;
+	}
+	
+	@RequestMapping("/productWriteSub.do")
+	@ResponseBody
+	public String insertProductWrite(MainVO mainVO , HttpSession session) throws Exception{
+		String message = "";
+		String result = "";
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		
+		result = mainService.insertProduct(mainVO);
+		
+		if(result == null){ // 성공
+			message = "ok";
+			logger.info("상품 등록 성공");
+		}
+		else{
+			logger.info("상품 등록 실패");
+		}
+		return message;
+	}
+	
+
+	@RequestMapping("/productModify.do")
+	public String selectProductModify(MainVO vo, ModelMap model) throws Exception{
+		List<?> list = mainService.selectProductModify(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
+		model.addAttribute("productList",list);
+		return "seller/productModify";
+	}
+
+	
+	@RequestMapping("/productModifySub.do")
+	@ResponseBody // ajax에 보내줄 수 있는 어노테이션
+	public String updateProductModifySub(MainVO mainVO, HttpSession session) throws Exception{
+		int result = 0;
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		System.out.print(mainVO.getProductId());
+		mainVO.getProductName();
+		System.out.print(mainVO.getProductName());
+		result = mainService.updateProduct(mainVO);
+		
+		return result+"";
 	}
 }

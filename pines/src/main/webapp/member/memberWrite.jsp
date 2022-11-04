@@ -101,10 +101,10 @@
 			
 			success: function(result){
 				if(result == "ok"){
-					alert("저장 완료");
+					alert("회원가입이 완료되었습니다.");
 					location="loginWrite.do"
 				} else{
-					alert("저장실패. \n 관리자에게 연락해주세요");
+					alert("회원가입에 실패하였습니다. \n 관리자에게 연락해주세요");
 				}
 			},
 			error: function(){

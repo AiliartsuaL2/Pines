@@ -66,4 +66,19 @@ public class MainDAO extends EgovAbstractDAO{
 		return list("mainDAO.selectCategoryList", mainVO);
 	}
 
+	public String insertProduct(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (String) insert("mainDAO.insertProduct", mainVO);
+	}
+
+	public List<?> selectProductModify(String productId) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectProductModify",productId);
+	}
+
+	public int updateProduct(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return update("mainDAO.updateProduct", mainVO);
+	}
+
 }

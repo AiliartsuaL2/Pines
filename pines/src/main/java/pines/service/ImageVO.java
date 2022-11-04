@@ -5,7 +5,6 @@ public class ImageVO {
 	private String uploadPath;
 	private String uuid;
 	private String fileName;
-	private String productId;
 	
 	
 	public String getUploadPath() {
@@ -25,12 +24,6 @@ public class ImageVO {
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-	public String getProductId() {
-		return productId;
-	}
-	public void setProductId(String productId) {
-		this.productId = productId;
 	}
 	
 	

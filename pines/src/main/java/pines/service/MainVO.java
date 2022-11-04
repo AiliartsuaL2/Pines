@@ -11,11 +11,9 @@ public class MainVO {
 	private String productDescription;
 	private String regYN;
 	private String categoryId;
-	
-	
-	
 	private String discountPrice;
-	private List<String> regState;
+	private List<String> regStateList;
+	private String regState;
 	private int productStock;
 	private int discountRate;
 	private String image1;
@@ -28,10 +26,6 @@ public class MainVO {
 	private int freeShippingPrice;
 	private String regDate;
 	private String discountPeriod;	
-	
-	
-	
-	
 	private String searchGubun;
 	private String searchText;
 	private int viewPage = 1;
@@ -45,6 +39,7 @@ public class MainVO {
 		this.userId = userId;
 	}
 	public String getProductId() {
+		System.out.println("getProductId "+productId);
 		return productId;
 	}
 	public void setProductId(String productId) {
@@ -92,10 +87,16 @@ public class MainVO {
 	public void setDiscountPrice(String discountPrice) {
 		this.discountPrice = discountPrice;
 	}
-	public List<String> getRegState() {
+	public List<String> getRegStateList() {
+		return regStateList;
+	}
+	public void setRegStateList(List<String> regStateList) {
+		this.regStateList = regStateList;
+	}
+	public String getRegState() {
 		return regState;
 	}
-	public void setRegState(List<String> regState) {
+	public void setRegState(String regState) {
 		this.regState = regState;
 	}
 	public int getProductStock() {

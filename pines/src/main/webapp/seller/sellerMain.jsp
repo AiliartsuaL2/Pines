@@ -51,7 +51,7 @@ $(function(){
 			  		html+="<td class='table_cell'>"+JSON.stringify(data['obj1'][i]['discountPeriod']).replace(/\"/gi, "")+"</td>";
 			  		html+="<td class='table_cell'>"+JSON.stringify(data['obj1'][i]['productStock']).replace(/\"/gi, "")+"</td>";
 			  		html+="<td class='table_cell'>"+JSON.stringify(data['obj1'][i]['regState']).replace(/\"/gi, "")+"</td>";
-			  		html+="<td class='table_cell'><a href='productDetail.do?unq="+JSON.stringify(data['obj1'][i]['productId']).replace(/\"/gi, "")+"'><c:out value='수정'/></a></td>"
+			  		html+="<td class='table_cell'><a href='productModify.do?productId="+JSON.stringify(data['obj1'][i]['productId']).replace(/\"/gi, "")+"'><c:out value='수정'/></a></td>"
 			  		html+="</tr>";
 				}
 				html+="</table>";
@@ -66,13 +66,13 @@ $(function(){
 	var soldOut = false;
 	$("#chk_whole").change(function(){
         if($("#chk_whole").is(":checked")){
-        	$("input[name=regState]").prop("checked", true);
+        	$("input[name=regStateList]").prop("checked", true);
         	onSale = true;
         	soldOut = true;
     		$("#ajaxDiv").empty();// 요소 내용 제거
         	ajaxLoad();
         }else{
-        	$("input[name=regState]").prop("checked", false);
+        	$("input[name=regStateList]").prop("checked", false);
         	onSale = false;
         	soldOut = false;
     		$("#ajaxDiv").empty();// 요소 내용 제거
@@ -286,8 +286,8 @@ input, progress {
 		<div class = "box_state">
 	      <label class="form_case"> 진열 상태</label>
 	      <label class="state_chk"><input id="chk_whole" class="chk_box" type="checkbox" name="chk_whole" value="판매중','품절"> 전체</label>
-	      <label class="state_chk"><input id="chk_onSale" class="chk_box" type="checkbox" name="regState" value="판매중" checked> 판매중</label>
-    	  <label class="state_chk"><input id="chk_soldOut" class="chk_box" type="checkbox" name="regState" value="품절"> 품절</label>
+	      <label class="state_chk"><input id="chk_onSale" class="chk_box" type="checkbox" name="regStateList" value="판매중" checked> 판매중</label>
+    	  <label class="state_chk"><input id="chk_soldOut" class="chk_box" type="checkbox" name="regStateList" value="품절"> 품절</label>
 		</div>
 
 	<div class="search_bar">
@@ -331,7 +331,7 @@ input, progress {
 		<td class="table_cell"><c:out value="${result.discountPeriod}"/></td>
 		<td class="table_cell"><c:out value="${result.productStock}"/></td>
 		<td class="table_cell"><c:out value="${result.regState}"/></td>
-		<td class="table_cell"><a href="productDetail.do?unq=${result.productId}"><c:out value="수정"/></a></td>
+		<td class="table_cell"><a href="productModify.do?productId=${result.productId}"><c:out value="수정"/></a></td>
 	</tr>
 	</c:forEach>
 	</table>
