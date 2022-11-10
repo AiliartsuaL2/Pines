@@ -83,7 +83,7 @@ a { text-decoration:none }
 	    <c:if test="${i%j == 0 }">
 	    <tr>
 	    </c:if>
-		<td onClick="location.href='${result.productId}.do'" style="cursor:pointer;"><a href="#" style='align:center'>
+		<td onClick="location.href='productDetail.do?productId=${result.productId}'" style="cursor:pointer;"><a href="#" style='align:center'>
 				<p><img src="${result.image1}" width="200" height="150" alt""/></p> </a> <p>${result.productName}</p><p>${result.productPrice}원</p></td>
 	    <c:if test="${i%j == j-1 }">
 	    </tr>

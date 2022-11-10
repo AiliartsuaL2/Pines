@@ -11,60 +11,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Pines</title>
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
-<script>
-/*
-var lastScrollTop = 0; // 이전 스크롤 좌표 값
-$(window).scroll(function(){ // 스크롤 이벤트시
-	var currentScrollTop = $(window).scrollTop(); // 현재 스크롤 좌표값
-	
-	
-	if(currentScrollTop - lasScrollTop > 0){ // 다운 스크롤인 상태
-		lastScrollTop = currentScrollTop; // 이전 스크롤 좌표로 할당
-		if($(window).scrollTop() >= ($(document).height() - $(window).height())){
-			var lastrn = $(".scrolling:last").attr("data-bno"); 
-			$.ajax({
-				type : 'post',
-				url : 'infiniteScrollDown',
-				headers:{
-					"Content-type" : "application/json",
-					"X-HTTP-Method-Override" : "POST"
-				},
-				dataType : 'json', // 서버로부터 return받을 데이터 타입
-				data : JSON.stringify({ // 서버로 보낼 데이터 명시
-					bno : lastbno
-				})
-				success : function(data){
-					var str = "";
-					if(data != ""){ // 받아온 데이터가 null이 아니면
-						$(data).each(
-							function(){
-								str += "<td onClick="+"'location.href="+"'"+this.productId+".do'"+"'"+"style="+"'cursor:pointer;'><a href="+"'#'style='align:center'>"
-								    +  "<p><img src="+"'"this.image1+"'width="+"'200' height='150' alt''/></p></a><p>"+this.productName+"</p><p>"+this.productPrice+"원</p></td>";
-							});
-							$(".listToChange").empty();
-							$(".scrollLocation").after(str);
-					}
-					else{
-						alert("더 불러올 데이터가 없습니다.");
-					}	
-				}
-			});		
-			
-			
-		}
-	} 
-	
-	
-	else{ // 업스크롤인 상태
-		lastScrollTop = currentScrollTop;
-	}
-	
-	if($(window).scrollTop() >= $(docunment).height() - $(window).height()){
-		
-	}
-});
-*/
-</script>
 
 </head>
 <style>
@@ -137,7 +83,7 @@ a { text-decoration:none }
 	    <c:if test="${i%j == 0 }">
 	    <tr>
 	    </c:if>
-		<td onClick="location.href='${result.productId}.do'" style="cursor:pointer;"><a href="#" style='align:center'>
+		<td onClick="location.href='productDetail.do?productId=${result.productId}'" style="cursor:pointer;"><a href="#" style='align:center'>
 				<p><img src="${result.image1}" width="200" height="150" alt""/></p> </a> <p>${result.productName}</p><p>${result.productPrice}원</p></td>
 	    <c:if test="${i%j == j-1 }">
 	    </tr>

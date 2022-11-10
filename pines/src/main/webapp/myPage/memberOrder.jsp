@@ -11,6 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Pines</title>
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
+
 </head>
 <style>
 .div_Wrap{
@@ -40,19 +41,28 @@ footer {
 }
 a { text-decoration:none }
 .table_title{
+	float : left;
 	margin-left:31%;
 	margin-top:20px;
 	font-size:15pt;
 	font-weight:bold;
     height: 50px;
+    width : 
 }
 .div_table_title{
-	width : 1920px;
+	width : 50%;
+	height : 80%;
+	position : absolute;
 }
 
+.whole_wrap{
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
 </style>
 <body>
-
+<div class = "whole_wrap">
 <br>
 <!-- 번호, 제목, 글쓴이, 등록일 , 조회수 -->
 
@@ -60,37 +70,15 @@ a { text-decoration:none }
 <%@ include file="../include/searchBar.jsp" %>
 </header>
 <main>
-<%@ include file="../include/topMenu.jsp" %>
-<div class = "div_table_title">
-	<table class ="table_title">
-		<tr>
-			<th>최근 등록 상품</th>
-		</tr>
-	</table>
-</div>
-	<div class = "div_Wrap">
-	<div class="div3">
-	<c:set var="i" value="0" />
-	<c:set var="j" value="3" />
-	<table class = "table_product" width="850">
-	  <c:forEach items="${resultList}" var="result">
-	    <c:if test="${i%j == 0 }">
-	    <tr>
-	    </c:if>
-		<td onClick="location.href='${result.productId}.do'" style="cursor:pointer;"><a href="#" style='align:center'>
-				<p><img src="${result.image1}" width="200" height="150" alt""/></p> </a> <p>${result.productName}</p><p>${result.productPrice}원</p></td>
-	    <c:if test="${i%j == j-1 }">
-	    </tr>
-	    </c:if>
-	    <c:set var="i" value="${i+1 }" />
-	  </c:forEach>
-	</table>
-</div>
-
+<%@ include file="../include/myPageTopMenu.jsp" %>
+	<p class = "table_title"> 상품 정보</p>
+	<div class = "div_table_title">
+	
 	</div>
+
 </main>
 <footer>
 </footer>
-
+</div>
 </body>
 </html>

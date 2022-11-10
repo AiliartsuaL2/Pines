@@ -86,6 +86,7 @@
 		  FROM ORDER 
 	     WHERE user_Id = #userId#
 	</select>
+	
     <select id="memberDAO.selectSellerCheck" resultClass = "java.lang.Integer">
 		SELECT COUNT(*)
 		  FROM STORE
@@ -93,4 +94,21 @@
 		   AND USER_ID = #userId#
 		   AND SIGN_STORE = 'Y'
 	</select>
+	
+    <select id="memberDAO.selectMemberInfo" resultClass = "egovMap">
+		SELECT *
+		  FROM MEMBER
+		 WHERE USER_ID = #userId#
+	</select>
+	
+	<update id="memberDAO.updateMemberPoint">
+		UPDATE MEMBER 
+		   SET POINT = (
+		   				SELECT POINT
+		   				  FROM MEMBER 
+		   				 WHERE USER_ID = #userId#
+		   				)-#totalAmount#
+		 WHERE USER_ID = #userId#
+	</update>
+	
 </sqlMap>

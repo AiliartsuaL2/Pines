@@ -21,7 +21,6 @@
       changeYear: true
     });
 
-  	window.onload = function(){
         document.getElementById("address_button").addEventListener("click", function(){ //주소입력칸을 클릭하면
             //카카오 주소 발생
             new daum.Postcode({
@@ -31,7 +30,6 @@
                 }
             }).open();
         });
-    }
     $("#btn_idcheck").click(function(){
       var userId = $("#userId").val();
       userId = $.trim(userId);

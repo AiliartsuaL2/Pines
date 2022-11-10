@@ -1,8 +1,11 @@
 package pines.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
+import pines.service.MainVO;
 import pines.service.MemberVO;
 import pines.service.OrderVO;
 
@@ -51,5 +54,15 @@ public class MemberDAO extends EgovAbstractDAO{
 	public int selectSellerCheck(MemberVO memberVO) {
 		// TODO Auto-generated method stub
 		return (int) select("memberDAO.selectSellerCheck",memberVO);
+	}
+
+	public List<?> selectMemberInfo(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("memberDAO.selectMemberInfo", mainVO);
+	}
+
+	public int updateMemberPoint(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) update("memberDAO.updateMemberPoint",mainVO);
 	}
 }

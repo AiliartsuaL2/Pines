@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +37,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import pines.service.ImageVO;
 import pines.service.MainService;
 import pines.service.MainVO;
+import pines.service.MemberService;
 import pines.service.MemberVO;
 
 @Controller
@@ -43,13 +45,15 @@ public class MainController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	@Resource(name="mainService")
 	MainService mainService;
+	
+	@Resource(name="memberService")
+	MemberService memberService;
 
 	@RequestMapping("/mainList.do")
 	public String selectMainList(MainVO vo , ModelMap model) throws Exception{
 		List<?> list = mainService.selectMainList(vo);
 		model.addAttribute("resultList",list);
-		System.out.println("list : "+ list);
-		
+			
 		
 		return "main/mainList";
 	}
@@ -93,7 +97,6 @@ public class MainController {
 	public String selectPlantList(MainVO vo, ModelMap model) throws Exception{
 		List<?> list = mainService.selectPlantList(vo);
 		model.addAttribute("plantList",list);
-		System.out.println("list : "+ list);
 		return "product/plantList";
 	}
 	
@@ -101,14 +104,12 @@ public class MainController {
 	public String selectFlowerList(MainVO vo, ModelMap model) throws Exception{
 		List<?> list = mainService.selectFlowerList(vo);
 		model.addAttribute("flowerList",list);
-		System.out.println("list : "+ list);
 		return "product/flowerList";
 	}
 	@RequestMapping("/discountList.do")
 	public String selectDiscountList(MainVO vo, ModelMap model) throws Exception{
 		List<?> list = mainService.selectDiscountList(vo);
 		model.addAttribute("discountList",list);
-		System.out.println("list : "+ list);
 		return "product/discountList";
 	}
 
@@ -164,7 +165,8 @@ public class MainController {
 			}
 			
 		}// for
-		String uploadFolder = "C:\\Users\\장호성\\AppData\\Roaming\\SPB_Data\\git\\Pines\\pines\\src\\main\\webapp\\product_image";
+		//String uploadFolder = "C:\\Users\\장호성\\AppData\\Roaming\\SPB_Data\\git\\Pines\\pines\\src\\main\\webapp\\product_image"; // 서버 원래 경로
+		String uploadFolder = "C:\\Users\\장호성\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\pines\\product_image"; // 톰캣 실행시 서버에 올라가는 경로
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String str = sdf.format(date);
@@ -175,10 +177,9 @@ public class MainController {
 			uploadPath.mkdirs();
 		}
 		List<ImageVO> list = new ArrayList();
-		
-		
-		for(MultipartFile multipartFile : uploadFile) {
 
+		int i=0;
+		for(MultipartFile multipartFile : uploadFile) {
 			// 널값 들어오면 (4개중 1~3개 이미지만 등록시)
 			File checkfile = new File(multipartFile.getOriginalFilename());
 			String type = null;
@@ -200,6 +201,8 @@ public class MainController {
 			
 			/* 파일 이름 */
 			String uploadFileName = multipartFile.getOriginalFilename();	
+			System.out.println("uploadFile "+i+" = "+uploadFileName + " list size = "+uploadFile.size());
+			i++;
 			vo.setFileName(uploadFileName);
 			vo.setUploadPath(datePath);
 			
@@ -236,7 +239,6 @@ public class MainController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("obj1", list); 
 	    mv.setViewName("jsonView");
-	    System.out.println("list"+list);
 	    return mv;
 	}
 	
@@ -273,11 +275,54 @@ public class MainController {
 	public String updateProductModifySub(MainVO mainVO, HttpSession session) throws Exception{
 		int result = 0;
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		System.out.print(mainVO.getProductId());
 		mainVO.getProductName();
-		System.out.print(mainVO.getProductName());
 		result = mainService.updateProduct(mainVO);
 		
 		return result+"";
 	}
+
+	@RequestMapping("/productDetail.do")
+	public String selectProductDetail(MainVO vo, ModelMap model) throws Exception{
+		List<?> list = mainService.selectProductDetail(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
+		model.addAttribute("productList",list);
+		return "main/productDetail";
+	}
+	@RequestMapping("/orderLoginCheck.do")
+	public String orderLoginCheck(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+			
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{ // 로그인 된경우				
+				List<?> memberList = memberService.selectMemberInfo(mainVO);
+
+				model.addAttribute("productList",mainVO);
+				model.addAttribute("memberList",memberList);
+				return "order/orderWrite";	
+		}
+	}
+	
+	@RequestMapping("/orderWriteSub.do")
+	@ResponseBody
+	public String insertOrderWrite(MainVO mainVO , HttpSession session) throws Exception{
+		String message = "";
+		String result = "";
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		result = mainService.insertOrder(mainVO);
+		
+		if(result == null){ // 성공
+			int tmp = memberService.updateMemberPoint(mainVO);
+			message = "ok";
+			logger.info("주문 성공");
+		}
+		else{
+			logger.info("주문 실패");
+		}
+		return message;
+	}
+	
 }

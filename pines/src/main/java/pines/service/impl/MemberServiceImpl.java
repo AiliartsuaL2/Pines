@@ -1,10 +1,13 @@
 package pines.service.impl;
 
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import pines.service.MainVO;
 import pines.service.MemberService;
 import pines.service.MemberVO;
 import pines.service.OrderVO;
@@ -66,5 +69,17 @@ public class MemberServiceImpl implements MemberService{
 	public int selectSellerCheck(MemberVO memberVO) throws Exception {
 		// TODO Auto-generated method stub
 		return (int) memberDAO.selectSellerCheck(memberVO);
+	}
+
+	@Override
+	public List<?> selectMemberInfo(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return memberDAO.selectMemberInfo(mainVO);
+	}
+
+	@Override
+	public int updateMemberPoint(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return (int) memberDAO.updateMemberPoint(mainVO);
 	}
 }

@@ -350,7 +350,7 @@ a { text-decoration:none }
 .id_input_box{
 	border: 1px solid #A5A5A5;
 	display: block;
-	height:940px;
+	height:1000px;
 	width : 45%;
 	margin-left : 610px;	
 }
@@ -380,6 +380,7 @@ a { text-decoration:none }
 	height:60px;
 	width:100%;
 }
+
 .name_category_case{
 	text-align : center;
 	height:36px;
@@ -501,8 +502,70 @@ a { text-decoration:none }
 	height:49px;
 	width:660px;
 	font-size : 18px;
-	font-wight : bold;
+	font-weight : bold;
 }
+.option_box{
+	margin-top : -10px;
+	text-align : center;
+	height:40px;
+	width:100%;
+}
+.opt_case{
+	padding-top:15px;
+	float:left;
+	height:80%;
+	width:10%;
+	font-size : 14px;
+	margin-left : 5px;
+}
+.opt_case_title{
+	font-weight : bold;
+}
+
+.opt_case_context{
+	width:10%;
+	height:100%;
+}
+
+.opt_case_description{
+	padding-top:15px;
+	float:left;
+	text-align:left;
+	height:80%;
+	width:30%;
+	font-size : 14px;
+}
+.opt_name_case{
+	text-align : center;
+	padding-top : 9px;
+	height:40px;
+	width:200px;
+	background-color : #FCDDDC;
+	color : black;
+	border : 1px solid #BABABA;
+	font-size : 18px;
+	font-weight:bold;
+    float: left;
+}
+.option_value_case{
+	padding:4px;
+	display:inline-block; 
+    float: left;
+    border : 0;
+    margin-left : 10px;
+	height:45px;
+	width:15%;
+	font-size : 18px;
+	font-wight : bold;	
+}
+.option_value{
+	text-align : center;
+    border : 0;
+	height:40px;
+	width:100%;
+}
+
+
 
 .img_name_case{
 	text-align : center;
@@ -725,6 +788,25 @@ a { text-decoration:none }
 						<p class = "price">원 이상 무료</p>
 	      			</div>
 			</div>
+			<div class = "option_box">
+	      			<label class="opt_name_case">옵션</label>
+	      			<div class = "ship_empty_box">						
+						<div class = "option_value_case"> 
+							<input type="text" name="totalNum"id="totalNum"class="option_value" placeholder="개수" >
+						</div>
+	      				<div class ="opt_case">
+							<label class="opt_case_context">개 이상시</label>
+						</div>
+						<div class = "option_value_case"> 
+							<input type="text" name="discountWon"id="discountWon"class="option_value" placeholder="할인금액(원)" >
+						</div>
+	      				<div class ="opt_case_description">
+							<label class="opt_case_context">원 할인(개당 할인액)</label>
+						</div>
+					</div>
+			</div>
+			
+			
 			</form>
 			
 			

@@ -6,6 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
+    	<logger name="jdbc" level="OFF"/>
         <Logger name="java.sql" level="DEBUG" additivity="false">
             <AppenderRef ref="console" />
         </Logger>
@@ -19,6 +20,10 @@
         <Logger name="org.springframework" level="INFO" additivity="false">
             <AppenderRef ref="console" />
         </Logger>
+        <Logger name="jdbc.audit" level="INFO" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        
         <Root level="INFO">
             <AppenderRef ref="console" />
         </Root>

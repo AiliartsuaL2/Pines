@@ -1,5 +1,7 @@
 package pines.service;
 
+import java.util.List;
+
 public interface MemberService {
 	public String insertMember(MemberVO vo) throws Exception;
 
@@ -18,5 +20,9 @@ public interface MemberService {
 	public OrderVO selectMemberOrder(MemberVO vo) throws Exception;
 
 	public int selectSellerCheck(MemberVO memberVO) throws Exception;
+
+	public List<?> selectMemberInfo(MainVO mainVO) throws Exception;
+
+	public int updateMemberPoint(MainVO mainVO) throws Exception;
 
 }

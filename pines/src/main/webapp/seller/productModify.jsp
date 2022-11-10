@@ -127,7 +127,6 @@ $("#btn_submit").click(function(){
 				return false;
 			}
 		}
-		formData.append("uploadFile", fileObj);
 		$.ajax({
 			url:"uploadAjaxAction.do", // 보낼 url
 			processData : false,
@@ -137,23 +136,73 @@ $("#btn_submit").click(function(){
 	    	dataType:"json",
 		    success : function(result){		    	 
 				  frmData += '&categoryId='+categoryId;
-				  for(var i=0; i<result['obj1'].length; i++){
+			
 	                  if(fileCheck1){
-	                	  frmData += '&image1=product_image\\'+'\\'+JSON.stringify(result['obj1'][i]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][i]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][i]['fileName']).replace(/\"/gi, "");
+	                	  frmData += '&image1=product_image\\'+'\\'+JSON.stringify(result['obj1'][0]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][0]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][0]['fileName']).replace(/\"/gi, "");
 	                  }
-
 	                  if(fileCheck2){
-	                	  frmData += '&image2=product_image\\'+'\\'+JSON.stringify(result['obj1'][i]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][i]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][i]['fileName']).replace(/\"/gi, "");
-	                  }
-
+	                	  var i =0;
+	                	  if(fileCheck1){
+									i=1;
+							}
+	                      else{
+									i=0;
+							}
+	                	  frmData += '&image2=product_image\\'+'\\'+JSON.stringify(result['obj1'][i]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][i]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][i]['fileName']).replace(/\"/gi, "");        	
+                	  }
 	                  if(fileCheck3){
-	                	  frmData += '&image3=product_image\\'+'\\'+JSON.stringify(result['obj1'][i]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][i]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][i]['fileName']).replace(/\"/gi, "");
+	                	  var i = 0;
+	                	  if(fileCheck1){
+	                		if(fileCheck2){ // 1번 2번 둘 다 있는경우 3번쨰
+	                			i=2;
+	                			}
+	                		else{ // 1번만 있는경우 2번쨰
+	                			i=1;
+	                			}
+	                	  }
+	                	  else if(fileCheck2){ // 1번이 없는데 2번이 있는 경우 2번째
+	                		  i=1;
+	                		  }
+	                	  else{ // 3번만 있는경우
+								i=0;
+							}
+	                	  frmData += '&image3=product_image\\'+'\\'+JSON.stringify(result['obj1'][i]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][i]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][i]['fileName']).replace(/\"/gi, "");        	
 	                  }
 
 	                  if(fileCheck4){
+	                	  var i = 0;
+	                	  if(fileCheck1){
+	                		  if(fileCheck2){
+	                			  if(fileCheck3){//1,2,3,4번 있는경우
+	                				 i=3; 
+	                			  }
+	                			  else{//1,2,4번 있는경우
+	                				  i=2; 
+	                			  }
+	                		  }
+	                		  else if(fileCheck3){// 1,3,4번 있는경우
+	                			  i=2;
+	                		  }
+	                		  else{//1번,4번 있는경우
+	                			  i=1;
+	                		  }
+	                	  }
+	                	  else if(fileCheck2){
+	                		  if(fileCheck3){ //2,3,4번 있는경우
+	                			  i=2;
+	                		  }
+	                		  else{ //2번 4번 있는경우
+	                			  i=1;
+	                		  }
+	                	  }
+	                	  else if(fileCheck3){ //3번 4번 있는경우
+	                		  i=1;
+	                	  }
+	                	  else{ // 4번만 있는경우
+	                		  i=0;
+	                	  }
 	                	  frmData += '&image4=product_image\\'+'\\'+JSON.stringify(result['obj1'][i]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][i]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][i]['fileName']).replace(/\"/gi, "");
-	                  }
-				  }
+	                	}
                   ajaxCall(frmData);
 
 		    	},
@@ -171,7 +220,7 @@ $("#btn_submit").click(function(){
 			  	type : 'POST',
 			  	dataType:"text",
 				    success : function(data){
-				    		if(data=="1"){
+				    		if(data=="-1"){
 								alert("상품수정이 완료되었습니다.");
 								location="sellerCheck.do"
 				    		}
@@ -319,7 +368,7 @@ a { text-decoration:none }
 .id_input_box{
 	border: 1px solid #A5A5A5;
 	display: block;
-	height:940px;
+	height:1050px;
 	width : 45%;
 	margin-left : 610px;	
 }
@@ -520,6 +569,68 @@ a { text-decoration:none }
 	font-size : 18px;
 	font-wight : bold;
 }
+.option_box{
+	margin-top : -10px;
+	text-align : center;
+	height:40px;
+	width:100%;
+}
+.opt_case{
+	padding-top:15px;
+	float:left;
+	height:80%;
+	width:10%;
+	font-size : 14px;
+	margin-left : 5px;
+}
+.opt_case_title{
+	font-weight : bold;
+}
+
+.opt_case_context{
+	width:10%;
+	height:100%;
+}
+
+.opt_case_description{
+	padding-top:15px;
+	float:left;
+	text-align:left;
+	height:80%;
+	width:30%;
+	font-size : 14px;
+}
+.opt_name_case{
+	text-align : center;
+	padding-top : 9px;
+	height:40px;
+	width:200px;
+	background-color : #FCDDDC;
+	color : black;
+	border : 1px solid #BABABA;
+	font-size : 18px;
+	font-weight:bold;
+    float: left;
+}
+.option_value_case{
+	padding:4px;
+	display:inline-block; 
+    float: left;
+    border : 0;
+    margin-left : 10px;
+	height:45px;
+	width:15%;
+	font-size : 18px;
+	font-wight : bold;	
+}
+.option_value{
+	text-align : center;
+    border : 0;
+	height:40px;
+	width:100%;
+}
+
+
 
 
 .btn_submit{
@@ -700,8 +811,36 @@ a { text-decoration:none }
 			<div class = "name_box">
 	      			<label class="name_case">판매 상태</label>
 	      			<div class = "empty_box">
-						<input type="text" name="regState"id="regState"class="input_value" value = "${mainVO.regState}" >
+	      				<select name="regState" id="regState" class="input_value">
+	      					<c:choose>
+							<c:when test="${mainVO.regState eq '판매중'}">
+								<option value="판매중"  style="height:50px; ">판매중</option>
+								<option value="품절" style="height:50px;">품절</option>
+							</c:when>
+							<c:otherwise>  
+								<option value="품절" style="height:50px;">품절</option>
+								<option value="판매중"  style="height:50px;">판매중</option>
+							</c:otherwise>
+							</c:choose>
+						</select>
 	      			</div>
+			</div>
+			<div class = "option_box">
+	      			<label class="opt_name_case">옵션</label>
+	      			<div class = "ship_empty_box">						
+						<div class = "option_value_case"> 
+							<input type="text" name="totalNum"id="totalNum"class="option_value" value = "${mainVO.totalNum}" >
+						</div>
+	      				<div class ="opt_case">
+							<label class="opt_case_context">개 이상시</label>
+						</div>
+						<div class = "option_value_case"> 
+							<input type="text" name="discountWon"id="discountWon"class="option_value" value = "${mainVO.discountWon}"  >
+						</div>
+	      				<div class ="opt_case_description">
+							<label class="opt_case_context">원 할인(개당 할인액)</label>
+						</div>
+					</div>
 			</div>
 			
 			

@@ -26,6 +26,50 @@ public class MainVO {
 	private int freeShippingPrice;
 	private String regDate;
 	private String discountPeriod;	
+	private String optionId;
+	private String orderOption;
+	private int numOfProduct;
+	private int totalNum;
+	private int discountWon;
+	private int totalAmount;
+	
+	
+	public int getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(int totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public String getOrderOption() {
+		return orderOption;
+	}
+	public void setOrderOption(String orderOption) {
+		this.orderOption = orderOption;
+	}
+	public int getNumOfProduct() {
+		return numOfProduct;
+	}
+	public void setNumOfProduct(int numOfProduct) {
+		this.numOfProduct = numOfProduct;
+	}
+	public String getOptionId() {
+		return optionId;
+	}
+	public void setOptionId(String optionId) {
+		this.optionId = optionId;
+	}
+	public int getTotalNum() {
+		return totalNum;
+	}
+	public void setTotalNum(int totalNum) {
+		this.totalNum = totalNum;
+	}
+	public int getDiscountWon() {
+		return discountWon;
+	}
+	public void setDiscountWon(int discountWon) {
+		this.discountWon = discountWon;
+	}
 	private String searchGubun;
 	private String searchText;
 	private int viewPage = 1;

@@ -18,4 +18,7 @@ public interface MainService {
 	public String insertProduct(MainVO mainVO) throws Exception;
 	public List<?> selectProductModify(String productId) throws Exception;
 	public int updateProduct(MainVO mainVO) throws Exception;
+	public List<?> selectProductDetail(String productId) throws Exception;
+	public List<?> selectProductInfo(String productId) throws Exception;
+	public String insertOrder(MainVO mainVO) throws Exception;
 	}

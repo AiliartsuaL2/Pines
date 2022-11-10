@@ -189,7 +189,18 @@
 	</select>
 	
 	<insert id="mainDAO.insertProduct">
-		INSERT INTO PRODUCT( 
+		INSERT ALL
+		INTO PRODUCT_OPTION(
+							  OPTION_ID
+							, TOTAL_NUM 
+							, DISCOUNT_WON
+				    )
+					VALUES(
+							  OPTION_SEQ.NEXTVAL
+							, #totalNum#
+							, #discountWon#
+					)
+		INTO PRODUCT( 
 							PRODUCT_ID
 						  , STORE_ID
 						  , PRODUCT_NAME
@@ -218,6 +229,7 @@
 						  , FREE_SHIPPING_PRICE
 						  , REG_DATE
 						  , DISCOUNT_PERIOD
+						  , OPTION_ID
 						)
 					VALUES(
 						  PRODUCT_SEQ.NEXTVAL
@@ -249,8 +261,10 @@
 						  , #shippingCost#
 						  , #freeShippingPrice#
 						  , SYSDATE
-						  , '2022-11-05'
+						  , #discountPeriod#
+						  , OPTION_SEQ.NEXTVAL 		
 						)
+					SELECT * FROM DUAL
 	</insert>
 	
 	<select id="mainDAO.selectProductModify" resultClass="egovMap">
@@ -277,13 +291,27 @@
 			 , SHIPPING_COST
 			 , FREE_SHIPPING_PRICE
 			 , to_char(DISCOUNT_PERIOD,'yyyy-mm-dd') DISCOUNT_PERIOD
+			 , (
+			    SELECT TOTAL_NUM
+        		  FROM PRODUCT_OPTION o
+       			 WHERE o.OPTION_ID = p.OPTION_ID
+       			) AS TOTAL_NUM
+			 , (
+			    SELECT DISCOUNT_WON
+        		  FROM PRODUCT_OPTION o
+       			 WHERE o.OPTION_ID = p.OPTION_ID
+       			) AS DISCOUNT_WON
 		FROM PRODUCT p
 		WHERE p.PRODUCT_ID = #productId#
 	</select>
+
 	
 	<update id = "mainDAO.updateProduct">
-		UPDATE PRODUCT
-		   SET PRODUCT_NAME = #productName#
+{call
+	declare
+    begin
+     UPDATE PRODUCT SET 
+            PRODUCT_NAME = #productName#
 		 	 , PRODUCT_PRICE = #productPrice#
 		 	 , PRODUCT_DESCRIPTION = #productDescription#
 		 	 , REG_STATE = #regState#
@@ -307,7 +335,106 @@
 			 , FREE_SHIPPING_PRICE = #freeShippingPrice#
 			 , REG_DATE = SYSDATE
 			 , DISCOUNT_PERIOD = #discountPeriod# 
-	   WHERE PRODUCT_ID = #productId#
+	   WHERE PRODUCT_ID = #productId#;
+      UPDATE PRODUCT_OPTION SET 
+              TOTAL_NUM = #totalNum#
+            , DISCOUNT_WON = #discountWon#
+      WHERE  OPTION_ID = (SELECT OPTION_ID
+      						FROM PRODUCT
+      					   WHERE PRODUCT_ID = #productId#
+      						);
+    END
+    }
+				
 	</update>
+	
+		<select id="mainDAO.selectProductDetail" resultClass="egovMap">
+		SELECT PRODUCT_ID
+			 , STORE_ID
+			 , PRODUCT_NAME
+			 , PRODUCT_PRICE
+			 , PRODUCT_DESCRIPTION
+			 , REG_STATE
+			 , CATEGORY_ID
+			 , (
+			    SELECT CATEGORY_NAME
+        		  FROM CATEGORY c 
+       			 WHERE c.CATEGORY_ID = p.CATEGORY_ID 
+       			) AS CATEGORY_NAME
+       		 , (
+			    SELECT PARENT_CATEGORY_NAME
+        		  FROM CATEGORY c 
+       			 WHERE c.CATEGORY_ID = p.CATEGORY_ID 
+       			) AS PARENT_CATEGORY_NAME
+			 , PRODUCT_STOCK
+			 , DISCOUNT_RATE
+			 , IMAGE1
+			 , IMAGE2
+			 , IMAGE3
+			 , IMAGE4
+			 , MIN_PURCHASE
+			 , MAX_PURCHASE
+			 , SHIPPING_COST
+			 , FREE_SHIPPING_PRICE
+			 , to_char(DISCOUNT_PERIOD,'yyyy-mm-dd') DISCOUNT_PERIOD
+			 , (
+			    SELECT TOTAL_NUM
+        		  FROM PRODUCT_OPTION o
+       			 WHERE o.OPTION_ID = p.OPTION_ID
+       			) AS TOTAL_NUM
+			 , (
+			    SELECT DISCOUNT_WON
+        		  FROM PRODUCT_OPTION o
+       			 WHERE o.OPTION_ID = p.OPTION_ID
+       			) AS DISCOUNT_WON
+		FROM PRODUCT p
+		WHERE p.PRODUCT_ID = #productId#
+	</select>
+	
+		<select id="mainDAO.selectProductInfo" resultClass="egovMap">
+			SELECT   PRODUCT_ID
+			       , PRODUCT_NAME
+			       , STORE_ID
+			       , PRODUCT_PRICE
+			       , DISCOUNT_RATE
+		           , to_char(p.PRODUCT_PRICE-(p.PRODUCT_PRICE * p.DISCOUNT_RATE/100), '999,999,999,999,999') DISCOUNT_PRICE
+			       , SHIPPING_COST
+			       , FREE_SHIPPING_PRICE
+			       , DISCOUNT_PERIOD
+			       , OPTION_ID
+			       , (
+	  				    SELECT TOTAL_NUM
+        				  FROM PRODUCT_OPTION o
+       					 WHERE o.OPTION_ID = p.OPTION_ID
+       				  ) AS TOTAL_NUM
+				   , (
+			    		SELECT DISCOUNT_WON
+        		  		  FROM PRODUCT_OPTION o
+       			 		 WHERE o.OPTION_ID = p.OPTION_ID
+       				  )  AS DISCOUNT_WON
+			  FROM  PRODUCT p
+			 WHERE p.PRODUCT_ID = #productId#
+		</select>
+
+		<insert id="mainDAO.insertOrder">
+			INSERT INTO "ORDER" (
+								ORDER_ID
+							  , USER_ID
+							  , PRODUCT_ID
+							  , NUM_OF_PRODUCT
+							  , PURCHASE_DATE
+							  , ORDER_OPTION
+							 )
+					  VALUES(
+					  		    ORDER_SEQ.NEXTVAL
+					  		  , #userId#
+					  		  , #productId#
+					  		  , #numOfProduct#
+					  		  , SYSDATE
+					  		  , #orderOption#
+						)
+		</insert>
+		
+	
 	
 </sqlMap>

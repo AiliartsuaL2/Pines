@@ -12,9 +12,9 @@
   justify-content: center;
 }
 .table1{
-	margin-left:100px;
+	width:49.4%;
 	height:50px;
-	width:950px;
+	margin-left : 5.2%;
     background: #FA6A6A;
 	font-size:15pt;
 	color : #FFFFFF;

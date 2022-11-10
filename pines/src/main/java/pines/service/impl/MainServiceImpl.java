@@ -99,7 +99,23 @@ public class MainServiceImpl implements MainService {
 		return mainDAO.updateProduct(mainVO);
 	}
 
+	@Override
+	public List<?> selectProductDetail(String productId) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectProductDetail(productId);
+	}
 
+	@Override
+	public List<?> selectProductInfo(String productId) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectProductInfo(productId);
+	}
+
+	@Override
+	public String insertOrder(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.insertOrder(mainVO);
+	}
 
 
 }

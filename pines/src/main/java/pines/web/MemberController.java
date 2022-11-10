@@ -158,9 +158,10 @@ public class MemberController {
 		return message;
 	}
 	@RequestMapping("/memberOrder.do")
-	public String selectMemberOrder(MemberVO vo, ModelMap model) throws Exception{
-		OrderVO orderVO = memberService.selectMemberOrder(vo);
-		model.addAttribute("memberVO ",orderVO);
+	public String selectMemberOrder(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		
 		return "myPage/memberOrder";
 	}
 	
