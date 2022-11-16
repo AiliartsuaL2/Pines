@@ -9,7 +9,6 @@
 <title>Pines</title>
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
- <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -35,7 +34,6 @@
       userId = $.trim(userId);
 	  if(userId == ""){
 		  alert("아이디를 입력해주세요.");
-
 		  $("#userId").focus();
 		  return false;
 	  } // idcheck.do로 데이터 전송 ,, ajax방식
@@ -43,9 +41,8 @@
 	  $.ajax({
 		    type:"POST",
 			data:"userId="+userId, // json설정
-			url:"idcheck.do",
+			url:"idCheck.do",
 			dataType:"text",
-			
 			success: function(result){
 				if(result == "ok"){
 					alert("사용 가능한 아이디 입니다.");
@@ -56,14 +53,14 @@
 			error: function(){
 				alert("오류발생");
 			}
-		  
-	  });
+	  	});
       
     });
     
     $("#btn_submit").click(function(){//데이터 유효성 검사
       var userId = $("#userId").val();
       var pass= $("#pass").val();
+      var pass2= $("#pass2").val();
       var name = $("#name").val();
       
       
@@ -80,6 +77,12 @@
 		  $("#pass").focus();
 		  return false;
 	  }
+	  if(pass != pass2){
+		  alert("비밀번호가 일치하지 않습니다.");
+		  $("#pass2").focus();
+		  return false;
+	  }
+	  
 	  if(name == ""){
 		  alert("이름을 입력해주세요.");
 		  $("#name").focus();
@@ -375,12 +378,12 @@
 			</div>
 			<div class="pw_wrap">
 				<div class="pw_input_box">
-					<input id="pass" name="pass" class="pw_input" placeholder="비밀번호 설정">
+					<input type="password" id="pass" name="pass" class="pw_input" placeholder="비밀번호 설정">
 				</div>
 			</div>
 			<div class="pwck_wrap">
 				<div class="pwck_input_box">
-					<input class="pwck_input" placeholder="비밀번호 확인">
+					<input type="password" id="pass2" class="pwck_input" placeholder="비밀번호 확인">
 				</div>
 			</div>
 			<div class="user_wrap">

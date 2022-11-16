@@ -65,4 +65,14 @@ public class MemberDAO extends EgovAbstractDAO{
 		// TODO Auto-generated method stub
 		return (int) update("memberDAO.updateMemberPoint",mainVO);
 	}
+
+	public int updateMemberModify(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		return (int) update("memberDAO.updateMemberModify",memberVO);
+	}
+
+	public int updateMemberPointModify(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		return (int) update("memberDAO.updateMemberPointModify",memberVO);
+	}
 }

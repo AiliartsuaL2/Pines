@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import net.coobird.thumbnailator.Thumbnails;
 import pines.service.ImageVO;
 import pines.service.MainService;
@@ -97,6 +98,7 @@ public class MainController {
 	public String selectPlantList(MainVO vo, ModelMap model) throws Exception{
 		List<?> list = mainService.selectPlantList(vo);
 		model.addAttribute("plantList",list);
+		model.addAttribute("parentCategoryId",vo);
 		return "product/plantList";
 	}
 	
@@ -104,6 +106,7 @@ public class MainController {
 	public String selectFlowerList(MainVO vo, ModelMap model) throws Exception{
 		List<?> list = mainService.selectFlowerList(vo);
 		model.addAttribute("flowerList",list);
+		model.addAttribute("parentCategoryId",vo);
 		return "product/flowerList";
 	}
 	@RequestMapping("/discountList.do")
@@ -268,7 +271,28 @@ public class MainController {
 		model.addAttribute("productList",list);
 		return "seller/productModify";
 	}
+	@RequestMapping("/productDelete")
+	@ResponseBody
+	public String deleteProduct(MainVO mainVO, ModelMap model, HttpSession session) throws Exception{
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		mainVO.getProductName();
 
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "권한이 없습니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			int result = mainService.deleteProduct(mainVO);
+			if(result == 1){
+				logger.info("상품 삭제 성공"); // update시켜서 스토어 아이디만 0으로 바꿔버림
+			}
+			else{
+				logger.info("상품 삭제 성공");
+			}
+			return result+"";
+		}
+	}
 	
 	@RequestMapping("/productModifySub.do")
 	@ResponseBody // ajax에 보내줄 수 있는 어노테이션
@@ -284,9 +308,17 @@ public class MainController {
 	@RequestMapping("/productDetail.do")
 	public String selectProductDetail(MainVO vo, ModelMap model) throws Exception{
 		List<?> list = mainService.selectProductDetail(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
+		EgovMap value = (EgovMap) list.get(0);
+		if(value.get("storeId").equals("0")){ //storeId가 0인 상품은 삭제된 상품
+			model.addAttribute("msg", "삭제된 상품입니다.");
+			model.addAttribute("url", "mainList.do");
+			return "main/alert";
+		}	
 		model.addAttribute("productList",list);
 		return "main/productDetail";
 	}
+	
+	
 	@RequestMapping("/orderLoginCheck.do")
 	public String orderLoginCheck(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);
@@ -324,5 +356,53 @@ public class MainController {
 		}
 		return message;
 	}
+	@RequestMapping("/orderInquiry.do")
+	public String selectOrderInquiry(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> orderList = mainService.selectMyOrderList(mainVO);
+			model.addAttribute("orderList", orderList);
+			return "myPage/orderInquiry";
+		}
+	}
+	@RequestMapping("/paymentManage.do")
+	public String selectPaymentManage(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> memberList = memberService.selectMemberInfo(mainVO);
+			model.addAttribute("memberList",memberList);
+			return "myPage/paymentManage";
+		}
+	}
+	@RequestMapping("/orderDetail.do")
+	public String selectOrderDetail(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> orderList = mainService.selectOrderDetailList(mainVO);
+			model.addAttribute("orderList",orderList);
+			return "myPage/orderDetail";
+		}
+	}
+
+
+	
 	
 }

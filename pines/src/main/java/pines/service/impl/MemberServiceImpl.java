@@ -82,4 +82,16 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return (int) memberDAO.updateMemberPoint(mainVO);
 	}
+
+	@Override
+	public int updateMemberModify(MemberVO memberVO) throws Exception {
+		// TODO Auto-generated method stub
+		return (int) memberDAO.updateMemberModify(memberVO);
+	}
+
+	@Override
+	public int updateMemberPointModify(MemberVO memberVO) throws Exception {
+		// TODO Auto-generated method stub
+		return (int) memberDAO.updateMemberPointModify(memberVO);
+	}
 }

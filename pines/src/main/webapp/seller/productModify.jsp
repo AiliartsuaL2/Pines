@@ -48,7 +48,34 @@ $(function(){
 	let fileList ;
 	let fileObj ;
 	let categoryId
+	
 
+$("#btn_remove").click(function(){
+	 if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+	      var productId = $("#productId").val();
+		 
+		 $.ajax({
+				url:"productDelete.do", // 보낼 url
+			  	data : "productId="+productId,
+			  	type : 'POST',
+			  	dataType:"text",
+				    success : function(data){
+				    		if(data=="1"){
+								alert("상품 삭제가 완료되었습니다.");
+								location="sellerCheck.do"
+				    		}
+				    		else{
+								alert("상품 삭제실패 \n관리자에게 연락해주세요.");
+				    		}
+				    	},
+				    	error : function(data){
+				    		alert("상품 삭제에 실패하였습니다. \n 관리자에게 연락해주세요");
+				    	}
+					});
+	 }else{   //취소
+	     return false;
+	 }
+});
 $("#btn_submit").click(function(){
 		var productName = $.trim($("#productName").val());
 		var productPrice = $.trim($("#productPrice").val());
@@ -717,6 +744,22 @@ a { text-decoration:none }
     color : #FFFFFF;
 }
 </style>
+
+<%
+ String strReferer = request.getHeader("referer");
+ 
+ if(strReferer == null){
+%>
+ <script language="javascript">
+  alert("잘못된 접근입니다.");
+  document.location.href="mainList.do";
+ </script>
+<%
+  return;
+ }
+%>
+
+
 <body>
 
 <div class = "whole_wrap">
@@ -903,7 +946,7 @@ a { text-decoration:none }
 	      			</div>
 			</div>
 			<div class="find-btn">
-				<input type="button" id="btn_cancle" class="btn_submit" onclick= "location='sellerCheck.do'" value="이전">
+				<input type="button" id="btn_remove" class="btn_submit" value="삭제">
 				<input type="button" id="btn_submit" class="btn_submit" value="완료">
 			</div>
 			</form>

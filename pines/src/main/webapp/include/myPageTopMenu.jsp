@@ -58,34 +58,23 @@
 	height:30%;
 
 }
-.category_btn{
-	width:100%;
-	height:100%;
-	border: 1px solid #A5A5A5;
-	font-size : 15px;
-	font-weight : bold;
-	background-color:white;
-	color:#A5A5A5;
-	cursor:pointer;
-}
 
 </style>
 <body >
 	<div class="div_Wrap">
 		<div class="topBar">
 			<input type="button" class="page_btn" value="마이 페이지">
-			<label class="pointLabel">포인트 8000원</label>
 		</div>
 	</div>
 	<div class="category_wrap">
 		<div class="sub_category">
-			<input type="button" class="category_btn" value="주문 조회">
+			<input type="button" class="category_btn_order" value="주문 조회" onclick="location='orderInquiry.do'">
 		</div>
 		<div class="sub_category">
-			<input type="button" class="category_btn" value="개인정보관리">
+			<input type="button" class="category_btn_info" value="개인정보관리" onclick="location='memberCheck.do'">
 		</div>
 		<div class="sub_category">
-			<input type="button" class="category_btn" value="결제수단관리">
+			<input type="button" class="category_btn_payment" value="결제수단관리" onclick="location='paymentManage.do'">
 		</div>
 	</div>
 </body>

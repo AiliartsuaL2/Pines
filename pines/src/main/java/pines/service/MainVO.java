@@ -11,6 +11,7 @@ public class MainVO {
 	private String productDescription;
 	private String regYN;
 	private String categoryId;
+	private String parentCategoryId;
 	private String discountPrice;
 	private List<String> regStateList;
 	private String regState;
@@ -32,8 +33,54 @@ public class MainVO {
 	private int totalNum;
 	private int discountWon;
 	private int totalAmount;
+	private String searchGubun;
+	private String searchText;
+	private int viewPage = 1;
+	private int startIndex = 1;
+	private int endIndex = 10;
+	private String orderName;
+	private String orderZipCode;
+	private String orderAddress;
+	private String deliveryStatus;
+	private String orderId;
 	
 	
+	public String getParentCategoryId() {
+		return parentCategoryId;
+	}
+	public void setParentCategoryId(String parentCategoryId) {
+		this.parentCategoryId = parentCategoryId;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+	public String getOrderName() {
+		return orderName;
+	}
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
+	}
+	public String getOrderZipCode() {
+		return orderZipCode;
+	}
+	public void setOrderZipCode(String orderZipCode) {
+		this.orderZipCode = orderZipCode;
+	}
+	public String getOrderAddress() {
+		return orderAddress;
+	}
+	public void setOrderAddress(String orderAddress) {
+		this.orderAddress = orderAddress;
+	}
 	public int getTotalAmount() {
 		return totalAmount;
 	}
@@ -70,12 +117,6 @@ public class MainVO {
 	public void setDiscountWon(int discountWon) {
 		this.discountWon = discountWon;
 	}
-	private String searchGubun;
-	private String searchText;
-	private int viewPage = 1;
-	private int startIndex = 1;
-	private int endIndex = 10;
-	
 	public String getUserId() {
 		return userId;
 	}
@@ -83,7 +124,6 @@ public class MainVO {
 		this.userId = userId;
 	}
 	public String getProductId() {
-		System.out.println("getProductId "+productId);
 		return productId;
 	}
 	public void setProductId(String productId) {

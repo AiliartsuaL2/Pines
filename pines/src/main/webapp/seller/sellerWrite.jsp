@@ -66,6 +66,21 @@ a { text-decoration:none }
   flex-wrap: wrap;
 }
 </style>
+<%
+ String strReferer = request.getHeader("referer");
+ 
+ if(strReferer == null){
+%>
+ <script language="javascript">
+  alert("잘못된 접근입니다.");
+  document.location.href="mainList.do";
+ </script>
+<%
+  return;
+ }
+%>
+
+
 <body>
 
 <div class = "whole_wrap">

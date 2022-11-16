@@ -58,7 +58,7 @@ public class MemberController {
 		return "member/loginWrite";
 	}
 	
-	@RequestMapping("/idcheck.do")
+	@RequestMapping("/idCheck.do")
 	@ResponseBody
 	public String selectMemberIdCheck(String userId) throws Exception{
 		String message = "";
@@ -157,12 +157,78 @@ public class MemberController {
 		System.out.println(count);
 		return message;
 	}
-	@RequestMapping("/memberOrder.do")
-	public String selectMemberOrder(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+	
+	@RequestMapping("/memberCheck.do")
+	public String selectMemberCheck(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			model.addAttribute("mainVO", mainVO);
+			return "myPage/memberCheck";
+		}
+	}
+	@RequestMapping("/memberCheckSub.do")
+	@ResponseBody
+	public String memberCheckSub(MemberVO memberVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		memberVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(memberVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			String message = "";
+			int count = memberService.selectMemberCount(memberVO);
+			if(count == 1){
+				message = "ok";
+				logger.info("비밀번호 확인 성공");
+			}
+			else{
+				logger.info("비밀번호 확인 실패");
+			}
+			return message;
+		}
+	}
+	@RequestMapping("/memberManage.do")
+	public String selectMemberManage(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> memberList = memberService.selectMemberInfo(mainVO);
+			model.addAttribute("memberList",memberList);
+			return "myPage/memberManage";
+		}
+	}
+	
+	@RequestMapping("/memberModify.do")
+	@ResponseBody // ajax에 보내줄 수 있는 어노테이션
+	public String updateMemberModify(MemberVO memberVO, HttpSession session) throws Exception{
+		int result = 0;
+		memberVO.setUserId((String) session.getAttribute("SessionUserID"));
+		result = memberService.updateMemberModify(memberVO);
 		
-		return "myPage/memberOrder";
+		return result+"";
+	}
+	
+	@RequestMapping("/memberPointCharge.do")
+	@ResponseBody
+	public String updateMemberPointCharge(MemberVO memberVO, HttpSession session) throws Exception{
+		int result = 0;
+		memberVO.setUserId((String) session.getAttribute("SessionUserID"));
+		result = memberService.updateMemberPointModify(memberVO);
+		
+		return result+"";
 	}
 	
 	

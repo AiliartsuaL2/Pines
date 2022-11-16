@@ -79,7 +79,7 @@
 		<form name="searchFrm" method="post" action="productList.do">
 			<select name="searchGubun" id="searchGubun" style="height:50px; weight:100px; border:solid 2px #FA6A6A;">
 				<option value="product_name"  style="height:50px; ">상품명 </option>
-				<option value="store_id" style="height:50px;">판매처 </option>
+				<option value="store_name" style="height:50px;">판매처 </option>
 			</select>
 			<button type="submit" class="btn_search"><img src="images/search_icon.JPG" width="30px" height="30px"></button>
 			<input type="text" name="searchText"id="searchText" placeholder="찾으시는 상품을 입력해주세요"style="width:500px; height:45px; border:solid 2px #FA6A6A; ">

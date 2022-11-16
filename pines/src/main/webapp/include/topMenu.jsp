@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+
+
 <style>
 .div_Wrap{
   display: flex;
@@ -31,8 +33,8 @@
 
 <table class="table1">
 	<tr>
-		<th width="80" align="left" ><a class="a1" href="/pines/plantList.do" style="text-decoration:none; margin-left:50px;">식물</a></th>
-		<th width="80" align="left"><a class="a1" href="/pines/flowerList.do" style="text-decoration:none">꽃 / 화환</a></th>
+		<th width="80" align="left" ><a class="a1" href="/pines/plantList.do?parentCategoryId=plant" style="text-decoration:none; margin-left:50px;">식물</a></th>
+		<th width="80" align="left"><a class="a1" href="/pines/flowerList.do?parentCategoryId=flower" style="text-decoration:none">꽃 / 화환</a></th>
 		<th width="80" align="left"><a class="a1" href="/pines/discountList.do" style="text-decoration:none">할인상품</a></th>
 		
 	<%	
@@ -45,7 +47,7 @@
 		} else { // 로그인 성공시
 	%>
 		<th width="80 align="right"><a class="a1" href="/pines/logout.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그아웃</a></th>
-		<th width="80 align="right"><a class="a1" href="/pines/memberOrder.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">마이 페이지</a></th>
+		<th width="80 align="right"><a class="a1" href="/pines/memberCheck.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">마이 페이지</a></th>
 	<%
 		}
 	%>

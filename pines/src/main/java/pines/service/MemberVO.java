@@ -11,8 +11,15 @@ public class MemberVO {
 	private String dormantState;
 	private int point;
 	private String adminRights;
-	
+	private int chargePoint;
 
+	
+	public int getChargePoint() {
+		return chargePoint;
+	}
+	public void setChargePoint(int chargePoint) {
+		this.chargePoint = chargePoint;
+	}
 	public String getUserId() {
 		System.out.println("getUserId : "+userId);	
 		return userId;

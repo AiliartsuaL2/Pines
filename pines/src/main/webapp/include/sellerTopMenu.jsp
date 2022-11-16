@@ -45,7 +45,7 @@
 		} else { // 로그인 성공시
 	%>
 		<th width="80 align="right"><a class="a1" href="/pines/logout.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그아웃</a></th>
-		<th width="80 align="right"><a class="a1" href="/pines/memberOrder.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">마이 페이지</a></th>
+		<th width="80 align="right"><a class="a1" href="/pines/memberCheck.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">마이 페이지</a></th>
 	<%
 		}
 	%>

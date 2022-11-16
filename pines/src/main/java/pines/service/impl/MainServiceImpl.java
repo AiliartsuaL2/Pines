@@ -87,6 +87,14 @@ public class MainServiceImpl implements MainService {
 		return (String) mainDAO.insertProduct(mainVO);
 	}
 
+
+	@Override
+	public int deleteProduct(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return (int) mainDAO.deleteProduct(mainVO);
+	}
+
+	
 	@Override
 	public List<?> selectProductModify(String productId) throws Exception {
 		// TODO Auto-generated method stub
@@ -115,6 +123,18 @@ public class MainServiceImpl implements MainService {
 	public String insertOrder(MainVO mainVO) throws Exception {
 		// TODO Auto-generated method stub
 		return mainDAO.insertOrder(mainVO);
+	}
+
+	@Override
+	public List<?> selectMyOrderList(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectMyOrderList(mainVO);
+	}
+
+	@Override
+	public List<?> selectOrderDetailList(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectOrderDetailList(mainVO);
 	}
 
 

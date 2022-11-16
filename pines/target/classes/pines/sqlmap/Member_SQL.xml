@@ -111,4 +111,28 @@
 		 WHERE USER_ID = #userId#
 	</update>
 	
+	<update id="memberDAO.updateMemberModify">
+		UPDATE MEMBER 
+		   SET NAME = #name#
+		     , PASS = #pass#
+		     , PHONE = #phone#
+		     , ZIP_CODE = #zipCode#
+		     , ADDRESS = #address#
+		 WHERE USER_ID = #userId#
+	</update>
+	
+	<update id="memberDAO.updateMemberPointModify">
+		UPDATE MEMBER 
+		   SET POINT = (
+		   				SELECT POINT
+		   				  FROM MEMBER
+		   				 WHERE USER_ID = #userId#
+		   				) + #chargePoint#
+		 WHERE USER_ID = #userId#
+	</update>
+	
+	
+	
+	
+	
 </sqlMap>

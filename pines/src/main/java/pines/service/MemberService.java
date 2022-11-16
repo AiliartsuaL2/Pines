@@ -25,4 +25,9 @@ public interface MemberService {
 
 	public int updateMemberPoint(MainVO mainVO) throws Exception;
 
+	public int updateMemberModify(MemberVO memberVO) throws Exception;
+
+	public int updateMemberPointModify(MemberVO memberVO) throws Exception;
+
+
 }

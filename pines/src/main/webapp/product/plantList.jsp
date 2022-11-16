@@ -11,7 +11,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Pines</title>
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
+<script src="/pines/script/jquery-1.12.4.js"></script>
+<script src="/pines/script/jquery-ui.js"></script>
 </head>
+<script>
+$(function(){
+	var categoryId =$("#categoryId").val();
+	var parentCategoryId =$("#parentCategoryId").val();
+	if(parentCategoryId == ""){
+		if(categoryId == 'seed'){
+			$(".btn_seed").css({"color":"#FA6A6A","font-weight":"bold"});	
+		}
+		else if(categoryId == 'airplant'){
+			$(".btn_airplant").css({"color":"#FA6A6A","font-weight":"bold"});	
+		}
+		else if(categoryId == 'potted'){
+			$(".btn_potted").css({"color":"#FA6A6A","font-weight":"bold"});	
+		}
+		else if(categoryId == 'succulents'){
+			$(".btn_succulents").css({"color":"#FA6A6A","font-weight":"bold"});	
+		}
+		else if(categoryId == 'orchid'){
+			$(".btn_orchid").css({"color":"#FA6A6A","font-weight":"bold"});	
+		}
+		else if(categoryId == 'herb'){
+			$(".btn_herb").css({"color":"#FA6A6A","font-weight":"bold"});	
+		}	
+	}
+});
+</script>
 <style>
 .div_Wrap{
   display: flex;
@@ -41,7 +69,8 @@ footer {
 a { text-decoration:none }
 .table_title{
 	margin-left:31%;
-	margin-top:20px;
+	margin-top: 2%;
+    margin-bottom: -1%;
 	font-size:15pt;
 	font-weight:bold;
     height: 50px;
@@ -67,19 +96,19 @@ a { text-decoration:none }
 </header>
 <main>
 <%@ include file="../include/topMenu.jsp" %>
-<div class = "div_table_title">
-	<table class ="table_title">
-		<tr>
-			<th>식물</th>
-		</tr>
-	</table>
-</div>
+<%@ include file="../include/navigationBar.jsp" %>
+
+	<div class = "div_table_title">
+		<p class = "table_title"> 식물</p>
+	</div>
 	<div class = "div_Wrap">
 	<div class="div3">
+	<input type="hidden" id="parentCategoryId" value="${parentCategoryId.parentCategoryId}">
 	<c:set var="i" value="0" />
 	<c:set var="j" value="3" />
 	<table class = "table_product" width="850">
 	  <c:forEach items="${plantList}" var="result">
+	  <input type="hidden" id="categoryId" value="${result.categoryId}">
 	    <c:if test="${i%j == 0 }">
 	    <tr>
 	    </c:if>

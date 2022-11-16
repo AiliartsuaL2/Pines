@@ -67,6 +67,7 @@ a { text-decoration:none }
 </header>
 <main>
 <%@ include file="../include/topMenu.jsp" %>
+<%@ include file="../include/navigationBar.jsp" %>
 <div class = "div_table_title">
 	<table class ="table_title">
 		<tr>

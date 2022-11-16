@@ -75,6 +75,12 @@ public class MainDAO extends EgovAbstractDAO{
 		// TODO Auto-generated method stub
 		return list("mainDAO.selectProductModify",productId);
 	}
+	
+
+	public int deleteProduct(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) delete("mainDAO.deleteProduct", mainVO);
+	}
 
 	public int updateProduct(MainVO mainVO) {
 		// TODO Auto-generated method stub
@@ -95,5 +101,16 @@ public class MainDAO extends EgovAbstractDAO{
 		// TODO Auto-generated method stub
 		return (String) insert("mainDAO.insertOrder",mainVO);
 	}
+
+	public List<?> selectMyOrderList(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectMyOrderList", mainVO);
+	}
+
+	public List<?> selectOrderDetailList(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectOrderDetailList", mainVO);
+	}
+
 
 }

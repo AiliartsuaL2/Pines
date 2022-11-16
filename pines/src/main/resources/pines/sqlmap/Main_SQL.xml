@@ -16,9 +16,19 @@
    			                 , image1
    			                 , discount_rate
    			              FROM PRODUCT
+   			             WHERE STORE_ID != '0' 
          		<isNotNull property="searchGubun">
            			<isNotNull property="searchText">
-              			 WHERE $searchGubun$ like '%$searchText$%'
+           				<isEqual property="searchGubun" compareValue="product_name">
+              			 	AND $searchGubun$ like '%$searchText$%' 
+						</isEqual>
+           				<isEqual property="searchGubun" compareValue="store_name">
+              			 	AND STORE_ID = (
+              			 					SELECT STORE_ID
+              			 					  FROM STORE
+              			 					 WHERE STORE_NAME like '%$searchText$%'
+              			 				)
+						</isEqual>
            			</isNotNull>
          		</isNotNull>
                 ORDER BY REG_DATE DESC )a)  b
@@ -34,12 +44,17 @@
 		    , p.product_price
 		    , p.image1
 		    , p.discount_rate
+      		, p.CATEGORY_ID
 		 FROM PRODUCT p
   		WHERE (
          		SELECT PARENT_CATEGORY_ID
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'plant'
+   		  AND STORE_ID != '0' 
+       <isNotNull property="categoryId">
+          AND CATEGORY_ID = #categoryId#
+       </isNotNull>
 	</select>
 	
 	<select id="mainDAO.selectFlowerList" resultClass = "egovMap" >
@@ -50,12 +65,17 @@
 		    , product_price
 		    , image1
 		    , discount_rate
+      		, CATEGORY_ID
 	     FROM PRODUCT p
   		WHERE (
          		SELECT PARENT_CATEGORY_ID
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'flower'
+   		  AND STORE_ID != '0' 
+       <isNotNull property="categoryId">
+          AND CATEGORY_ID = #categoryId#
+       </isNotNull>
 	</select>
 	
 	<select id="mainDAO.selectMainList" resultClass="egovMap">
@@ -70,9 +90,10 @@
    			                 , image1
    			                 , discount_rate
    			              FROM PRODUCT
+   			             WHERE STORE_ID != '0' 
          		<isNotNull property="searchGubun">
            			<isNotNull property="searchText">
-              			 WHERE $searchGubun$ like '%$searchText$%'
+              			 AND $searchGubun$ like '%$searchText$%'
            			</isNotNull>
          		</isNotNull>
                 ORDER BY REG_DATE DESC )a)  b
@@ -91,7 +112,8 @@
    			                 , discount_rate
    			              FROM PRODUCT
    			              WHERE discount_rate BETWEEN 1 AND 100
-   		                    AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE 
+   		                    AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE
+   		                    AND STORE_ID != '0' 
                 		  )a)  b
        WHERE rn BETWEEN 1 AND 20
 	</select>
@@ -99,9 +121,19 @@
 	<select id="mainDAO.selectProductTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
 		  FROM PRODUCT
+		  WHERE STORE_ID != '0'
 		<isNotNull property="searchGubun">
 					<isNotNull property="searchText">
-					WHERE $searchGubun$ like '%$searchText$%'
+           				<isEqual property="searchGubun" compareValue="product_name">
+              			 	AND $searchGubun$ like '%$searchText$%' 
+						</isEqual>
+           				<isEqual property="searchGubun" compareValue="store_name">
+              			 	AND STORE_ID = (
+              			 					SELECT STORE_ID
+              			 					  FROM STORE
+              			 					 WHERE STORE_NAME like '%$searchText$%'
+              			 				)
+						</isEqual>
 					</isNotNull>
 				</isNotNull>
 	</select>
@@ -114,6 +146,7 @@
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'plant'
+   		  AND STORE_ID != '0' 
 	
 	</select>
 	
@@ -125,6 +158,7 @@
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'flower'
+   		  AND STORE_ID != '0' 
 	
 	</select>
 	
@@ -133,6 +167,7 @@
 		  FROM PRODUCT
    		 WHERE discount_rate BETWEEN 1 AND 100
    		   AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE 
+   		   AND STORE_ID != '0' 
 	</select>
 	
 	<select id="mainDAO.selectSellerProductList" resultClass="egovMap">
@@ -172,6 +207,8 @@
          AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regStateList">#regStateList[]#</iterate>
          AND s.STORE_ID = p.STORE_ID
 	</select>
+	
+	
 	<select id="mainDAO.selectParentCategory" resultClass="egovMap">
 	  SELECT CATEGORY_NAME
 	  	   , CATEGORY_ID
@@ -305,6 +342,17 @@
 		WHERE p.PRODUCT_ID = #productId#
 	</select>
 
+	<update id="mainDAO.deleteProduct">
+  		UPDATE PRODUCT 
+  		SET STORE_ID = '0'
+  		WHERE PRODUCT_ID = #productId#
+    		AND STORE_ID  = (
+          						SELECT STORE_ID
+            					  FROM STORE s 
+           						 WHERE s.USER_ID = #userId#
+        					)
+	</update>
+
 	
 	<update id = "mainDAO.updateProduct">
 {call
@@ -424,6 +472,11 @@
 							  , NUM_OF_PRODUCT
 							  , PURCHASE_DATE
 							  , ORDER_OPTION
+							  , ORDER_NAME
+							  , ORDER_ZIPCODE
+							  , ORDER_ADDRESS
+							  , DELIVERY_STATUS
+							  , TOTAL_AMOUNT
 							 )
 					  VALUES(
 					  		    ORDER_SEQ.NEXTVAL
@@ -432,9 +485,75 @@
 					  		  , #numOfProduct#
 					  		  , SYSDATE
 					  		  , #orderOption#
+					  		  , #orderName#
+					  		  , #orderZipCode#
+					  		  , #orderAddress#
+					  		  , '배송전'
+					  		  , #totalAmount#
 						)
 		</insert>
 		
+		<select id="mainDAO.selectMyOrderList" resultClass="egovMap">
+      SELECT (
+              SELECT DISCOUNT_WON
+                FROM PRODUCT_OPTION po 
+               WHERE po.OPTION_ID = p.OPTION_ID 
+              ) AS DISCOUNT_WON 
+              , 
+              (
+               SELECT TOTAL_NUM 
+                FROM PRODUCT_OPTION po 
+               WHERE po.OPTION_ID = p.OPTION_ID 
+              ) AS TOTAL_NUM  
+              , p.PRODUCT_ID 
+              , p.PRODUCT_NAME 
+              , p.PRODUCT_PRICE 
+              , p.IMAGE1 
+              , o.ORDER_ID 
+              , o.NUM_OF_PRODUCT 
+              , o.PURCHASE_DATE 
+              , o.DELIVERY_STATUS
+              , o.TOTAL_AMOUNT
+              , o.ORDER_OPTION
+      	FROM "ORDER" o join PRODUCT p 
+       	  ON o.PRODUCT_ID = p.PRODUCT_ID 
+       WHERE USER_ID = #userId#
+       ORDER BY o.PURCHASE_DATE DESC
+		</select>
 	
+		<select id="mainDAO.selectOrderDetailList" resultClass="egovMap">
+      SELECT (
+              SELECT DISCOUNT_WON
+                FROM PRODUCT_OPTION po 
+               WHERE po.OPTION_ID = p.OPTION_ID 
+              ) AS DISCOUNT_WON 
+              , 
+              (
+               SELECT TOTAL_NUM 
+                FROM PRODUCT_OPTION po 
+               WHERE po.OPTION_ID = p.OPTION_ID 
+              ) AS TOTAL_NUM  
+              , p.PRODUCT_ID 
+              , p.PRODUCT_NAME 
+              , p.PRODUCT_PRICE 
+              , p.IMAGE1 
+              , p.SHIPPING_COST
+              , p.FREE_SHIPPING_PRICE
+              , o.ORDER_ID 
+              , o.NUM_OF_PRODUCT 
+	          , to_char(o.PURCHASE_DATE,'yyyy"년" mm"월" dd"일" HH24"시"MI"분"') PURCHASE_DATE 
+              , o.DELIVERY_STATUS
+              , o.TOTAL_AMOUNT
+              , o.ORDER_OPTION
+              , (
+                 SELECT s.STORE_NAME
+                   FROM STORE s
+                  WHERE p.STORE_ID = s.STORE_ID
+                ) STORE_NAME
+      	FROM "ORDER" o join PRODUCT p 
+       	  ON o.PRODUCT_ID = p.PRODUCT_ID 
+       WHERE USER_ID = #userId#
+         AND ORDER_ID = #orderId#
+		</select>
 	
 </sqlMap>

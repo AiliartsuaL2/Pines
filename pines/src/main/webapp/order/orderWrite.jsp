@@ -27,8 +27,9 @@ $(function(){
         new daum.Postcode({
             oncomplete: function(data) { //선택시 입력값 세팅
                 document.getElementById("vzipCode").value = data.address; // 주소 넣기
-                document.getElementById("zipCode").value = data.address; // 주소 넣기
+                document.getElementById("orderZipCode").value = data.address; // 주소 넣기
                 document.querySelector("input[name=vaddress]").focus(); //상세입력 포커싱
+                document.getElementById("vaddress").value = "";	
             }
         }).open();
     });	
@@ -42,6 +43,14 @@ $("#btn_submit").click(function(){
 		var productPrice = $("#productPrice").val();
 		var orderOption = $("#orderOption").val();
 		var discountWon = $("#discountWon").val();
+
+		var vname = $("#vname").val();
+		var vzipcode = $("#vzipcode").val();
+		var vaddress = $("#vaddress").val();
+
+	  	$('input[name="orderName"]').attr('value', vname);
+		$('input[name="orderZipCode"]').attr('value', vzipcode);
+	  	$('input[name="orderAddress"]').attr('value', vaddress);
 		
 		var totalAmount = 0;
 		
@@ -341,6 +350,21 @@ a { text-decoration:none }
     color : #FFFFFF;
 }
 </style>
+
+<%
+ String strReferer = request.getHeader("referer");
+ 
+ if(strReferer == null){
+%>
+ <script language="javascript">
+  alert("잘못된 접근입니다.");
+  document.location.href="mainList.do";
+ </script>
+<%
+  return;
+ }
+%>
+
 <body>
 
 <div class = "whole_wrap">
@@ -362,26 +386,30 @@ a { text-decoration:none }
 	  		<form id="frmData">
 			  <input type="hidden" id="userId" name="userId" value="${memberVO.userId}">
 			  <input type="hidden" id="productId" name="productId" value="${productList.productId}">
+			  
 			  <input type="hidden" id="numOfProduct" name="numOfProduct" value="${productList.numOfProduct}">
 			  <input type="hidden" id="orderOption" name="orderOption" value="${productList.orderOption}">
 			  
 			  <c:choose> 
-							<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct >= productList.freeShippingPrice }">
-	      						 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.productPrice*productList.numOfProduct}">
-							</c:when> 
-							<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct < productList.freeShippingPrice }">
-	      						 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.productPrice*productList.numOfProduct+productList.shippingCost}">
-							</c:when> 
-							<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct >= productList.freeShippingPrice }">
-	      						 <input type="hidden" id="totalAmount" name="totalAmount" value="${(productList.productPrice-productList.discountWon)*productList.numOfProduct}">
-							</c:when> 
-							<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct < productList.freeShippingPrice }">
-	      						<input type="hidden" id="totalAmount" name="totalAmount" value="${(productList.productPrice-productList.discountWon)*productList.numOfProduct+productList.shippingCost}">	
-							</c:when> 
+				<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct >= productList.freeShippingPrice }">
+	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.productPrice*productList.numOfProduct}">
+				</c:when> 
+				<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct < productList.freeShippingPrice }">
+	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.productPrice*productList.numOfProduct+productList.shippingCost}">
+				</c:when> 
+				<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct >= productList.freeShippingPrice }">
+	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${(productList.productPrice-productList.discountWon)*productList.numOfProduct}">
+				</c:when> 
+				<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct < productList.freeShippingPrice }">
+	      			<input type="hidden" id="totalAmount" name="totalAmount" value="${(productList.productPrice-productList.discountWon)*productList.numOfProduct+productList.shippingCost}">	
+				</c:when> 
 			</c:choose> 
 			  
 			  
-			  
+			<input type="hidden" id="orderZipCode" name="orderZipCode" value="${memberVO.zipCode}">
+			<input type="hidden" id="orderAddress" name="orderAddress" value="${memberVO.address}">
+			<input type="hidden" id="orderName" name="orderName" value="${memberVO.name}">
+			
 			</form>
 			
 			<div class = "category_box">
