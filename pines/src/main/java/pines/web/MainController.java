@@ -313,7 +313,12 @@ public class MainController {
 			model.addAttribute("msg", "삭제된 상품입니다.");
 			model.addAttribute("url", "mainList.do");
 			return "main/alert";
-		}	
+		}
+		if(value.get("regState").equals("품절")){ // 품절된 상품,,
+			model.addAttribute("msg", "품절된 상품입니다.");
+			model.addAttribute("url", "mainList.do");
+			return "main/alert";
+		}
 		model.addAttribute("productList",list);
 		return "main/productDetail";
 	}
@@ -371,6 +376,19 @@ public class MainController {
 			return "myPage/orderInquiry";
 		}
 	}
+
+	@RequestMapping("orderListSearch.do")
+	public ModelAndView selectOrderListSearch(MainVO mainVO, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		List<?> list = mainService.selectSearchByMyOrderList(mainVO);
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("obj1", list); 
+	    mv.setViewName("jsonView");
+	    return mv;
+	}
+	
+	
 	@RequestMapping("/paymentManage.do")
 	public String selectPaymentManage(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);
@@ -401,7 +419,21 @@ public class MainController {
 			return "myPage/orderDetail";
 		}
 	}
-
+	@RequestMapping("/sellerOrderInquiry.do")
+	public String selectSellerOrderInquiry(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> orderList = mainService.selectSellerOrderList(mainVO);
+			model.addAttribute("orderList", orderList);
+			return "seller/sellerOrderInquiry";
+		}
+	}
 
 	
 	

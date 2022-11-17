@@ -436,9 +436,9 @@ a { text-decoration:none }
 <%@ include file="../include/searchBar.jsp" %>
 </header>
 <main>
-<%@ include file="../include/myPageTopMenu.jsp" %>
+<%@ include file="../include/sellerOrderTopMenu.jsp" %>
 	<div class = "div_table_title">
-		<p class = "table_title"> 주문조회</p>
+		<p class = "table_title"> 판매내역조회</p>
 	</div>
 	<div id = "searchWrap" class="searchWrap">
 		<form id="searchForm" name = "searchForm">

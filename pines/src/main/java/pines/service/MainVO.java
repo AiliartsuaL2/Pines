@@ -8,6 +8,7 @@ public class MainVO {
 	private String storeId;
 	private String productName;
 	private String productPrice;
+	
 	private String productDescription;
 	private String regYN;
 	private String categoryId;
@@ -43,8 +44,23 @@ public class MainVO {
 	private String orderAddress;
 	private String deliveryStatus;
 	private String orderId;
+	private String endOrderPeriod;
+	private String startOrderPeriod;
 	
 	
+	
+	public String getEndOrderPeriod() {
+		return endOrderPeriod;
+	}
+	public void setEndOrderPeriod(String endOrderPeriod) {
+		this.endOrderPeriod = endOrderPeriod;
+	}
+	public String getStartOrderPeriod() {
+		return startOrderPeriod;
+	}
+	public void setStartOrderPeriod(String startOrderPeriod) {
+		this.startOrderPeriod = startOrderPeriod;
+	}
 	public String getParentCategoryId() {
 		return parentCategoryId;
 	}

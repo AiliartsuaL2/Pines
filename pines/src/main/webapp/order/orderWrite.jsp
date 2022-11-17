@@ -389,19 +389,12 @@ a { text-decoration:none }
 			  
 			  <input type="hidden" id="numOfProduct" name="numOfProduct" value="${productList.numOfProduct}">
 			  <input type="hidden" id="orderOption" name="orderOption" value="${productList.orderOption}">
-			  
 			  <c:choose> 
-				<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct >= productList.freeShippingPrice }">
-	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.productPrice*productList.numOfProduct}">
+				<c:when test="${productList.totalAmount >= productList.freeShippingPrice }">
+	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.totalAmount}">
 				</c:when> 
-				<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct < productList.freeShippingPrice }">
-	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.productPrice*productList.numOfProduct+productList.shippingCost}">
-				</c:when> 
-				<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct >= productList.freeShippingPrice }">
-	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${(productList.productPrice-productList.discountWon)*productList.numOfProduct}">
-				</c:when> 
-				<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct < productList.freeShippingPrice }">
-	      			<input type="hidden" id="totalAmount" name="totalAmount" value="${(productList.productPrice-productList.discountWon)*productList.numOfProduct+productList.shippingCost}">	
+				<c:when test="${productList.totalAmount < productList.freeShippingPrice }">
+	      			<input type="hidden" id="totalAmount" name="totalAmount" value="${productList.totalAmount+productList.shippingCost}">	
 				</c:when> 
 			</c:choose> 
 			  

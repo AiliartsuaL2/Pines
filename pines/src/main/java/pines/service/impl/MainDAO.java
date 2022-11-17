@@ -112,5 +112,15 @@ public class MainDAO extends EgovAbstractDAO{
 		return list("mainDAO.selectOrderDetailList", mainVO);
 	}
 
+	public List<?> selectSearchByMyOrderList(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectSearchByMyOrderList", mainVO);
+	}
+
+	public List<?> selectSellerOrderList(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectSellerOrderList", mainVO);
+	}
+
 
 }

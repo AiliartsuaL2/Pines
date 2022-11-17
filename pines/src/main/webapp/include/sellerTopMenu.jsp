@@ -32,7 +32,7 @@
 <table class="table1">
 	<tr>
 		<th width="80" align="left" ><a class="a1" href="/pines/sellerCheck.do" style="text-decoration:none; margin-left:50px;">상품</a></th>
-		<th width="80" align="left"><a class="a1" href="/pines/sellerOrder.do" style="text-decoration:none">주문 / 정산</a></th>
+		<th width="80" align="left"><a class="a1" href="/pines/sellerOrderInquiry.do" style="text-decoration:none">주문 / 정산</a></th>
 		<th width="80" align="left"><a class="a1" href="/pines/sellerWrite.do" style="text-decoration:none">판매자 등록 / 해지</a></th>
 		
 	<%	

@@ -269,7 +269,6 @@ a { text-decoration:none }
 }
 .price_wrap{
 	margin-top : 3%;
-	margin-bottom : 10%;
 	width : 80%;
 	height: 15%;
 	margin-left : 10%;
@@ -285,12 +284,24 @@ a { text-decoration:none }
 .price_Unit{
 	width : 20px;
 	height: 20px;
-	font-size:16pt;
+	font-size:14pt;
 	font-weight:bold;
 	color : red;
 }
+.discount_price_wrap{
+	margin-bottom : 2%;
+	width : 80%;
+	height: 15%;
+	margin-left : 10%;
+	}
 
-
+.discount_price_Unit{
+	width : 20px;
+	height: 20px;
+	font-size:14pt;
+	font-weight:bold;
+	color : red;
+}
 
 .shipping_wrap{
 	width : 100%;
@@ -302,9 +313,9 @@ a { text-decoration:none }
     background-color: #FFFFFF;
 	border:0;
 	font-size:12pt;
+	color : #8f8f8f;
+	font-weight:bold;
 }
-
-
 
 .option_box{
 	margin-top : 3%;
@@ -416,7 +427,14 @@ a { text-decoration:none }
 	
 	    <form name ="frm" method ="post" id="frm" action="orderLoginCheck.do" >    
 			  <input type="hidden" id="productId" name="productId" value="${mainVO.productId}">
-			  <input type="hidden" id="productPrice" name="productPrice" value="${mainVO.productPrice}">
+			  <c:choose> 
+				<c:when test="${mainVO.discountPrice != mainVO.productPrice}"> <!-- 할인이 들어갔을경우 -->
+					<input type="hidden" id="productPrice" name="productPrice" value="${mainVO.discountPrice}">
+				</c:when> 
+				<c:otherwise>
+					<input type="hidden" id="productPrice" name="productPrice" value="${mainVO.productPrice}">
+				</c:otherwise> 
+			  </c:choose> 
 			  <input type="hidden" id="shippingCost" name="shippingCost" value="${mainVO.shippingCost}">
 			  <input type="hidden" id="freeShippingPrice" name="freeShippingPrice" value="${mainVO.freeShippingPrice}">
 			  <input type="hidden" id="numOfProduct" name="numOfProduct" value="1" >
@@ -458,11 +476,23 @@ a { text-decoration:none }
 							<div class = "price_wrap">
 								<label class="price_Unit">${mainVO.productPrice}원</label>
 							</div>
+							<c:choose> 
+								<c:when test="${mainVO.discountPrice != mainVO.productPrice}"> <!-- 할인이 들어갔을경우 -->
+									<div class = "discount_price_wrap">
+										<label class="discount_price_Unit">할인가 : ${mainVO.discountPrice}원 / ${mainVO.discountPeriod}까지</label>
+									</div>
+								</c:when> 
+								<c:otherwise>
+									<div class = "discount_price_wrap">
+										<label class="discount_price_Unit"></label>
+									</div>
+								</c:otherwise> 
+							</c:choose> 
 							<div class = "shipping_wrap">
 								<input disabled type="text" class="shippingCost" id="vshippingCost" name="vshippingCost" value="배송비  ${mainVO.shippingCost}원">
 							</div>
 							<div class = "shipping_wrap">
-								<label type="text" id="vfreeShippingPrice" name="vfreeShippingPrice" >주문 금액 ${mainVO.freeShippingPrice}원 이상 시 배송비 무료</label>
+								<label class="shippingCost" >주문 금액 ${mainVO.freeShippingPrice}원 이상 시 배송비 무료</label>
 	      					</div>
 	      				</div>
 	      				
@@ -485,9 +515,19 @@ a { text-decoration:none }
 	      						<input type='button' class="numBtn" onclick='count("minus")' value='-'/>
 	      					</div>
 	      					</div>
-	      					<div class="totalAmount">
-	      						<label for="totalAmount" name="totalAmount">${mainVO.productPrice}원 </label>
-	      					</div>
+	      					<c:choose> 
+								<c:when test="${mainVO.discountPrice != mainVO.productPrice}"> <!-- 할인이 들어갔을경우 -->
+	      							<div class="totalAmount">
+	      								<label for="totalAmount" name="totalAmount">${mainVO.discountPrice}원 </label>
+	      							</div>
+								</c:when> 
+								<c:otherwise>
+	      							<div class="totalAmount">
+	      								<label for="totalAmount" name="totalAmount">${mainVO.productPrice}원 </label>
+	      							</div>
+								</c:otherwise> 
+							</c:choose> 
+	      					
 	      				</div>
 	      				
 						<div class="find-btn">
