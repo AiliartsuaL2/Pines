@@ -26,4 +26,9 @@ public interface MainService {
 	public int deleteProduct(MainVO mainVO) throws Exception;
 	public List<?> selectSearchByMyOrderList(MainVO mainVO) throws Exception;
 	public List<?> selectSellerOrderList(MainVO mainVO) throws Exception;
+	public List<?> selectSearchBySellerOrderList(MainVO mainVO) throws Exception;
+	public List<?> selectSellerOrderNumberList(MainVO mainVO) throws Exception;
+	public List<?> selectRevenueDetail(MainVO mainVO) throws Exception;
+	public String insertRevenue(MainVO mainVO) throws Exception;
+	public int updateOrderRevenue(MainVO mainVO) throws Exception;
 	}

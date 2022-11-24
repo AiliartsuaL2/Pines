@@ -46,9 +46,36 @@ public class MainVO {
 	private String orderId;
 	private String endOrderPeriod;
 	private String startOrderPeriod;
+	private String salesDate;
+	private String salesDateNext;
+	private int dayAmount;
+	private String numOfSales;
 	
-	
-	
+
+	public int getDayAmount() {
+		return dayAmount;
+	}
+	public void setDayAmount(int dayAmount) {
+		this.dayAmount = dayAmount;
+	}
+	public String getNumOfSales() {
+		return numOfSales;
+	}
+	public void setNumOfSales(String numOfSales) {
+		this.numOfSales = numOfSales;
+	}
+	public String getSalesDate() {
+		return salesDate;
+	}
+	public void setSalesDate(String salesDate) {
+		this.salesDate = salesDate;
+	}
+	public String getSalesDateNext() {
+		return salesDateNext;
+	}
+	public void setSalesDateNext(String salesDateNext) {
+		this.salesDateNext = salesDateNext;
+	}
 	public String getEndOrderPeriod() {
 		return endOrderPeriod;
 	}

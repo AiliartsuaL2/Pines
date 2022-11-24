@@ -414,6 +414,7 @@
 			 , REG_DATE = SYSDATE
 			 , DISCOUNT_PERIOD = #discountPeriod# 
 	   WHERE PRODUCT_ID = #productId#;
+	   
       UPDATE PRODUCT_OPTION SET 
               TOTAL_NUM = #totalNum#
             , DISCOUNT_WON = #discountWon#
@@ -426,7 +427,7 @@
 				
 	</update>
 	
-		<select id="mainDAO.selectProductDetail" resultClass="egovMap">
+	<select id="mainDAO.selectProductDetail" resultClass="egovMap">
 		SELECT PRODUCT_ID
 			 , STORE_ID
 			 , PRODUCT_NAME
@@ -511,6 +512,7 @@
 							  , ORDER_ADDRESS
 							  , DELIVERY_STATUS
 							  , TOTAL_AMOUNT
+							  , REVENUE_STATUS
 							 )
 					  VALUES(
 					  		    ORDER_SEQ.NEXTVAL
@@ -524,6 +526,7 @@
 					  		  , #orderAddress#
 					  		  , '배송전'
 					  		  , #totalAmount#
+					  		  , 'N'
 						)
 		</insert>
 		
@@ -652,7 +655,120 @@
                          )
        ORDER BY o.PURCHASE_DATE DESC
 		</select>
+		
+		
+	<select id="mainDAO.selectSearchBySellerOrderList" resultClass="egovMap">
+      		SELECT 
+      		  (
+              SELECT DISCOUNT_WON
+                FROM PRODUCT_OPTION po 
+               WHERE po.OPTION_ID = p.OPTION_ID 
+              ) AS DISCOUNT_WON 
+              ,(
+              SELECT TOTAL_NUM 
+                FROM PRODUCT_OPTION po 
+ 	           WHERE po.OPTION_ID = p.OPTION_ID 
+       	      ) AS TOTAL_NUM  
+              , p.PRODUCT_ID 
+              , p.PRODUCT_NAME 
+              , p.PRODUCT_PRICE 
+              , p.IMAGE1 
+              , o.ORDER_ID 
+              , o.NUM_OF_PRODUCT 
+              , o.PURCHASE_DATE 
+              , o.DELIVERY_STATUS
+              , o.TOTAL_AMOUNT
+              , o.ORDER_OPTION
+      	FROM "ORDER" o join PRODUCT p 
+       	  ON o.PRODUCT_ID = p.PRODUCT_ID 
+       WHERE STORE_ID = (
+       					 SELECT STORE_ID 
+                           FROM STORE
+                          WHERE USER_ID = #userId#
+                         )
+         AND $searchGubun$ like '%$searchText$%'
+         AND #startOrderPeriod# <![CDATA[<=]]>  o.PURCHASE_DATE
+         AND #endOrderPeriod# >= o.PURCHASE_DATE
+       ORDER BY o.PURCHASE_DATE DESC
+	</select>
 	
+	<select id="mainDAO.selectSellerOrderNumberList" resultClass="egovMap">
+      	SELECT to_char(PURCHASE_DATE,'yyyy-mm-dd') AS SALES_DATE 
+      	       ,SUM(TOTAL_AMOUNT) AS DAY_AMOUNT
+      	       ,count(TOTAL_AMOUNT) AS NUM_Of_SALES
+       	  FROM "ORDER" o join PRODUCT p 
+       		ON o.PRODUCT_ID = p.PRODUCT_ID 
+       	 WHERE STORE_ID = (
+             				SELECT STORE_ID 
+                           	  FROM STORE
+                          	 WHERE USER_ID = #userId#
+                          )
+           AND REVENUE_STATUS = 'N'
+       GROUP BY to_char(PURCHASE_DATE,'yyyy-mm-dd') 
+       HAVING 1=1 
+       
+	</select>
 	
+	<select id="mainDAO.selectRevenueDetail" resultClass="egovMap">
+      	SELECT to_char(PURCHASE_DATE,'yyyy-mm-dd') AS SALES_DATE 
+      	       ,SUM(TOTAL_AMOUNT) AS DAY_AMOUNT
+      	       ,count(TOTAL_AMOUNT) AS NUM_OF_SALES
+       	  FROM "ORDER" o join PRODUCT p 
+       		ON o.PRODUCT_ID = p.PRODUCT_ID 
+       	 WHERE STORE_ID = (
+             				SELECT STORE_ID 
+                           	  FROM STORE
+                          	 WHERE USER_ID = #userId#
+                          )
+          AND PURCHASE_DATE > #salesDate#
+          AND PURCHASE_DATE <![CDATA[<]]> #salesDateNext#
+       GROUP BY to_char(PURCHASE_DATE,'yyyy-mm-dd') 
+       HAVING 1=1 
+       
+	</select>
+	
+	<insert id="mainDAO.insertRevenue">
+			INSERT INTO REVENUE (
+								  REVENUE_ID
+								, NUM_OF_SALES
+								, SETTLE_DATE
+								, SETTLE_AMOUNT
+								, STORE_ID
+								, SALES_DATE
+							 )
+					  VALUES(
+					  		    REVENUE_SEQ.NEXTVAL
+					  		  , #numOfSales#
+					  		  , SYSDATE
+					  		  , #dayAmount#
+					  		  , (
+					  		      SELECT STORE_ID
+					  		        FROM STORE
+					  		       WHERE USER_ID = #userId#
+					  		     )
+					  		  , #salesDate#
+						)
+	</insert>
+	
+	<update id="mainDAO.updateOrderRevenue">
+			   UPDATE  (
+        				  SELECT  STORE_ID
+               					, REVENUE_STATUS
+               					, PURCHASE_DATE
+               			   FROM  "ORDER" O
+                				, PRODUCT P
+          				  WHERE
+                 			P.PRODUCT_ID = O.PRODUCT_ID 
+         				)
+     			  SET REVENUE_STATUS = 'Y'
+    			WHERE 1=1
+      			  AND PURCHASE_DATE > #salesDate#
+			      AND PURCHASE_DATE <![CDATA[<]]> #salesDateNext#
+      			  AND STORE_ID = (
+                       				SELECT STORE_ID
+                         			  FROM STORE s 
+                        			 WHERE USER_ID = #userId#
+                     			  )
+	</update>
 	
 </sqlMap>

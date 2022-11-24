@@ -122,5 +122,28 @@ public class MainDAO extends EgovAbstractDAO{
 		return list("mainDAO.selectSellerOrderList", mainVO);
 	}
 
+	public List<?> selectSearchBySellerOrderList(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectSearchBySellerOrderList", mainVO);
+	}
 
+	public List<?> selectSellerOrderNumberList(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectSellerOrderNumberList",mainVO);
+	}
+
+	public List<?> selectRevenueDetail(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("mainDAO.selectRevenueDetail", mainVO);
+	}
+
+	public String insertRevenue(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (String) insert("mainDAO.insertRevenue", mainVO);
+	}
+
+	public int updateOrderRevenue(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) update("mainDAO.updateOrderRevenue", mainVO);
+	}
 }

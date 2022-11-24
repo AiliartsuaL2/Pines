@@ -20,6 +20,38 @@
 
 $(function(){
 	 $("#btn_submit").click(function(){//데이터 유효성 검사
+
+			var orderOption = $("#orderOption").val();
+			var productPrice = $("#productPrice").val();
+			var freeShippingPrice = $("#freeShippingPrice").val();
+			var shippingCost = $("#shippingCost").val();
+			var numOfProduct = $("#numOfProduct").val();
+			var discountWon = $("#discountWon").val();
+		 		
+			var totalAmount = 0;
+			
+			if(orderOption == "none"){
+				if(productPrice * numOfProduct >= freeShippingPrice){
+					totalAmount = productPrice * numOfProduct;			
+				}
+				else{
+					totalAmount = productPrice * numOfProduct;	 
+					totalAmount = totalAmount + Number(shippingCost);		
+				}
+			}
+			else{
+				if((productPrice-discountWon)* numOfProduct >= freeShippingPrice){
+					totalAmount = (productPrice-discountWon)* numOfProduct;
+				}
+				else{
+					totalAmount = (productPrice-discountWon)* numOfProduct;
+					totalAmount = totalAmount + Number(shippingCost);
+				}
+			}
+
+			$('input[name="totalAmount"]').attr('value', totalAmount);
+			
+			
 		  	document.frm.submit();
 	 });
 	
@@ -442,6 +474,7 @@ a { text-decoration:none }
 			  <input type="hidden" id="productName" name="productName" value="${mainVO.productName}">
 			  <input type="hidden" id="totalNum" name="totalNum" value="${mainVO.totalNum}" >
 			  <input type="hidden" id="discountWon" name="discountWon" value="${mainVO.discountWon}">
+			  <input type="hidden" id="totalAmount" name="totalAmount" >
 	    </form> 
 	    
 		<div class="id_input_box">

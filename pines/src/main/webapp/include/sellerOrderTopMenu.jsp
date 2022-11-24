@@ -63,18 +63,18 @@
 <body >
 	<div class="div_Wrap">
 		<div class="topBar">
-			<input type="button" class="page_btn" value="마이 페이지">
+			<input type="button" class="page_btn" value="주문 / 정산">
 		</div>
 	</div>
 	<div class="category_wrap">
 		<div class="sub_category">
-			<input type="button" class="category_btn_order" value="주문 내역 조회" onclick="location='orderInquiry.do'">
+			<input type="button" class="category_btn_order" value="판매 내역 조회" onclick="location='sellerOrderInquiry.do'">
 		</div>
 		<div class="sub_category">
-			<input type="button" class="category_btn_info" value="정산" onclick="location='memberCheck.do'">
+			<input type="button" class="category_btn_info" value="정산" onclick="location='sellerRevenue.do'">
 		</div>
 		<div class="sub_category">
-			<input type="button" class="category_btn_payment" value="정산 내역 조회" onclick="location='paymentManage.do'">
+			<input type="button" class="category_btn_payment" value="정산 내역 조회" onclick="location='sellerRevenueList.do'">
 		</div>
 	</div>
 </body>

@@ -33,7 +33,9 @@ $(function(){
             }
         }).open();
     });	
+  	var totalAmount1 = $("#totalAmount").val();
 	
+  	
 
 $("#btn_submit").click(function(){
 		var point = $("#point").val();
@@ -73,13 +75,14 @@ $("#btn_submit").click(function(){
 				totalAmount += shippingCost;
 			}
 		}
-		
-		if(point < totalAmount) {
+
+		if (point < totalAmount) {
 			alert("포인트가 부족합니다.");
 			return false;
 		}
+		
 		else{// ajax 실행
-
+				
 			  	let frmData = $("#frmData").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
 
 				$.ajax({
@@ -389,6 +392,7 @@ a { text-decoration:none }
 			  
 			  <input type="hidden" id="numOfProduct" name="numOfProduct" value="${productList.numOfProduct}">
 			  <input type="hidden" id="orderOption" name="orderOption" value="${productList.orderOption}">
+			  
 			  <c:choose> 
 				<c:when test="${productList.totalAmount >= productList.freeShippingPrice }">
 	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.totalAmount}">

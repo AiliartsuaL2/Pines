@@ -149,5 +149,35 @@ public class MainServiceImpl implements MainService {
 		return mainDAO.selectSellerOrderList(mainVO);
 	}
 
+	@Override
+	public List<?> selectSearchBySellerOrderList(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectSearchBySellerOrderList(mainVO);
+	}
+
+	@Override
+	public List<?> selectSellerOrderNumberList(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectSellerOrderNumberList(mainVO);
+	}
+
+	@Override
+	public List<?> selectRevenueDetail(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectRevenueDetail(mainVO);
+	}
+
+	@Override
+	public String insertRevenue(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.insertRevenue(mainVO);
+	}
+
+	@Override
+	public int updateOrderRevenue(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.updateOrderRevenue(mainVO);
+	}
+
 
 }

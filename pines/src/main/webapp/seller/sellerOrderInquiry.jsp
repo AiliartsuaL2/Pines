@@ -61,7 +61,7 @@
 			var formData2 = $("#searchForm").serialize(); 
 			// 비동기 전송방식,, (화면 이동이 없음)의 jquery 함수,, ajax
 			$.ajax({
-				url:"orderListSearch.do", // 보낼 url
+				url:"sellerOrderListSearch.do", // 보낼 url
 				data:formData2, //폼 자체
 				dataType:"json",
 				success: function(data){
@@ -106,8 +106,6 @@
 				}
 			});//
 		}
-		
-		
 		
 	});
 </script>
@@ -275,36 +273,6 @@ a { text-decoration:none }
     cursor : pointer;
 }
 
-.category_btn_order{
-	width:90%;
-	height:100%;
-	border: 1px solid #A5A5A5;
-	font-size : 15px;
-	font-weight : bold;
-	background-color:white;
-	color:#FA6A6A;
-    cursor: pointer;
-}
-.category_btn_info{
-	width:90%;
-	height:100%;
-	border: 1px solid #A5A5A5;
-	font-size : 15px;
-	font-weight : bold;
-	background-color:white;
-	color:#A5A5A5;
-    cursor: pointer;
-}
-.category_btn_payment{
-	width:90%;
-	height:100%;
-	border: 1px solid #A5A5A5;
-	font-size : 15px;
-	font-weight : bold;
-	background-color:white;
-	color:#A5A5A5;
-    cursor: pointer;
-}
 
 .img_box{
 	
@@ -320,7 +288,7 @@ a { text-decoration:none }
 }
 
 .searchWrap{
-    width: 42%;
+    width: 38.5%;
     height:13%;
     position: absolute;
     left: 40%;
@@ -410,6 +378,36 @@ a { text-decoration:none }
 	margin-top:1.5%;
 	border : 0;
 	cursor : pointer;
+}
+.category_btn_order{
+	width:90%;
+	height:100%;
+	border: 1px solid #A5A5A5;
+	font-size : 15px;
+	font-weight : bold;
+	background-color:white;
+	color:#FA6A6A;
+    cursor: pointer;
+}
+.category_btn_info{
+	width:90%;
+	height:100%;
+	border: 1px solid #A5A5A5;
+	font-size : 15px;
+	font-weight : bold;
+	background-color:white;
+	color:#A5A5A5;
+    cursor: pointer;
+}
+.category_btn_payment{
+	width:90%;
+	height:100%;
+	border: 1px solid #A5A5A5;
+	font-size : 15px;
+	font-weight : bold;
+	background-color:white;
+	color:#A5A5A5;
+    cursor: pointer;
 }
 </style>
 
