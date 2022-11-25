@@ -117,7 +117,7 @@ a { text-decoration:none }
 	text-align : center;
 	border : 1px solid #BABABA;
 	height:48px;
-	width:78%;
+	width:70%;
 	font-size : 18px;
 	font-wight : bold;
 }

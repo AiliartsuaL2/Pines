@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SellerSpace">
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/> <!-- 출력시(select) 필요한  list를 담는 변수 -->
+	<typeAlias  alias="mainVO" type="pines.service.MainVO"/> <!-- 출력시(select) 필요한 변수 -->
+	
+	<select id="sellerDAO.selectStoreNameCheck" resultClass = "java.lang.Integer">
+		SELECT COUNT(*) 
+		  FROM STORE
+	     WHERE STORE_NAME = #storeName#
+	</select>
+	
+	<select id="sellerDAO.selectStoreBusNumCheck" resultClass = "java.lang.Integer">
+		SELECT COUNT(*) 
+		  FROM STORE
+	     WHERE BUSINESS_REG_NUM = #businessRegNum#
+	</select>
+	
+	<insert id="sellerDAO.insertSellerWrite">
+		INSERT INTO STORE( 
+							STORE_ID
+						  , USER_ID
+						  , BUSINESS_REG_NUM
+						  , STORE_NAME
+						  , SELLER_TYPE
+						  , SIGN_STORE
+						  , ACCOUNT_NUMBER
+						  , BANK_NAME
+						  , ACCOUNT_HOLDER
+						  , STORE_REG_DATE
+							)
+					VALUES(
+							  STORE_SEQ.NEXTVAL
+							, #userId#
+							, #businessRegNum#
+							, #storeName#
+							, #sellerType#
+							, 'Y'
+							, #accountNumber#
+							, #bankName#
+							, #accountHolder#
+							, SYSDATE
+						  )
+	</insert>
+	
+</sqlMap>

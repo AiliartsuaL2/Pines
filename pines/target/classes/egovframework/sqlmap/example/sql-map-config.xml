@@ -5,4 +5,5 @@
 	<sqlMap resource="egovframework/sqlmap/example/sample/EgovSample_Sample_SQL.xml"/>
 	<sqlMap resource="pines/sqlmap/Main_SQL.xml"/>
 	<sqlMap resource="pines/sqlmap/Member_SQL.xml"/>
+	<sqlMap resource="pines/sqlmap/Seller_SQL.xml"/>
 </sqlMapConfig>

@@ -1,6 +1,5 @@
 package pines.web;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +7,7 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -21,13 +18,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +32,6 @@ import pines.service.ImageVO;
 import pines.service.MainService;
 import pines.service.MainVO;
 import pines.service.MemberService;
-import pines.service.MemberVO;
 
 @Controller
 public class MainController {
@@ -360,6 +352,7 @@ public class MainController {
 		}
 		return message;
 	}
+	
 	@RequestMapping("/orderInquiry.do")
 	public String selectOrderInquiry(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);
@@ -418,106 +411,4 @@ public class MainController {
 			return "myPage/orderDetail";
 		}
 	}
-	@RequestMapping("/sellerOrderInquiry.do")
-	public String selectSellerOrderInquiry(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
-		HttpSession session = request.getSession(true);
-		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		if(mainVO.getUserId() == null){ // 로그인 안된경우
-			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
-			model.addAttribute("url", "loginWrite.do");
-			return "main/alert";
-		}
-		else{
-			List<?> orderList = mainService.selectSellerOrderList(mainVO);
-			model.addAttribute("orderList", orderList);
-			return "seller/sellerOrderInquiry";
-		}
-	}
-
-	@RequestMapping("sellerOrderListSearch.do")
-	public ModelAndView selectSearchBySellerOrderList(MainVO mainVO, HttpServletRequest request) throws Exception{
-		HttpSession session = request.getSession(true);
-		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		List<?> list = mainService.selectSearchBySellerOrderList(mainVO);
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("obj1", list); 
-	    mv.setViewName("jsonView");
-	    return mv;
-	}
-
-	@RequestMapping("sellerRevenue.do")
-	public String sellerRevenue(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
-		HttpSession session = request.getSession(true);
-		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		if(mainVO.getUserId() == null){ // 로그인 안된경우
-			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
-			model.addAttribute("url", "loginWrite.do");
-			return "main/alert";
-		}
-		else{
-			List<?> revenueList = mainService.selectSellerOrderNumberList(mainVO);
-			model.addAttribute("revenueList", revenueList);
-		    return "seller/sellerRevenue";
-		}
-	}
-
-	@RequestMapping("/revenueDetail.do")
-	public String selectRevenueDetail(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
-		HttpSession session = request.getSession(true);
-		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		if(mainVO.getUserId() == null){ // 로그인 안된경우
-			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
-			model.addAttribute("url", "loginWrite.do");
-			return "main/alert";
-		}
-		else{
-			String[] setDate = mainVO.getSalesDate().split("-"); // 연 월 일로 배열 생성
-			int nextDay = Integer.parseInt(setDate[2])+1; // day에 하루 추가
-			String nextDate = setDate[0]+"-"+setDate[1]+"-"; //연 -월 -로 데이터 생성
-			nextDate+=Integer.toString(nextDay); // 일 추가
-			mainVO.setSalesDateNext(nextDate);// 연-월-일 데이터 세팅
-			List<?> revenueList = mainService.selectRevenueDetail(mainVO);
-			model.addAttribute("revenueList", revenueList);
-		    return "seller/revenueDetail";
-		}
-	}
-	@RequestMapping("/revenueSub.do")
-	@ResponseBody
-	public String insertRevenue(MainVO mainVO , HttpSession session, ModelMap model) throws Exception{
-		String message = "";
-		String result = "";
-		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		
-		if(mainVO.getUserId() == null){ // 로그인 안된경우
-			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
-			model.addAttribute("url", "loginWrite.do");
-			return "main/alert";
-		}
-		else{
-			String[] setDate = mainVO.getSalesDate().split("-"); // 연 월 일로 배열 생성
-			int nextDay = Integer.parseInt(setDate[2])+1; // day에 하루 추가
-			String nextDate = setDate[0]+"-"+setDate[1]+"-"; //연 -월 -로 데이터 생성
-			nextDate+=Integer.toString(nextDay); // 일 추가
-			mainVO.setSalesDateNext(nextDate);// 연-월-일 데이터 세팅
-			result = mainService.insertRevenue(mainVO);
-			if(result == null){ // 성공
-				logger.info("revenue insert 성공,");
-				int tmp = mainService.updateOrderRevenue(mainVO);
-				System.out.println("tmp : "+tmp);
-				if(tmp != 0){
-					message = "ok";
-					logger.info("order update 성공");
-				}
-				else{
-					logger.info("정산 실패 (order테이블 status update 실패)");
-				}
-			}
-			else{
-				logger.info("정산 실패(revenue테이블 insert 실패)");
-			}
-			return message;
-		}
-
-	}
-	
 }

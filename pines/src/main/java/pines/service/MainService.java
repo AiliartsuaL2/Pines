@@ -31,4 +31,5 @@ public interface MainService {
 	public List<?> selectRevenueDetail(MainVO mainVO) throws Exception;
 	public String insertRevenue(MainVO mainVO) throws Exception;
 	public int updateOrderRevenue(MainVO mainVO) throws Exception;
+	public List<?> selectSellerRevenueList(MainVO mainVO) throws Exception;
 	}

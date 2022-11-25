@@ -179,5 +179,11 @@ public class MainServiceImpl implements MainService {
 		return mainDAO.updateOrderRevenue(mainVO);
 	}
 
+	@Override
+	public List<?> selectSellerRevenueList(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectSellerRevenueList(mainVO);
+	}
+
 
 }

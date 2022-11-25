@@ -320,7 +320,7 @@ a { text-decoration:none }
 }
 
 .searchWrap{
-    width: 42%;
+    width: 39%;
     height:13%;
     position: absolute;
     left: 40%;

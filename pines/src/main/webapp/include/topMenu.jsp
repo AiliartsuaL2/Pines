@@ -13,46 +13,108 @@
   display: flex;
   justify-content: center;
 }
-.table1{
+.topBar{
+	background-color : #FA6A6A;
 	width:49.4%;
 	height:50px;
 	margin-left : 5.2%;
-    background: #FA6A6A;
-	font-size:15pt;
-	color : #FFFFFF;
 }
-	.a1:link {text-decoration: none; color: white;}
-	.a1:visited {text-decoration: none; color: white;}
-	.a1:hover {text-decoration: none; color: white;}
+.pointLabel{
+	text-align : center;
+	padding-top : 15px;
+	float : right;
+	background-color : #FA6A6A;
+	width:20%;
+	height:35px;
+	color : white;
+	font-size : 15px;
+	font-weight : bold;
+}
+.page_btn{
+	text-align : center;
+	padding-top : 12px;
+	float : left;
+	background-color : #FA6A6A;
+	border : 0;
+	width:18%;
+    font-size: 20px;
+	font-weight : bold;
+	color : white;
+	cursor : pointer;
+}
+.category_wrap{
+  	display: flex;
+  	justify-content: center;
+	width:10%;
+	height:200px;
+	margin-left : 27.9%;
+	display: flex;
+	flex-direction : column;
+	margin-top : -10px;
+	
+}
+
+.sub_category{
+	width:100%;
+	height:30%;
+
+}
+
+
+.login_btn{
+	text-align : center;
+	padding-top : 15px;
+	float : left;
+	background-color : #FA6A6A;
+	border : 0;
+	width:10%;
+    font-size: 15px;
+	font-weight : bold;
+	color : white;
+	cursor : pointer;
+    margin-left: 14%;
+
+}
+.myPage_btn{
+	text-align : center;
+	padding-top : 15px;
+	float : left;
+	background-color : #FA6A6A;
+	border : 0;
+	width:10%;
+    font-size: 15px;
+	font-weight : bold;
+	color : white;
+	cursor : pointer;
+    margin-left: 5%;
+
+}
+
 </style>
 <body >
 <%
 	String USERID = (String) session.getAttribute("SessionUserID");
 %>
-<div class="div_Wrap">
-
-<table class="table1">
-	<tr>
-		<th width="80" align="left" ><a class="a1" href="/pines/plantList.do?parentCategoryId=plant" style="text-decoration:none; margin-left:50px;">식물</a></th>
-		<th width="80" align="left"><a class="a1" href="/pines/flowerList.do?parentCategoryId=flower" style="text-decoration:none">꽃 / 화환</a></th>
-		<th width="80" align="left"><a class="a1" href="/pines/discountList.do" style="text-decoration:none">할인상품</a></th>
-		
-	<%	
+	<div class="div_Wrap">
+		<div class="topBar">
+			<input type="button" class="page_btn" value="식물" onclick="location='plantList.do?parentCategoryId=plant'">
+			<input type="button" class="page_btn" value="꽃 / 화환" onclick="location='flowerList.do?parentCategoryId=flower'">
+			<input type="button" class="page_btn" value="할인상품" onclick="location='discountList.do'">
+		<%	
 		if(USERID == null){ // 로그인 안했을경우
-			
-	%>
-		<th width="80" align="right"><a class="a1" href="/pines/loginWrite.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그인</a></th>
-		<th width="80" align="right"><a class="a1" href="/pines/memberWrite.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">회원가입</a></th>
-	<%
+		%>
+			<input type="button" class="login_btn" value="로그인" onclick="location='loginWrite.do'">
+			<input type="button" class="myPage_btn" value="회원가입" onclick="location='memberWrite.do'">
+		<%
 		} else { // 로그인 성공시
-	%>
-		<th width="80 align="right"><a class="a1" href="/pines/logout.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그아웃</a></th>
-		<th width="80 align="right"><a class="a1" href="/pines/memberCheck.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">마이 페이지</a></th>
-	<%
+		%>
+			<input type="button" class="login_btn" value="로그아웃" onclick="location='logout.do'">
+			<input type="button" class="myPage_btn" value="마이페이지" onclick="location='memberCheck.do'">
+		
+		<%
 		}
-	%>
-	</tr>
-</table>
-</div>
+		%>
+		</div>
+	</div>
 </body>
 </html>

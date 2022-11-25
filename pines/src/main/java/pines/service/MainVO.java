@@ -50,8 +50,58 @@ public class MainVO {
 	private String salesDateNext;
 	private int dayAmount;
 	private String numOfSales;
+	private String settleDate;
+	private String businessRegNum;
+	private String storeName;
+	private String sellerType;
+	private String accountNumber;
+	private String accountHolder;
+	private String bankName;
 	
 
+	
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public String getAccountHolder() {
+		return accountHolder;
+	}
+	public void setAccountHolder(String accountHolder) {
+		this.accountHolder = accountHolder;
+	}
+	public String getBusinessRegNum() {
+		return businessRegNum;
+	}
+	public void setBusinessRegNum(String businessRegNum) {
+		this.businessRegNum = businessRegNum;
+	}
+	public String getStoreName() {
+		return storeName;
+	}
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+	public String getSellerType() {
+		return sellerType;
+	}
+	public void setSellerType(String sellerType) {
+		this.sellerType = sellerType;
+	}
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	public String getSettleDate() {
+		return settleDate;
+	}
+	public void setSettleDate(String settleDate) {
+		this.settleDate = settleDate;
+	}
 	public int getDayAmount() {
 		return dayAmount;
 	}

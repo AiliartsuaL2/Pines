@@ -152,10 +152,12 @@ $(function(){
 }
 
 .div3{
-	margin-left:5%;
+    position: absolute;
+    top: 36%;
+    left: 29%;
 	text-align:center;
 	font-size:12pt;
-	margin-top:10px;
+
 }
 header {
     height: 215px;

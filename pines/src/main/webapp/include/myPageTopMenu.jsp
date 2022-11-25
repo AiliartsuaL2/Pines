@@ -30,14 +30,13 @@
 }
 .page_btn{
 	text-align : center;
-	padding-top : 15px;
+	padding-top : 12px;
 	float : left;
 	background-color : #FA6A6A;
 	border : 0;
-	width:20%;
-	font-size : 15px;
+	width:18%;
+    font-size: 20px;
 	font-weight : bold;
-	height:35px;
 	color : white;
 	cursor : pointer;
 }
@@ -59,11 +58,60 @@
 
 }
 
+
+.login_btn{
+	text-align : center;
+	padding-top : 15px;
+	float : left;
+	background-color : #FA6A6A;
+	border : 0;
+	width:10%;
+    font-size: 15px;
+	font-weight : bold;
+	color : white;
+	cursor : pointer;
+    margin-left: 14%;
+
+}
+.myPage_btn{
+	text-align : center;
+	padding-top : 15px;
+	float : left;
+	background-color : #FA6A6A;
+	border : 0;
+	width:10%;
+    font-size: 15px;
+	font-weight : bold;
+	color : white;
+	cursor : pointer;
+    margin-left: 5%;
+
+}
+
 </style>
 <body >
+<%
+	String USERID = (String) session.getAttribute("SessionUserID");
+%>
 	<div class="div_Wrap">
 		<div class="topBar">
-			<input type="button" class="page_btn" value="마이 페이지">
+			<input type="button" class="page_btn" value="식물" onclick="location='plantList.do?parentCategoryId=plant'">
+			<input type="button" class="page_btn" value="꽃 / 화환" onclick="location='flowerList.do?parentCategoryId=flower'">
+			<input type="button" class="page_btn" value="할인상품" onclick="location='discountList.do'">
+		<%	
+		if(USERID == null){ // 로그인 안했을경우
+		%>
+			<input type="button" class="login_btn" value="로그인" onclick="location='loginWrite.do'">
+			<input type="button" class="myPage_btn" value="회원가입" onclick="location='memberWrite.do'">
+		<%
+		} else { // 로그인 성공시
+		%>
+			<input type="button" class="login_btn" value="로그아웃" onclick="location='logout.do'">
+			<input type="button" class="myPage_btn" value="마이페이지" onclick="location='memberCheck.do'">
+		
+		<%
+		}
+		%>
 		</div>
 	</div>
 	<div class="category_wrap">

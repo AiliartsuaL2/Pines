@@ -240,18 +240,19 @@ public class MemberController {
 		if(vo.getUserId() == null){ // 로그인 안된경우
 			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
 			model.addAttribute("url", "loginWrite.do");
-			return "member/loginWrite";
+			return "main/alert";	
 		}
 		else{ // 로그인 된경우
 			tmp = memberService.selectSellerCheck(vo);
 			if(tmp == 1){ // 판매자일경우
-				
 				List<?> list = mainService.selectSellerProductList(vo);
 				model.addAttribute("resultList",list);
 				return "seller/sellerMain";
 			}
 			else{ // 판매자가 아닐경우
-				return "seller/sellerWrite";	
+				model.addAttribute("msg", "판매자로 등록된 사용자만 사용 가능한 메뉴입니다.");
+				model.addAttribute("url", "sellerWrite.do");
+				return "main/alert";	
 			}		
 		}
 	}

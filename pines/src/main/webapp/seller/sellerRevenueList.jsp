@@ -121,7 +121,7 @@ a { text-decoration:none }
 	font-size : 15px;
 	font-weight : bold;
 	background-color:white;
-	color:#FA6A6A;
+	color:#A5A5A5;
     cursor: pointer;
 }
 .category_btn_payment{
@@ -131,7 +131,7 @@ a { text-decoration:none }
 	font-size : 15px;
 	font-weight : bold;
 	background-color:white;
-	color:#A5A5A5;
+	color:#FA6A6A;
     cursor: pointer;
 }
 
@@ -177,22 +177,22 @@ a { text-decoration:none }
 	<table class = "product_table">
 		<c:forEach items="${revenueList}" var="revenue" varStatus="status">
 		<tr>
-			<th class="table_head" width="10%">날짜</th>
-			<th class="table_head" width="7%">판매 건수</th>
-			<th class="table_head" width="10%">판매 금액</th>
-			<th class="table_head" width="5%">정산</th>
+			<th class="table_head" width="6%">매출 일자</th>
+			<th class="table_head" width="4%">매출 건수</th>
+			<th class="table_head" width="7%">매출액</th>
+			<th class="table_head" width="6%">정산일자</th>
 		</tr>
 		<tr class="pr_tr" align="center">
-			<td class="table_cell"><input class="val" id="salesDate_${status.index}" name="salesDate" type="text" disabled value="${revenue.salesDate}"></td>
-			<td class="table_cell"><input class="val" id="numOfOrder_${status.index}" name="numOfSales" type="text" disabled value="${revenue.numOfSales}">건</td>
-			<td class="table_cell"><input class="val" id="settleAmount_${status.index}" name="dayAmount" type="text" disabled value="${revenue.dayAmount}">원</td>
-			<td class="table_cell"><input type="button" class="btn_submit" id="btn_submit" value="정산" onclick="location='revenueDetail.do?salesDate=${revenue.salesDate}'"></td>
+			<td class="table_cell"><input class="val" id="salesDate" name="salesDate" type="text" disabled value="${revenue.salesDate}"></td>
+			<td class="table_cell"><input class="val" id="numOfOrder" name="numOfSales" type="text" disabled value="${revenue.numOfSales}">건</td>
+			<td class="table_cell"><input class="val" id="settleAmount" name="dayAmount" type="text" disabled value="${revenue.settleAmount}">원</td>
+			<td class="table_cell"><input class="val" id="settleDate" name="dayAmount" type="text" disabled value="${revenue.settleDate}"></td>
 		</tr>
 		</c:forEach>
-		<c:if test="${empty revenueList }">
-    		<span> 정산 가능한 매출일이 없습니다.</span>
-		</c:if>
 	</table>
+		<c:if test="${empty revenueList }">
+    		<span> 정산을 완료한 일자가 존재하지 않습니다.</span>
+		</c:if>
 	</form>
 	
 	</div>

@@ -30,14 +30,13 @@
 }
 .page_btn{
 	text-align : center;
-	padding-top : 15px;
+	padding-top : 12px;
 	float : left;
 	background-color : #FA6A6A;
 	border : 0;
-	width:20%;
-	font-size : 15px;
+	width:18%;
+    font-size: 20px;
 	font-weight : bold;
-	height:35px;
 	color : white;
 	cursor : pointer;
 }
@@ -52,6 +51,34 @@
 	margin-top : -10px;
 	
 }
+.login_btn{
+	text-align : center;
+	padding-top : 15px;
+	float : left;
+	background-color : #FA6A6A;
+	border : 0;
+	width:10%;
+    font-size: 15px;
+	font-weight : bold;
+	color : white;
+	cursor : pointer;
+    margin-left: 14%;
+
+}
+.myPage_btn{
+	text-align : center;
+	padding-top : 15px;
+	float : left;
+	background-color : #FA6A6A;
+	border : 0;
+	width:10%;
+    font-size: 15px;
+	font-weight : bold;
+	color : white;
+	cursor : pointer;
+    margin-left: 5%;
+
+}
 
 .sub_category{
 	width:100%;
@@ -60,10 +87,31 @@
 }
 
 </style>
+
 <body >
+<%
+	String USERID = (String) session.getAttribute("SessionUserID");
+%>
 	<div class="div_Wrap">
 		<div class="topBar">
-			<input type="button" class="page_btn" value="주문 / 정산">
+			<input type="button" class="page_btn" value="상품" onclick="location='sellerCheck.do'">
+			<input type="button" class="page_btn" value="주문 / 정산" onclick="location='sellerOrderInquiry.do'">
+			<input type="button" class="page_btn" value="판매자 등록 / 해지" onclick="location='sellerWrite.do'">
+			
+		<%	
+		if(USERID == null){ // 로그인 안했을경우
+		%>
+			<input type="button" class="login_btn" value="로그인" onclick="location='loginWrite.do'">
+			<input type="button" class="myPage_btn" value="회원가입" onclick="location='memberWrite.do'">
+		<%
+		} else { // 로그인 성공시
+		%>
+			<input type="button" class="login_btn" value="로그아웃" onclick="location='logout.do'">
+			<input type="button" class="myPage_btn" value="마이페이지" onclick="location='memberCheck.do'">
+		
+		<%
+		}
+		%>
 		</div>
 	</div>
 	<div class="category_wrap">

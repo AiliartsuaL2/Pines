@@ -771,4 +771,20 @@
                      			  )
 	</update>
 	
+		<select id="mainDAO.selectSellerRevenueList" resultClass="egovMap">
+			SELECT REVENUE_ID
+				 , STORE_ID
+				 , TO_CHAR(SETTLE_DATE,'yyyy-mm-dd') AS SETTLE_DATE
+				 , SETTLE_AMOUNT
+				 , NUM_OF_SALES
+				 , TO_CHAR(SALES_DATE,'yyyy-mm-dd') AS SALES_DATE
+  			  FROM REVENUE r 
+ 			 WHERE STORE_ID = (
+                    			SELECT STORE_ID
+                      			  FROM STORE s 
+                     			 WHERE USER_ID = #userId#
+                    		   )
+		</select>
+	
+	
 </sqlMap>
