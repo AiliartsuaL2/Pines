@@ -261,6 +261,15 @@
 	</select>
 	
 	
+	<select id="mainDAO.selectSellerType" resultClass="java.lang.String">
+		SELECT SELLER_TYPE
+		  FROM STORE
+		 WHERE USER_ID = #userId#
+		   AND SIGN_STORE = 'Y'
+	</select>
+	
+	
+	
 	<select id="mainDAO.selectCategoryList" resultClass="egovMap">
 	  SELECT CATEGORY_NAME
 	  	   , CATEGORY_ID

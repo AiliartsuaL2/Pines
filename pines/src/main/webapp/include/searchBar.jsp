@@ -89,12 +89,12 @@
 			    <%
 			    if(sessionId == null){ // 로그인 안했을경우	
 			    %>
-			    		<button type="submit" class="btn_cart" onclick= "alert('로그인이 필요한 서비스입니다.');return location='loginWrite.do';">장바구니</button>
+			    		<!-- <button type="submit" class="btn_cart" onclick= "alert('로그인이 필요한 서비스입니다.');return location='loginWrite.do';">장바구니</button> -->
 				 		<button type="submit" class="btn_seller" onclick= "alert('로그인이 필요한 서비스입니다.');return location='loginWrite.do';">판매자 페이지</button>
 				<%
 				} else { // 로그인 성공시
 				%>
-						<button type="submit" class="btn_cart" onclick= "location='selectCart.do'">장바구니</button>
+						<!-- <button type="submit" class="btn_cart" onclick= "location='myCart.do'">장바구니</button> -->
 						<button type="submit" class="btn_seller" onclick= "location='sellerCheck.do'">판매자 페이지</button>
 				<%
 				}

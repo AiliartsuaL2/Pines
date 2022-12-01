@@ -129,12 +129,19 @@ public class MainController {
 			return "main/alert";
 		}
 		else{
+			String sellerType = mainService.selectSellerType(mainVO);
+			
 			List<?> list = mainService.selectParentCategory(mainVO);
+			
+			model.addAttribute("sellerType",sellerType);
 			model.addAttribute("resultList",list);
 			return "seller/productWrite";
 			
 		}
 	}
+	
+	
+	
 	@RequestMapping("selectCategory.do")
 	public ModelAndView selectParentCategory(MainVO mainVO) throws Exception{
 		List<?> list = mainService.selectCategoryList(mainVO);
@@ -448,4 +455,20 @@ public class MainController {
 			return "myPage/orderDetail";
 		}
 	}
+	@RequestMapping("/myCart.do")
+	public String selectMyCart(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			
+			return "myPage/myCart";
+		}
+	}
+	
+	
 }

@@ -19,6 +19,7 @@
 
 
 $(function(){
+	
 	$( "#discountPeriod" ).datepicker({
 	      changeMonth: true,
 	      changeYear: true
@@ -52,6 +53,19 @@ $(function(){
 		});//
 	}
 	$(document).on("click","#parentCategory",function(e){
+		var pCategoryId = event.target.getAttribute('data-id');
+		if(pCategoryId == "flower"){
+			if("${sellerType}" == "farm"){
+				alert("농원 사용자는 꽃 상품을 등록 할 수 없습니다.");
+				return false;
+			}
+		}
+		else if(pCategoryId == "plant"){
+			if("${sellerType}" == "flower"){
+				alert("꽃집 사용자는 식물 상품을 등록 할 수 없습니다.");
+				return false;
+			}
+		}
 			var btns = document.querySelectorAll(".parent_category");
 			btns.forEach(function(btn, i) {
 				if(e.currentTarget == btn) {
