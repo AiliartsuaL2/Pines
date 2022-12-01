@@ -29,6 +29,17 @@ $(function(){
 	    });	
 	
 	
+	  
+
+	$("#btn_delete").click(function(){
+		 if (confirm("정말 탈퇴하시겠습니까??") == true){    //확인
+			 $(location).attr("href", "deleteMember.do")
+		 }else{   //취소
+		     return false;
+		 }		
+	});
+	
+	
 	$("#btn_submit").click(function(){
 
 		var newPass= $("#newPass").val();
@@ -390,7 +401,7 @@ a { text-decoration:none }
 	      				<label class="name_category_case">회원탈퇴</label>
 	      			<div class = "empty_box">
 	      				<input disabled class="exit_value" value="탈퇴를 원하시면 우측의 회원탈퇴 버튼을 눌러주세요.">
-						<input type="button" id="address_button" class="address_button" value="회원 탈퇴">
+						<input type="button" id="btn_delete" class="address_button" value="회원 탈퇴">
 	      			</div>
 				</div>
 	</div>

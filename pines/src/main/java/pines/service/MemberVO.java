@@ -12,8 +12,15 @@ public class MemberVO {
 	private int point;
 	private String adminRights;
 	private int chargePoint;
-
+	private String deleteStatus;
 	
+	
+	public String getDeleteStatus() {
+		return deleteStatus;
+	}
+	public void setDeleteStatus(String deleteStatus) {
+		this.deleteStatus = deleteStatus;
+	}
 	public int getChargePoint() {
 		return chargePoint;
 	}

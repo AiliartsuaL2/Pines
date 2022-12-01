@@ -43,4 +43,68 @@
 						  )
 	</insert>
 	
+	<select id="sellerDAO.selectSellerDeleteCheck" resultClass = "java.lang.Integer">
+		SELECT COUNT(*) 
+		  FROM STORE
+	     WHERE USER_ID = #userId#
+	       AND STORE_NAME = #storeName#
+	       AND BUSINESS_REG_NUM = #businessRegNum#
+	</select>
+	
+	
+	<update id="sellerDAO.updateSellerDeleteSub">
+  		UPDATE STORE
+  		SET SIGN_STORE = 'N'
+  		  , STORE_ID = 0
+  		WHERE USER_ID= #userId#
+  		  AND BUSINESS_REG_NUM = #businessRegNum#
+  		  AND STORE_NAME = #storeName#
+	</update>
+	
+	
+		<select id="sellerDAO.selectSellerOrderDetail" resultClass="egovMap">
+      SELECT (
+              SELECT DISCOUNT_WON
+                FROM PRODUCT_OPTION po 
+               WHERE po.OPTION_ID = p.OPTION_ID 
+              ) AS DISCOUNT_WON 
+              , 
+              (
+               SELECT TOTAL_NUM 
+                FROM PRODUCT_OPTION po 
+               WHERE po.OPTION_ID = p.OPTION_ID 
+              ) AS TOTAL_NUM  
+              , o.USER_ID
+              , o.ORDER_ZIPCODE
+              , o.ORDER_ADDRESS
+              , p.PRODUCT_ID 
+              , p.PRODUCT_NAME 
+              , p.PRODUCT_PRICE 
+              , p.IMAGE1 
+              , p.SHIPPING_COST
+              , p.FREE_SHIPPING_PRICE
+              , o.ORDER_ID 
+              , o.NUM_OF_PRODUCT 
+	          , to_char(o.PURCHASE_DATE,'yyyy"년" mm"월" dd"일" HH24"시"MI"분"') PURCHASE_DATE 
+              , o.DELIVERY_STATUS
+              , o.TOTAL_AMOUNT
+              , o.ORDER_OPTION
+              , (
+                 SELECT s.STORE_NAME
+                   FROM STORE s
+                  WHERE p.STORE_ID = s.STORE_ID
+                ) STORE_NAME
+      	FROM "ORDER" o join PRODUCT p 
+       	  ON o.PRODUCT_ID = p.PRODUCT_ID 
+       WHERE ORDER_ID = #orderId#
+		</select>
+		
+		<update id="sellerDAO.updateDeliveryStatus">
+  			UPDATE "ORDER"
+  			SET DELIVERY_STATUS = #deliveryStatus#
+  			WHERE ORDER_ID= #orderId#
+		</update>
+	
+	
+	
 </sqlMap>

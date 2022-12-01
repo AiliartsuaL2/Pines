@@ -1,5 +1,7 @@
 package pines.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -29,6 +31,30 @@ public class SellerServiceImpl implements SellerService{
 	public String insertSellerWrite(MainVO mainVO) throws Exception {
 		// TODO Auto-generated method stub
 		return sellerDAO.insertSellerWrite(mainVO);
+	}
+
+	@Override
+	public int selectSellerDeleteCheck(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sellerDAO.selectSellerDeleteCheck(mainVO);
+	}
+
+	@Override
+	public int updateSellerDeleteSub(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sellerDAO.updateSellerDeleteSub(mainVO);
+	}
+
+	@Override
+	public List<?> selectSellerOrderDetail(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sellerDAO.selectSellerOrderDetail(mainVO);
+	}
+
+	@Override
+	public int updateDeliveryStatus(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sellerDAO.updateDeliveryStatus(mainVO);
 	}
 
 }

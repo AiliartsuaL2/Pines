@@ -495,7 +495,7 @@ a { text-decoration:none }
 	      						<label class="total_price" >${mainVO.totalAmount}원</label>
 	      					</div>
 	      					<div class="detail_btn_box">
-	      						<input type="button" class="btn_detail" value="주문 상세"  onclick="location='orderDetail.do?orderId=${mainVO.orderId}'">
+	      						<input type="button" class="btn_detail" value="주문 상세"  onclick="location='sellerOrderDetail.do?orderId=${mainVO.orderId}'">
 	      						<input type="button" class="btn_detail" value="상품 상세보기" onclick="location='productDetail.do?productId=${mainVO.productId}'">
 	      					</div>
 					</div>

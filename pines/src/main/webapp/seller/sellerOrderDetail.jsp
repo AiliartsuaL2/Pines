@@ -187,7 +187,7 @@ a { text-decoration:none }
 .find-btn{
 	position : absolute;    
 	left: 57%;
-    top: 93%;
+    top: 100%;
 	text-align: center;
 }
 #btn_submit{
@@ -260,7 +260,7 @@ a { text-decoration:none }
 <%@ include file="../include/searchBar.jsp" %>
 </header>
 <main>
-<%@ include file="../include/myPageTopMenu.jsp" %>
+<%@ include file="../include/sellerOrderTopMenu.jsp" %>
 	<div class = "div_table_title">
 		<p class = "table_title"> 주문 상세</p>
 	</div>
@@ -331,15 +331,31 @@ a { text-decoration:none }
 	      			</div>
 				</div>
 				<div class = "category_box">
-	      				<label class="name_category_case">상점 이름</label>
+	      				<label class="name_category_case">구매자 성함</label>
 	      			<div class = "empty_box">
-	      				<input disabled class="category_value" value="${mainVO.storeName}">
+	      				<input disabled class="category_value" value="${mainVO.userId}">
+	      			</div>
+				</div>
+				<div class = "category_box">
+	      				<label class="name_category_case">배송 주소</label>
+	      			<div class = "empty_box">
+	      				<input disabled class="category_value" value="${mainVO.orderZipcode}">
+	      			</div>
+				</div>
+				<div class = "category_box">
+	      				<label class="name_category_case">배송 상세주소</label>
+	      			<div class = "empty_box">
+	      				<input disabled class="category_value" value="${mainVO.orderAddress}">
 	      			</div>
 				</div>
 				
+				
 	</div>
-	</c:forEach>
+			<div class="find-btn">
+				<input type="button" id="btn_submit" class="btn_submit" value="배송상태변경" onclick="location='updateDeliveryStatus.do?orderId=${mainVO.orderId}&deliveryStatus=${mainVO.deliveryStatus}'">
+			</div>
 
+	</c:forEach>
 </main>
 <footer>
 </footer>

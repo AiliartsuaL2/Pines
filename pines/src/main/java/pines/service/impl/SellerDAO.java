@@ -1,5 +1,7 @@
 package pines.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
@@ -21,6 +23,26 @@ public class SellerDAO extends EgovAbstractDAO{
 	public String insertSellerWrite(MainVO mainVO) {
 		// TODO Auto-generated method stub
 		return (String) insert("sellerDAO.insertSellerWrite",mainVO);
+	}
+
+	public int selectSellerDeleteCheck(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) select("sellerDAO.selectSellerDeleteCheck", mainVO);
+	}
+
+	public int updateSellerDeleteSub(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) update("sellerDAO.updateSellerDeleteSub",mainVO);
+	}
+
+	public List<?> selectSellerOrderDetail(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("sellerDAO.selectSellerOrderDetail", mainVO);
+	}
+
+	public int updateDeliveryStatus(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) update("sellerDAO.updateDeliveryStatus",mainVO);
 	}
 
 }

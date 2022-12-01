@@ -29,5 +29,7 @@ public interface MemberService {
 
 	public int updateMemberPointModify(MemberVO memberVO) throws Exception;
 
+	public int deleteMember(MemberVO memberVO) throws Exception;
+
 
 }

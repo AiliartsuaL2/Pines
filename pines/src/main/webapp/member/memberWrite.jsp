@@ -15,6 +15,8 @@
 
 <script>
   $( function() {
+	  
+	var confirmIdCheck = false;
     $( "#birth" ).datepicker({
       changeMonth: true,
       changeYear: true
@@ -46,6 +48,7 @@
 			success: function(result){
 				if(result == "ok"){
 					alert("사용 가능한 아이디 입니다.");
+					confirmIdCheck = true;
 				} else{
 					alert("이미 사용중인 아이디 입니다.");
 				}
@@ -82,12 +85,16 @@
 		  $("#pass2").focus();
 		  return false;
 	  }
-	  
 	  if(name == ""){
 		  alert("이름을 입력해주세요.");
 		  $("#name").focus();
 		  return false;
 	  }
+	  if(confirmIdCheck == false){
+    	  alert("중복 확인이 되지 않았습니다.");
+    	  return false;
+    	}
+	  
 	  $("#userId").val(userId);
 	  $("#pass").val(pass);
 	  $("#name").val(name);

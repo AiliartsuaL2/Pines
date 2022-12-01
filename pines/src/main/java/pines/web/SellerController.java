@@ -46,7 +46,7 @@ public class SellerController {
 			MemberVO vo = new MemberVO();
 			vo.setUserId(mainVO.getUserId());
 			int tmp = memberService.selectSellerCheck(vo);
-
+				
 			if(tmp == 1){ // 판매자일경우
 				List<?> orderList = mainService.selectSellerOrderList(mainVO);
 				model.addAttribute("orderList", orderList);
@@ -60,6 +60,64 @@ public class SellerController {
 		}
 	}
 
+	@RequestMapping("sellerOrderDetail.do")
+	public String selectSellerOrderDetail(ModelMap model, MainVO mainVO, HttpServletRequest request)throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> orderList = sellerService.selectSellerOrderDetail(mainVO);
+			model.addAttribute("orderList",orderList);
+			return "seller/sellerOrderDetail";
+		}
+	}
+
+	@RequestMapping("updateDeliveryStatus.do")
+	public String updateDeliveryStatus(ModelMap model, MainVO mainVO, HttpServletRequest request)throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			int cnt = 0;
+			if(mainVO.getDeliveryStatus().equals("배송 전")){
+				mainVO.setDeliveryStatus("배송완료");
+			}
+			else{ //배송 후 상태인경우
+				mainVO.setDeliveryStatus("배송 전");
+			}
+			
+			cnt = sellerService.updateDeliveryStatus(mainVO);
+			
+			if(cnt == 1){
+				logger.info("배송상태 변경 성공");
+				model.addAttribute("msg", "배송상태 변경이 완료되었습니다.");
+				model.addAttribute("url", "sellerOrderDetail.do?orderId="+mainVO.getOrderId());
+				return "main/alert";
+				
+				//return "seller/sellerOrderInquiry";
+			}
+			else{
+				logger.info("배송상태 변경 실패");
+				model.addAttribute("msg", "배송 상태 변경에 실패하였습니다. 관리자에게 연락 바랍니다.");
+				model.addAttribute("url", "sellerOrderInquiry.do");
+				return "main/alert";
+				//return "seller/sellerOrderInquiry";
+			}
+			
+			
+		}
+	}
+	
+	
+	
 	@RequestMapping("sellerOrderListSearch.do")
 	public ModelAndView selectSearchBySellerOrderList(MainVO mainVO, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession(true);
@@ -171,7 +229,15 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
-		    return "seller/sellerWrite";
+			MemberVO vo = new MemberVO();
+			vo.setUserId(mainVO.getUserId());
+			int tmp = memberService.selectSellerCheck(vo);
+			if(tmp == 1){ // 판매자일경우
+				return "seller/sellerRemove";
+			}
+			else{ // 판매자가 아닐경우
+			    return "seller/sellerWrite";
+			}					
 		}
 	}
 	
@@ -230,4 +296,46 @@ public class SellerController {
 		}
 		return message;
 	}
+	
+	@RequestMapping("/sellerDeleteCheck.do")
+	@ResponseBody
+	public String selectSellerDeleteCheck(MainVO mainVO , HttpSession session) throws Exception{
+		String message = "";
+		String tmp = (String) session.getAttribute("SessionUserID");
+		if(!tmp.equals(mainVO.getUserId())){
+			logger.info("로그인 ID, 입력 ID 불일치");
+			return "notEqualId";
+		}
+		
+		int count = sellerService.selectSellerDeleteCheck(mainVO);
+		
+		
+		if(count == 1){ // 성공
+			message = "ok";
+			logger.info("본인확인 성공");
+		}
+		else{
+			logger.info("본인확인 실패");
+		}
+		return message;
+	}
+	
+	@RequestMapping("/sellerDeleteSub.do")
+	@ResponseBody
+	public String updateSellerDeleteSub(MainVO mainVO , HttpSession session) throws Exception{
+		String message = "";
+		
+		int count = sellerService.updateSellerDeleteSub(mainVO);
+		
+		if(count == 1){ // 성공
+			message = "ok";
+			logger.info("판매자 탈퇴 성공");
+		}
+		else{
+			logger.info("판매자 탈퇴 실패");
+		}
+		return message;
+	}
+	
+	
 }

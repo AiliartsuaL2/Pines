@@ -9,7 +9,6 @@
    	     FROM ( 
    			    SELECT ROWNUM rn, a.*
    			      FROM (SELECT product_id
-   			                 , store_id
    			                 , product_name
    			                 , product_description
    			                 , product_price
@@ -20,19 +19,22 @@
    			                 , image1
    			                 , DISCOUNT_PERIOD
    			                 , discount_rate
-   			              FROM PRODUCT
-   			             WHERE STORE_ID != '0'
-   			               AND REG_STATE != '품절' 
+      	  		  FROM PRODUCT 
          		<isNotNull property="searchGubun">
            			<isNotNull property="searchText">
            				<isEqual property="searchGubun" compareValue="product_name">
-              			 	AND $searchGubun$ like '%$searchText$%' 
+           						 p JOIN STORE s
+      					      ON p.STORE_ID  = s.STORE_ID 
+   			               WHERE s.SIGN_STORE != 'N'
+   			                 AND REG_STATE != '품절' 
+              			 	 AND $searchGubun$ like '%$searchText$%' 
 						</isEqual>
            				<isEqual property="searchGubun" compareValue="store_name">
+           				    WHERE REG_STATE != '품절' 
               			 	AND STORE_ID = (
               			 					SELECT STORE_ID
               			 					  FROM STORE
-              			 					 WHERE STORE_NAME like '%$searchText$%'
+              			 					 WHERE $searchGubun$ like '%$searchText$%'
               			 				)
 						</isEqual>
            			</isNotNull>
@@ -56,13 +58,14 @@
 		    , DISCOUNT_PERIOD
 		    , p.discount_rate
       		, p.CATEGORY_ID
-		 FROM PRODUCT p
+      	  FROM PRODUCT p JOIN STORE s
+      		ON p.STORE_ID  = s.STORE_ID 
   		WHERE (
          		SELECT PARENT_CATEGORY_ID
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'plant'
-   		  AND STORE_ID != '0'
+       	  AND s.SIGN_STORE != 'N'
    		  AND REG_STATE != '품절'  
        <isNotNull property="categoryId">
           AND CATEGORY_ID = #categoryId#
@@ -70,27 +73,29 @@
 	</select>
 	
 	<select id="mainDAO.selectFlowerList" resultClass = "egovMap" >
-	   SELECT product_id
-		    , store_id
-		    , product_name
-		    , product_description
-		    , product_price
-    		, (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
-      		   THEN PRODUCT_PRICE
-      		   ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
-      		   END) AS DISCOUNT_PRICE 
-		    , image1
-		    , DISCOUNT_PERIOD
-		    , discount_rate
-      		, CATEGORY_ID
-	     FROM PRODUCT p
-  		WHERE (
-         		SELECT PARENT_CATEGORY_ID
-          		  FROM CATEGORY c 
-          		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
-          		) = 'flower'
-   		  AND STORE_ID != '0'
-   		  AND REG_STATE != '품절'  
+    	SELECT p.product_id
+      		 , p.store_id
+      		 , p.product_name
+      		 , p.product_description
+      		 , p.product_price
+      		 , (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
+           		 THEN PRODUCT_PRICE
+           		 ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
+           		 END) AS DISCOUNT_PRICE 
+      		 , p.image1
+      		 , p.DISCOUNT_PERIOD
+      		 , p.discount_rate
+        	 , p.CATEGORY_ID
+      	  FROM PRODUCT p JOIN STORE s
+      		ON p.STORE_ID  = s.STORE_ID 
+    	 WHERE (
+           		SELECT PARENT_CATEGORY_ID
+                  FROM CATEGORY c 
+                 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
+            	) = 'flower'
+       	   AND s.SIGN_STORE != 'N'
+       	   AND REG_STATE != '품절'
+   		    
        <isNotNull property="categoryId">
           AND CATEGORY_ID = #categoryId#
        </isNotNull>
@@ -101,7 +106,6 @@
    	     FROM ( 
    			    SELECT ROWNUM rn, a.*
    			      FROM (SELECT product_id
-   			                 , store_id
    			                 , product_name
    			                 , product_description
    			                 , product_price
@@ -112,8 +116,9 @@
       							ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
       							END) AS DISCOUNT_PRICE 
       						 , DISCOUNT_PERIOD
-   			              FROM PRODUCT
-   			             WHERE STORE_ID != '0' 
+      	  					FROM PRODUCT p JOIN STORE s
+      						 ON p.STORE_ID  = s.STORE_ID 
+       	   				WHERE s.SIGN_STORE != 'N'
    			             AND REG_STATE != '품절' 
          		<isNotNull property="searchGubun">
            			<isNotNull property="searchText">
@@ -124,37 +129,40 @@
        WHERE rn BETWEEN 1 AND 3
 	</select>
 	<select id="mainDAO.selectDiscountList" resultClass="egovMap">
-	   SELECT b.*
-   	     FROM ( 
-   			    SELECT ROWNUM rn, a.*
-   			      FROM (SELECT product_id
-   			                 , store_id
-   			                 , product_name
-   			                 , product_description
-   			                 , product_price
-   			                 , image1
-   			                 , discount_rate
-   			                 , DISCOUNT_PERIOD
-   			              FROM PRODUCT
-   			              WHERE discount_rate BETWEEN 1 AND 100
-   		                    AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE
-   		                    AND STORE_ID != '0' 
-   		                    AND REG_STATE != '품절' 
-                		  )a)  b
+    SELECT b.*
+         FROM ( 
+          SELECT ROWNUM rn, a.*
+            FROM (SELECT product_id
+                       , product_name
+                       , product_description
+                       , product_price
+                       , image1
+                       , discount_rate
+                       , DISCOUNT_PERIOD
+             FROM PRODUCT p JOIN STORE s
+             ON p.STORE_ID  = s.STORE_ID 
+                  WHERE s.SIGN_STORE != 'N'
+                    AND discount_rate BETWEEN 1 AND 100
+                       AND DISCOUNT_PERIOD >= SYSDATE
+                       AND REG_STATE != '품절' 
+                    )a)  b
        WHERE rn BETWEEN 1 AND 20
 	</select>
 		
 	<select id="mainDAO.selectProductTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
-		  FROM PRODUCT
-		  WHERE STORE_ID != '0'
-		    AND REG_STATE != '품절' 
+      	  FROM PRODUCT 
 		<isNotNull property="searchGubun">
 					<isNotNull property="searchText">
            				<isEqual property="searchGubun" compareValue="product_name">
+           				p JOIN STORE s
+      						 ON p.STORE_ID  = s.STORE_ID 
+       	 				   WHERE s.SIGN_STORE != 'N'
+		    				AND REG_STATE != '품절' 
               			 	AND $searchGubun$ like '%$searchText$%' 
 						</isEqual>
            				<isEqual property="searchGubun" compareValue="store_name">
+		    			  WHERE REG_STATE != '품절' 
               			 	AND STORE_ID = (
               			 					SELECT STORE_ID
               			 					  FROM STORE
@@ -167,36 +175,39 @@
 	
 	<select id="mainDAO.selectPlantTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
-		  FROM PRODUCT p
-  		WHERE (
+      	  FROM PRODUCT p JOIN STORE s
+      		ON p.STORE_ID  = s.STORE_ID 
+       	 WHERE s.SIGN_STORE != 'N'
+		    AND REG_STATE != '품절' 
+  			AND (
          		SELECT PARENT_CATEGORY_ID
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'plant'
-   		  AND STORE_ID != '0' 
-   		  AND REG_STATE != '품절' 
 	
 	</select>
 	
 	<select id="mainDAO.selectFlowerTotal" resultClass="java.lang.Integer">
-		SELECT COUNT(*) total 
-		  FROM PRODUCT p
-  		 WHERE (
+		SELECT COUNT(*) total
+      	  FROM PRODUCT p JOIN STORE s
+      		ON p.STORE_ID  = s.STORE_ID 
+       	 WHERE s.SIGN_STORE != 'N'
+  		 AND (
          		SELECT PARENT_CATEGORY_ID
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'flower'
-   		  AND STORE_ID != '0' 
    		  AND REG_STATE != '품절'
 	
 	</select>
 	
 	<select id="mainDAO.selectDiscountTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
-		  FROM PRODUCT
-   		 WHERE discount_rate BETWEEN 1 AND 100
+      	  FROM PRODUCT p JOIN STORE s
+      		ON p.STORE_ID  = s.STORE_ID 
+       	 WHERE s.SIGN_STORE != 'N'
+   		   AND discount_rate BETWEEN 1 AND 100
    		   AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE 
-   		   AND STORE_ID != '0' 
    		   AND REG_STATE != '품절'
 	</select>
 	
@@ -214,6 +225,8 @@
         FROM PRODUCT p
            , STORE s
        WHERE s.USER_ID = #userId#
+         AND SIGN_STORE = 'Y'
+       	
        	 AND p.REG_STATE = '판매중'
          AND s.STORE_ID = p.STORE_ID
 	</select>
@@ -233,6 +246,7 @@
         FROM PRODUCT p
            , STORE s
        WHERE s.USER_ID = #userId#
+         AND SIGN_STORE = 'Y'
          AND $searchGubun$ like '%$searchText$%'
          AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regStateList">#regStateList[]#</iterate>
          AND s.STORE_ID = p.STORE_ID
@@ -302,7 +316,8 @@
 						  PRODUCT_SEQ.NEXTVAL
 						  , (SELECT STORE_ID
 						  	   FROM STORE
-						  	  WHERE USER_ID = #userId#)   <!-- 판매자 id -->
+						  	  WHERE USER_ID = #userId#   <!-- 판매자 id -->
+             				  AND SIGN_STORE = 'Y')
 						  , #productName#
 						  , #productPrice#
 						  , #productDescription# 
@@ -343,7 +358,7 @@
 			 , REG_STATE
 			 , CATEGORY_ID
 			 , (
-			    SELECT CATEGORY_NAMEbeg
+			    SELECT CATEGORY_NAME
         		  FROM CATEGORY c 
        			 WHERE c.CATEGORY_ID = p.CATEGORY_ID 
        			) AS CATEGORY_NAME
@@ -430,6 +445,12 @@
 	<select id="mainDAO.selectProductDetail" resultClass="egovMap">
 		SELECT PRODUCT_ID
 			 , STORE_ID
+    		, (SELECT sign_store
+         		 FROM store
+         		WHERE store_id = (SELECT store_id 
+                	                FROM PRODUCT p2
+                       		       WHERE product_id = #productId#) 
+         	  )AS SIGN_STORE
 			 , PRODUCT_NAME
 			 , PRODUCT_PRICE
     		, (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
@@ -524,7 +545,7 @@
 					  		  , #orderName#
 					  		  , #orderZipCode#
 					  		  , #orderAddress#
-					  		  , '배송전'
+					  		  , '배송 전'
 					  		  , #totalAmount#
 					  		  , 'N'
 						)
@@ -652,6 +673,7 @@
        					 SELECT STORE_ID 
                            FROM STORE
                           WHERE USER_ID = #userId#
+                            AND SIGN_STORE = 'Y'
                          )
        ORDER BY o.PURCHASE_DATE DESC
 		</select>
@@ -685,6 +707,7 @@
        					 SELECT STORE_ID 
                            FROM STORE
                           WHERE USER_ID = #userId#
+                            AND SIGN_STORE = 'Y'
                          )
          AND $searchGubun$ like '%$searchText$%'
          AND #startOrderPeriod# <![CDATA[<=]]>  o.PURCHASE_DATE
@@ -702,6 +725,7 @@
              				SELECT STORE_ID 
                            	  FROM STORE
                           	 WHERE USER_ID = #userId#
+                               AND SIGN_STORE = 'Y'
                           )
            AND REVENUE_STATUS = 'N'
        GROUP BY to_char(PURCHASE_DATE,'yyyy-mm-dd') 
@@ -719,6 +743,7 @@
              				SELECT STORE_ID 
                            	  FROM STORE
                           	 WHERE USER_ID = #userId#
+                               AND SIGN_STORE = 'Y'
                           )
           AND PURCHASE_DATE > #salesDate#
           AND PURCHASE_DATE <![CDATA[<]]> #salesDateNext#
@@ -768,6 +793,7 @@
                        				SELECT STORE_ID
                          			  FROM STORE s 
                         			 WHERE USER_ID = #userId#
+                                       AND SIGN_STORE = 'Y'
                      			  )
 	</update>
 	
@@ -783,8 +809,21 @@
                     			SELECT STORE_ID
                       			  FROM STORE s 
                      			 WHERE USER_ID = #userId#
+                                   AND SIGN_STORE = 'Y'
                     		   )
 		</select>
 	
+	
+	
+	<select id="mainDAO.selectMemberProductCheck" resultClass="java.lang.Integer">
+		SELECT COUNT(*) 
+      	  FROM PRODUCT p 
+		 WHERE PRODUCT_ID = #productId#
+		   AND STORE_ID = (
+		   					SELECT STORE_ID
+		   					  FROM STORE
+		   					 WHERE USER_ID = #userId#
+		   				  )
+	</select>
 	
 </sqlMap>

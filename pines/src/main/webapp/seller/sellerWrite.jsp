@@ -68,11 +68,6 @@ $("#btn_busNum").click(function(){
 	});
 	
 $("#btn_submit").click(function(){
-
-	bankName
-	accountNumber
-	accountHolder
-	
     var bankName = $("#bankName").val();	
     var accountNumber = $("#accountNumber").val();	
     var accountHolder = $("#accountHolder").val();	

@@ -151,4 +151,9 @@ public class MainDAO extends EgovAbstractDAO{
 		// TODO Auto-generated method stub
 		return list("mainDAO.selectSellerRevenueList", mainVO);
 	}
+
+	public int selectMemberProductCheck(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectMemberProductCheck",mainVO);
+	}
 }

@@ -119,10 +119,21 @@ public class MainController {
 	    return mv;
 	}
 	@RequestMapping("productWrite.do")
-	public String productWrite(MainVO mainVO, ModelMap model) throws Exception{
-		List<?> list = mainService.selectParentCategory(mainVO);
-		model.addAttribute("resultList",list);
-		return "seller/productWrite";
+	public String productWrite(MainVO mainVO,HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+			
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> list = mainService.selectParentCategory(mainVO);
+			model.addAttribute("resultList",list);
+			return "seller/productWrite";
+			
+		}
 	}
 	@RequestMapping("selectCategory.do")
 	public ModelAndView selectParentCategory(MainVO mainVO) throws Exception{
@@ -258,16 +269,25 @@ public class MainController {
 	
 
 	@RequestMapping("/productModify.do")
-	public String selectProductModify(MainVO vo, ModelMap model) throws Exception{
-		List<?> list = mainService.selectProductModify(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
-		model.addAttribute("productList",list);
-		return "seller/productModify";
+	public String selectProductModify(MainVO vo,HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		vo.setUserId((String) session.getAttribute("SessionUserID"));
+			
+		if(vo.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{		
+			List<?> list = mainService.selectProductModify(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
+			model.addAttribute("productList",list);
+			return "seller/productModify";
+		}
 	}
 	@RequestMapping("/productDelete")
 	@ResponseBody
 	public String deleteProduct(MainVO mainVO, ModelMap model, HttpSession session) throws Exception{
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		mainVO.getProductName();
 
 		if(mainVO.getUserId() == null){ // 로그인 안된경우
 			model.addAttribute("msg", "권한이 없습니다.");
@@ -301,6 +321,13 @@ public class MainController {
 	public String selectProductDetail(MainVO vo, ModelMap model) throws Exception{
 		List<?> list = mainService.selectProductDetail(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
 		EgovMap value = (EgovMap) list.get(0);
+		
+		if(value.get("signStore").equals("N")){ // signStore가 N인 상품은 탈퇴한 상점의 상품
+			model.addAttribute("msg", "판매 중지된 상품입니다.");
+			model.addAttribute("url", "mainList.do");
+			return "main/alert";
+			
+		}
 		if(value.get("storeId").equals("0")){ //storeId가 0인 상품은 삭제된 상품
 			model.addAttribute("msg", "삭제된 상품입니다.");
 			model.addAttribute("url", "mainList.do");
@@ -320,18 +347,28 @@ public class MainController {
 	public String orderLoginCheck(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-			
 		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			String referer = request.getHeader("Referer"); // 이전페이지의 uri 받아옴		
+			request.getSession().setAttribute("redirectURI", referer);
+			
 			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
 			model.addAttribute("url", "loginWrite.do");
 			return "main/alert";
 		}
 		else{ // 로그인 된경우				
-				List<?> memberList = memberService.selectMemberInfo(mainVO);
-				model.addAttribute("productList",mainVO);
-				model.addAttribute("memberList",memberList);
-				return "order/orderWrite";	
-		}
+				int count = mainService.selectMemberProductCheck(mainVO);
+				if(count != 0){ // 본인 물건 구매시
+					model.addAttribute("msg", "본인 제품은 구매 할 수 없습니다.");
+					model.addAttribute("url", "productDetail.do?productId="+mainVO.getProductId());
+					return "main/alert";
+				}
+				else{
+					List<?> memberList = memberService.selectMemberInfo(mainVO);
+					model.addAttribute("productList",mainVO);
+					model.addAttribute("memberList",memberList);
+					return "order/orderWrite";		
+				}
+			}
 	}
 	
 	@RequestMapping("/orderWriteSub.do")

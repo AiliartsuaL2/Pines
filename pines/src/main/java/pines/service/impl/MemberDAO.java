@@ -75,4 +75,9 @@ public class MemberDAO extends EgovAbstractDAO{
 		// TODO Auto-generated method stub
 		return (int) update("memberDAO.updateMemberPointModify",memberVO);
 	}
+
+	public int deleteMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		return (int) update("memberDAO.deleteMember",memberVO);
+	}
 }

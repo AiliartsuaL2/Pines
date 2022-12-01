@@ -52,9 +52,11 @@ public class MemberController {
 		}
 		return message;
 	}
+	
 	@RequestMapping("/loginWrite.do")
-	public String loginWrite(){
+	public String loginWrite(HttpServletRequest request){
 		logger.info("로그인창 진입");
+
 		return "member/loginWrite";
 	}
 	
@@ -78,8 +80,11 @@ public class MemberController {
 	@RequestMapping("/loginWriteSub.do")
 	@ResponseBody
 	public String selectMemberCount(MemberVO vo , HttpSession session) throws Exception{
-		String message = "";
+		String message = "false";
 		int count = memberService.selectMemberCount(vo);
+
+		
+		
 		if(count == 1){
 			// 세션 생성
 			session.setAttribute("SessionUserID", vo.getUserId());
@@ -256,4 +261,30 @@ public class MemberController {
 			}		
 		}
 	}
+	@RequestMapping("/deleteMember.do")
+	public String deleteMember(MemberVO memberVO, HttpServletRequest request, ModelMap model) throws Exception{
+		HttpSession session = request.getSession(true);
+		memberVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(memberVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+		}
+		else{
+			String result = "";
+			int count = memberService.deleteMember(memberVO);
+			if(count == 1){ // 삭제 성공
+				session.removeAttribute("SessionUserID"); // 로그아웃처리
+				result = "회원 탈퇴가 정상적으로 처리되었습니다.";
+				logger.info("회원탈퇴 성공");	
+			}else {
+				result = "회원 탈퇴에 실패하였습니다. 관리자에게 문의 바랍니다.";
+				logger.info("회원탈퇴 실패");
+			}
+			model.addAttribute("msg", result);
+			model.addAttribute("url", "loginWrite.do");
+		}
+		return "main/alert";	
+	}
+	
+	
 }

@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	Object url =  session.getAttribute("redirectURI");
+%>    
+    
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -11,6 +16,7 @@
 <script src="/pines/script/jquery-ui.js"></script>
 <script>
 $(function(){
+	var url = "<%=url%>";
 	
 	$("#btn_submit").click(function(){
 		
@@ -37,12 +43,21 @@ $(function(){
     		
     		/* 전송 후 세팅  */
     		success: function(result) {
-    			if(result == "ok") {
-    				alert(userId+"님 로그인 되었습니다.");
-    				location="mainList.do";
-    			} else {
+    			
+    			if(result == "false"){ // 로그인 실패시
     				alert("로그인 정보를 다시 확인해주세요.");
     			}
+    			else{
+    				alert(userId+"님 로그인 되었습니다.");
+    				if(url == "null"){
+        				location="mainList.do";
+    				}
+    				else{
+    					location=url;
+    					<%session.setAttribute("redirectURI","null");%> // location 보내고 다시 null 처리
+    				}
+    			}
+    			
     		},
     		error: function() {  // 장애발생
     			alert("오류발생");
@@ -183,7 +198,6 @@ $(function(){
 
 <body>
 <div class = "whole_wrap">
-
 
 <form name="frm" id="frm">
 <div class="wrapper">
