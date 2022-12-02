@@ -131,6 +131,7 @@ public class MainController {
 		else{
 			String sellerType = mainService.selectSellerType(mainVO);
 			
+			
 			List<?> list = mainService.selectParentCategory(mainVO);
 			
 			model.addAttribute("sellerType",sellerType);

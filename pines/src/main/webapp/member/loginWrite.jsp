@@ -14,6 +14,13 @@
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
+
+<script type="text/javascript" src="/pines/script/RSA/jsbn.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rsa.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
+
+
 <script>
 $(function(){
 	var url = "<%=url%>";
@@ -29,10 +36,16 @@ $(function(){
 			return false;
 		}
 		if( pass == "" ) {
-			alert("암호를 입력해주세요.");
+			alert("비밀번호를 입력해주세요.");
 			$("#pass").focus();
 			return false;
 		}
+		var rawUserId = userId;
+		var rsa = new RSAKey();
+		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
+		userId = rsa.encrypt(userId);
+		pass = rsa.encrypt(pass);
+		
 		
 		$.ajax({
 			/* 전송 전 세팅 */
@@ -48,7 +61,8 @@ $(function(){
     				alert("로그인 정보를 다시 확인해주세요.");
     			}
     			else{
-    				alert(userId+"님 로그인 되었습니다.");
+    				
+    				alert(rawUserId+"님 로그인 되었습니다.");
     				if(url == "null"){
         				location="mainList.do";
     				}
@@ -200,6 +214,9 @@ $(function(){
 <div class = "whole_wrap">
 
 <form name="frm" id="frm">
+<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+<input type="hidden" id="RSAExponent" value="${RSAExponent}">
+
 <div class="wrapper">
 	<div class="wrap">
 		<div class="logo_wrap">
