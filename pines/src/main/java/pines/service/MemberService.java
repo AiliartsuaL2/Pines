@@ -19,7 +19,7 @@ public interface MemberService {
 
 	public OrderVO selectMemberOrder(MemberVO vo) throws Exception;
 
-	public int selectSellerCheck(MemberVO memberVO) throws Exception;
+	public int selectSellerCheck(MainVO vo) throws Exception;
 
 	public List<?> selectMemberInfo(MainVO mainVO) throws Exception;
 

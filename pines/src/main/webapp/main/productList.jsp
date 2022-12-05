@@ -98,9 +98,13 @@ a { text-decoration:none }
 </main>
 <footer>
 	<div style="width:600px;margin-top:5px; text-align:center;">
-		<c:forEach var="i" begin="1" end="${totalPage}">
-			<a href="productList.do?viewPage=${i}">${i}</a>
-		</c:forEach>
+		<c:choose> 
+			<c:when test="${totalPage > 1}">
+			<c:forEach var="i" begin="1" end="${totalPage}">
+				<a href="productList.do?viewPage=${i}&searchGubun=${search.searchGubun}&searchText=${search.searchText}">${i}</a>
+			</c:forEach>
+			</c:when> 
+		</c:choose> 
 	</div>
 </footer>
 

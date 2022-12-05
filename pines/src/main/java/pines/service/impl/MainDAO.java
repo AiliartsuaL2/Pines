@@ -46,7 +46,7 @@ public class MainDAO extends EgovAbstractDAO{
 		return (int) select("mainDAO.selectProductTotal",vo);
 	}
 
-	public List<?> selectSellerProductList(MemberVO vo) {
+	public List<?> selectSellerProductList(MainVO vo) {
 		// TODO Auto-generated method stub
 		return list("mainDAO.selectSellerProductList",vo);
 	}
@@ -160,5 +160,40 @@ public class MainDAO extends EgovAbstractDAO{
 	public String selectSellerType(MainVO mainVO) {
 		// TODO Auto-generated method stub
 		return (String) select("mainDAO.selectSellerType",mainVO);
+	}
+
+	public int selectPlantTotal(MainVO vo) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectPlantTotal",vo);
+	}
+
+	public int selectFlowerTotal(MainVO vo) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectFlowerTotal",vo);
+	}
+
+	public int selectDiscountTotal(MainVO vo) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectDiscountTotal",vo);
+	}
+
+	public int selectSellerProductTotal(MainVO vo) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectSellerProductTotal",vo);
+	}
+
+	public int selectSellerSearchProductTotal(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectProductSearchTotal",mainVO);
+	}
+
+	public int selectMyOrderListTotal(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectMyOrderListTotal",mainVO);
+	}
+
+	public int selectOrderListSearchTotal(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) select("mainDAO.selectOrderListSearchTotal",mainVO);
 	}
 }

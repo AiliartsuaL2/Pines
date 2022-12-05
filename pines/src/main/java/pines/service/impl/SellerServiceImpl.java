@@ -57,4 +57,10 @@ public class SellerServiceImpl implements SellerService{
 		return sellerDAO.updateDeliveryStatus(mainVO);
 	}
 
+	@Override
+	public int selectSellerOrderInquiryTotal(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sellerDAO.selectSellerOrderInquiryTotal(mainVO);
+	}
+
 }

@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,9 +77,12 @@ public class MainController {
 		vo.setStartIndex(startIndex);
 		vo.setEndIndex(endIndex);
 		
-		
+		MainVO mainVO = vo;
 		List<?> list = mainService.selectProductList(vo);
-
+		mainVO.setSearchGubun(vo.getSearchGubun());
+		mainVO.setSearchText(vo.getSearchText());
+		
+		model.addAttribute("search",mainVO);
 		model.addAttribute("rowNumber",startRowNo);
 		model.addAttribute("total",total);
 		model.addAttribute("totalPage",totalPage);
@@ -88,22 +93,100 @@ public class MainController {
 	
 	@RequestMapping("/plantList.do")
 	public String selectPlantList(MainVO vo, ModelMap model) throws Exception{
+		int unit = 6;
+		//총 데이터 개수 
+		int total = mainService.selectPlantTotal(vo);
+		int totalPage = (int) Math.ceil((double)total/unit);
+		
+		int viewPage = vo.getViewPage();
+		
+		if(viewPage > totalPage || viewPage < 1){
+			viewPage = 1;
+		}
+		// 1-> 1 ,10 // 2->11,20 // 3->21,30
+		int startIndex = (viewPage-1)*unit + 1;
+		int endIndex = startIndex+(unit-1);
+		//total -> 34
+		// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+		int startRowNo = total- (viewPage-1)*unit;
+		
+		//VO에 태워서 넘김
+		vo.setStartIndex(startIndex);
+		vo.setEndIndex(endIndex);
+		
 		List<?> list = mainService.selectPlantList(vo);
+		
+		model.addAttribute("rowNumber",startRowNo);
+		model.addAttribute("total",total);
+		model.addAttribute("totalPage",totalPage);
 		model.addAttribute("plantList",list);
 		model.addAttribute("parentCategoryId",vo);
+		
 		return "product/plantList";
 	}
 	
 	@RequestMapping("/flowerList.do")
 	public String selectFlowerList(MainVO vo, ModelMap model) throws Exception{
+		int unit = 6;
+		//총 데이터 개수 
+		int total = mainService.selectFlowerTotal(vo);
+		int totalPage = (int) Math.ceil((double)total/unit);
+		
+		int viewPage = vo.getViewPage();
+		
+		if(viewPage > totalPage || viewPage < 1){
+			viewPage = 1;
+		}
+		// 1-> 1 ,10 // 2->11,20 // 3->21,30
+		int startIndex = (viewPage-1)*unit + 1;
+		int endIndex = startIndex+(unit-1);
+		//total -> 34
+		// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+		int startRowNo = total- (viewPage-1)*unit;
+		
+		//VO에 태워서 넘김
+		vo.setStartIndex(startIndex);
+		vo.setEndIndex(endIndex);
+		
 		List<?> list = mainService.selectFlowerList(vo);
+		
+		model.addAttribute("rowNumber",startRowNo);
+		model.addAttribute("total",total);
+		model.addAttribute("totalPage",totalPage);
 		model.addAttribute("flowerList",list);
 		model.addAttribute("parentCategoryId",vo);
+		
 		return "product/flowerList";
 	}
+	
+	
 	@RequestMapping("/discountList.do")
 	public String selectDiscountList(MainVO vo, ModelMap model) throws Exception{
+		int unit = 6;
+		//총 데이터 개수 
+		int total = mainService.selectDiscountTotal(vo);
+		int totalPage = (int) Math.ceil((double)total/unit);
+		
+		int viewPage = vo.getViewPage();
+		
+		if(viewPage > totalPage || viewPage < 1){
+			viewPage = 1;
+		}
+		// 1-> 1 ,10 // 2->11,20 // 3->21,30
+		int startIndex = (viewPage-1)*unit + 1;
+		int endIndex = startIndex+(unit-1);
+		//total -> 34
+		// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+		int startRowNo = total- (viewPage-1)*unit;
+		
+		//VO에 태워서 넘김
+		vo.setStartIndex(startIndex);
+		vo.setEndIndex(endIndex);
+		
 		List<?> list = mainService.selectDiscountList(vo);
+		model.addAttribute("rowNumber",startRowNo);
+		model.addAttribute("total",total);
+		model.addAttribute("totalPage",totalPage);
 		model.addAttribute("discountList",list);
 		return "product/discountList";
 	}
@@ -112,12 +195,46 @@ public class MainController {
 	public ModelAndView selectProductSearchList(MainVO mainVO, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+
+		int unit = 5;
+		//총 데이터 개수 
+		int total = mainService.selectProductSearchTotal(mainVO);
+		
+		
+		int totalPage = (int) Math.ceil((double)total/unit);
+		
+		int viewPage = mainVO.getViewPage();
+		if(viewPage > totalPage || viewPage < 1){
+			viewPage = 1;
+		}
+		// 1-> 1 ,10 // 2->11,20 // 3->21,30
+		int startIndex = (viewPage-1)*unit + 1;
+		int endIndex = startIndex+(unit-1);
+		//total -> 34
+		// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+		int startRowNo = total- (viewPage-1)*unit;
+		
+		//VO에 태워서 넘김
+		mainVO.setStartIndex(startIndex);
+		mainVO.setEndIndex(endIndex);
+		
+		HashMap<String,Integer> cntMap = new HashMap<>();
+		cntMap.put("rowNumber", startRowNo);
+		cntMap.put("total", total);
+		cntMap.put("totalPage", totalPage);
+		
 		List<?> list = mainService.selectProductSearchList(mainVO);
+		List<HashMap<String,Integer>> list2 = new LinkedList<>();
+		list2.add(cntMap);
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("obj1", list); 
-	    mv.setViewName("jsonView");
+	    mv.addObject("obj2",list2);
+		mv.setViewName("jsonView");
 	    return mv;
 	}
+	
+	
 	@RequestMapping("productWrite.do")
 	public String productWrite(MainVO mainVO,HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);
@@ -408,6 +525,34 @@ public class MainController {
 			return "main/alert";
 		}
 		else{
+			
+			int unit = 5;
+			//총 데이터 개수 
+			int total = mainService.selectMyOrderListTotal(mainVO);
+			
+			
+			int totalPage = (int) Math.ceil((double)total/unit);
+			
+			int viewPage = mainVO.getViewPage();
+			if(viewPage > totalPage || viewPage < 1){
+				viewPage = 1;
+			}
+			// 1-> 1 ,10 // 2->11,20 // 3->21,30
+			int startIndex = (viewPage-1)*unit + 1;
+			int endIndex = startIndex+(unit-1);
+			//total -> 34
+			// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+			int startRowNo = total- (viewPage-1)*unit;
+			
+			//VO에 태워서 넘김
+			mainVO.setStartIndex(startIndex);
+			mainVO.setEndIndex(endIndex);
+
+			model.addAttribute("rowNumber",startRowNo);
+			model.addAttribute("total",total);
+			model.addAttribute("totalPage",totalPage);
+			
+			
 			List<?> orderList = mainService.selectMyOrderList(mainVO);
 			model.addAttribute("orderList", orderList);
 			return "myPage/orderInquiry";
@@ -418,9 +563,41 @@ public class MainController {
 	public ModelAndView selectOrderListSearch(MainVO mainVO, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		
+		int unit = 5;
+		//총 데이터 개수 
+		int total = mainService.selectOrderListSearchTotal(mainVO);
+		
+		int totalPage = (int) Math.ceil((double)total/unit);
+		
+		int viewPage = mainVO.getViewPage();
+		if(viewPage > totalPage || viewPage < 1){
+			viewPage = 1;
+		}
+		// 1-> 1 ,10 // 2->11,20 // 3->21,30
+		int startIndex = (viewPage-1)*unit + 1;
+		int endIndex = startIndex+(unit-1);
+		//total -> 34
+		// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+		int startRowNo = total- (viewPage-1)*unit;
+		
+		//VO에 태워서 넘김
+		mainVO.setStartIndex(startIndex);
+		mainVO.setEndIndex(endIndex);
+		
+		HashMap<String,Integer> cntMap = new HashMap<>();
+		cntMap.put("rowNumber", startRowNo);
+		cntMap.put("total", total);
+		cntMap.put("totalPage", totalPage);
+
 		List<?> list = mainService.selectSearchByMyOrderList(mainVO);
+		List<HashMap<String,Integer>> list2 = new LinkedList<>();
+		list2.add(cntMap);
+		
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("obj1", list); 
+		mv.addObject("obj2", list2); 
 	    mv.setViewName("jsonView");
 	    return mv;
 	}

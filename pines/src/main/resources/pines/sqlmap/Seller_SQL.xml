@@ -104,6 +104,19 @@
   			SET DELIVERY_STATUS = #deliveryStatus#
   			WHERE ORDER_ID= #orderId#
 		</update>
+		
+		<select id="sellerDAO.selectSellerOrderInquiryTotal" resultClass="java.lang.Integer">
+			SELECT COUNT(*) total 
+	   	      FROM "ORDER" o join PRODUCT p 
+       	  	    ON o.PRODUCT_ID = p.PRODUCT_ID 
+       		 WHERE STORE_ID = (
+       							 SELECT STORE_ID 
+                        		   FROM STORE
+                          		  WHERE USER_ID = #userId#
+                            		AND SIGN_STORE = 'Y'
+                         		)
+       		ORDER BY o.PURCHASE_DATE DESC
+		</select>
 	
 	
 	

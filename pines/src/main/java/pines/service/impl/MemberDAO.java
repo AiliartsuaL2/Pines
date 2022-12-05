@@ -51,9 +51,9 @@ public class MemberDAO extends EgovAbstractDAO{
 		return (OrderVO) select("memberDAO.selectMemberOrder");
 	}
 
-	public int selectSellerCheck(MemberVO memberVO) {
+	public int selectSellerCheck(MainVO mainVO) {
 		// TODO Auto-generated method stub
-		return (int) select("memberDAO.selectSellerCheck",memberVO);
+		return (int) select("memberDAO.selectSellerCheck",mainVO);
 	}
 
 	public List<?> selectMemberInfo(MainVO mainVO) {

@@ -11,7 +11,7 @@ public interface MainService {
 	public List<?> selectDiscountList(MainVO vo) throws Exception;
 	public List<?> infiniteScrollDown(Integer bnoToStart);
 	public int selectProductTotal(MainVO vo) throws Exception; // Total 개수 얻기
-	public List<?> selectSellerProductList(MemberVO vo) throws Exception;
+	public List<?> selectSellerProductList(MainVO vo) throws Exception;
 	public List<?> selectProductSearchList(MainVO vo) throws Exception;
 	public List<?> selectParentCategory(MainVO mainVO) throws Exception;
 	public List<?> selectCategoryList(MainVO mainVO) throws Exception;
@@ -34,4 +34,11 @@ public interface MainService {
 	public List<?> selectSellerRevenueList(MainVO mainVO) throws Exception;
 	public int selectMemberProductCheck(MainVO mainVO) throws Exception;
 	public String selectSellerType(MainVO mainVO) throws Exception;
+	public int selectPlantTotal(MainVO vo) throws Exception;
+	public int selectFlowerTotal(MainVO vo) throws Exception;
+	public int selectDiscountTotal(MainVO vo) throws Exception;
+	public int selectSellerProductTotal(MainVO vo) throws Exception;
+	public int selectProductSearchTotal(MainVO mainVO) throws Exception;
+	public int selectMyOrderListTotal(MainVO mainVO) throws Exception;
+	public int selectOrderListSearchTotal(MainVO mainVO) throws Exception;
 	}

@@ -124,6 +124,15 @@ a { text-decoration:none }
 </div>
 </main>
 <footer>
+	<div style="width:600px;margin-top:5px; text-align:center;">
+		<c:choose> 
+			<c:when test="${totalPage > 1}">
+			<c:forEach var="i" begin="1" end="${totalPage}">
+				<a href="plantList.do?viewPage=${i}">${i}</a>
+			</c:forEach>
+			</c:when> 
+		</c:choose> 
+	</div>
 </footer>
 
 

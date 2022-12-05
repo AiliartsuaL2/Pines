@@ -170,7 +170,7 @@ a { text-decoration:none }
 <main>
 <%@ include file="../include/sellerOrderTopMenu.jsp" %>
 	<div class = "div_table_title">
-		<p class = "table_title"> 정산</p>
+		<p class = "table_title"> 정산 내역 조회</p>
 	</div>
 	<div class="id_input_box">
 	<form id="frmData">

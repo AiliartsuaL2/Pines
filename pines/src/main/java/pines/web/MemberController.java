@@ -132,7 +132,7 @@ public class MemberController {
 		}
 		else{
 			try{
-				String _userId = decryptRsa(privateKey,userId);
+				String _userId = decryptRsa(privateKey,userId); // 복호화 
 				String _pass = decryptRsa(privateKey,pass);
 				
 				vo.setUserId(_userId);
@@ -141,7 +141,6 @@ public class MemberController {
 				if(count == 1){
 					// 세션 생성
 					session.setAttribute("SessionUserID", vo.getUserId());
-					// 세션 생성
 					// 메세지 처리
 					message = "ok";
 					// 메세지 처리
@@ -317,7 +316,7 @@ public class MemberController {
 	
 	
 	@RequestMapping("/sellerCheck.do")
-	public String sellerCheck(MemberVO vo , HttpServletRequest request, ModelMap model) throws Exception{
+	public String sellerCheck(MainVO vo , HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);
 		vo.setUserId((String) session.getAttribute("SessionUserID"));
 		int tmp = 0;
@@ -328,9 +327,34 @@ public class MemberController {
 		}
 		else{ // 로그인 된경우
 			tmp = memberService.selectSellerCheck(vo);
-			if(tmp == 1){ // 판매자일경우
+			if(tmp == 1){ // 판매자일경우				
+				int unit = 5;
+				//총 데이터 개수 
+				int total = mainService.selectSellerProductTotal(vo);
+				
+				int totalPage = (int) Math.ceil((double)total/unit);
+				int viewPage = vo.getViewPage();
+				
+				if(viewPage > totalPage || viewPage < 1){
+					viewPage = 1;
+				}
+				// 1-> 1 ,10 // 2->11,20 // 3->21,30
+				int startIndex = (viewPage-1)*unit + 1;
+				int endIndex = startIndex+(unit-1);
+				//total -> 34
+				// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+				int startRowNo = total- (viewPage-1)*unit;
+				
+				//VO에 태워서 넘김
+				vo.setStartIndex(startIndex);
+				vo.setEndIndex(endIndex);
+				
 				List<?> list = mainService.selectSellerProductList(vo);
+				model.addAttribute("rowNumber",startRowNo);
+				model.addAttribute("total",total);
+				model.addAttribute("totalPage",totalPage);
 				model.addAttribute("resultList",list);
+				
 				return "seller/sellerMain";
 			}
 			else{ // 판매자가 아닐경우

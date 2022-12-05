@@ -409,6 +409,25 @@ a { text-decoration:none }
 	color:#A5A5A5;
     cursor: pointer;
 }
+
+.btn_page{
+	margin-top : 5%; 
+    text-align: center;
+    margin-bottom : 10%;
+}
+.btn_viewPage{
+	background-color:white;
+	color:#A5A5A5;
+	cursor : pointer;
+	border:0;
+	
+}
+
+.btn_viewPage:hover{
+	background:#A5A5A5;
+	color:white;
+}
+
 </style>
 
 <%
@@ -501,6 +520,16 @@ a { text-decoration:none }
 					</div>
 					
 				</c:forEach>
+				<div class="btn_page">
+					<c:choose> 
+						<c:when test="${totalPage > 1}">
+							<c:forEach var="i" begin="1" end="${totalPage}">
+								<input type="button" class="btn_viewPage" value="${i}" onclick="location='sellerOrderInquiry.do?viewPage=${i}'">
+							</c:forEach>
+						</c:when> 
+					</c:choose> 
+				</div>
+				
 	</div>
 </main>
 <footer>

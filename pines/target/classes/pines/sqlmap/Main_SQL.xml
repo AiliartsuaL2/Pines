@@ -4,6 +4,34 @@
 	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/> <!-- 출력시(select) 필요한  list를 담는 변수 -->
 	<typeAlias  alias="mainVO" type="pines.service.MainVO"/> <!-- 출력시(select) 필요한 변수 -->
 
+	<select id="mainDAO.selectMainList" resultClass="egovMap">
+	   SELECT b.*
+   	     FROM ( 
+   			    SELECT ROWNUM rn, a.*
+   			      FROM (SELECT product_id
+   			                 , product_name
+   			                 , product_description
+   			                 , product_price
+   			                 , image1
+   			                 , discount_rate
+    						 , (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
+      						 	THEN PRODUCT_PRICE
+      							ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
+      							END) AS DISCOUNT_PRICE 
+      						 , DISCOUNT_PERIOD
+      	  					FROM PRODUCT p JOIN STORE s
+      						 ON p.STORE_ID  = s.STORE_ID 
+       	   				WHERE s.SIGN_STORE != 'N'
+   			             AND REG_STATE != '품절' 
+         		<isNotNull property="searchGubun">
+           			<isNotNull property="searchText">
+              			 AND $searchGubun$ like '%$searchText$%'
+           			</isNotNull>
+         		</isNotNull>
+                ORDER BY REG_DATE DESC )a)  b
+       WHERE rn BETWEEN 1 AND 6
+	</select>
+
 	<select id="mainDAO.selectProductList" resultClass="egovMap">
 	   SELECT b.*
    	     FROM ( 
@@ -44,111 +72,6 @@
           AND rn <![CDATA[<=]]> #endIndex#
 	</select>
 	
-	<select id="mainDAO.selectPlantList" resultClass = "egovMap">
-	   SELECT p.product_id
-		    , p.store_id
-		    , p.product_name
-		    , p.product_description
-		    , p.product_price
-    		, (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
-      		   THEN PRODUCT_PRICE
-      		   ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
-      		   END) AS DISCOUNT_PRICE 
-		    , p.image1
-		    , DISCOUNT_PERIOD
-		    , p.discount_rate
-      		, p.CATEGORY_ID
-      	  FROM PRODUCT p JOIN STORE s
-      		ON p.STORE_ID  = s.STORE_ID 
-  		WHERE (
-         		SELECT PARENT_CATEGORY_ID
-          		  FROM CATEGORY c 
-          		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
-          		) = 'plant'
-       	  AND s.SIGN_STORE != 'N'
-   		  AND REG_STATE != '품절'  
-       <isNotNull property="categoryId">
-          AND CATEGORY_ID = #categoryId#
-       </isNotNull>
-	</select>
-	
-	<select id="mainDAO.selectFlowerList" resultClass = "egovMap" >
-    	SELECT p.product_id
-      		 , p.store_id
-      		 , p.product_name
-      		 , p.product_description
-      		 , p.product_price
-      		 , (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
-           		 THEN PRODUCT_PRICE
-           		 ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
-           		 END) AS DISCOUNT_PRICE 
-      		 , p.image1
-      		 , p.DISCOUNT_PERIOD
-      		 , p.discount_rate
-        	 , p.CATEGORY_ID
-      	  FROM PRODUCT p JOIN STORE s
-      		ON p.STORE_ID  = s.STORE_ID 
-    	 WHERE (
-           		SELECT PARENT_CATEGORY_ID
-                  FROM CATEGORY c 
-                 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
-            	) = 'flower'
-       	   AND s.SIGN_STORE != 'N'
-       	   AND REG_STATE != '품절'
-   		    
-       <isNotNull property="categoryId">
-          AND CATEGORY_ID = #categoryId#
-       </isNotNull>
-	</select>
-	
-	<select id="mainDAO.selectMainList" resultClass="egovMap">
-	   SELECT b.*
-   	     FROM ( 
-   			    SELECT ROWNUM rn, a.*
-   			      FROM (SELECT product_id
-   			                 , product_name
-   			                 , product_description
-   			                 , product_price
-   			                 , image1
-   			                 , discount_rate
-    						 , (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
-      						 	THEN PRODUCT_PRICE
-      							ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
-      							END) AS DISCOUNT_PRICE 
-      						 , DISCOUNT_PERIOD
-      	  					FROM PRODUCT p JOIN STORE s
-      						 ON p.STORE_ID  = s.STORE_ID 
-       	   				WHERE s.SIGN_STORE != 'N'
-   			             AND REG_STATE != '품절' 
-         		<isNotNull property="searchGubun">
-           			<isNotNull property="searchText">
-              			 AND $searchGubun$ like '%$searchText$%'
-           			</isNotNull>
-         		</isNotNull>
-                ORDER BY REG_DATE DESC )a)  b
-       WHERE rn BETWEEN 1 AND 3
-	</select>
-	<select id="mainDAO.selectDiscountList" resultClass="egovMap">
-    SELECT b.*
-         FROM ( 
-          SELECT ROWNUM rn, a.*
-            FROM (SELECT product_id
-                       , product_name
-                       , product_description
-                       , product_price
-                       , image1
-                       , discount_rate
-                       , DISCOUNT_PERIOD
-             FROM PRODUCT p JOIN STORE s
-             ON p.STORE_ID  = s.STORE_ID 
-                  WHERE s.SIGN_STORE != 'N'
-                    AND discount_rate BETWEEN 1 AND 100
-                       AND DISCOUNT_PERIOD >= SYSDATE
-                       AND REG_STATE != '품절' 
-                    )a)  b
-       WHERE rn BETWEEN 1 AND 20
-	</select>
-		
 	<select id="mainDAO.selectProductTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
       	  FROM PRODUCT 
@@ -173,6 +96,41 @@
 				</isNotNull>
 	</select>
 	
+	
+	<select id="mainDAO.selectPlantList" resultClass = "egovMap">
+	   SELECT b.*
+   	     FROM ( 
+   			    SELECT ROWNUM rn, a.*
+   			      FROM (SELECT p.product_id
+		    				 , p.store_id
+		    				 , p.product_name
+		    				 , p.product_description
+		    				 , p.product_price
+    						 , (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
+      		   				 	THEN PRODUCT_PRICE
+      		   				 	ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
+      		   				 	END) AS DISCOUNT_PRICE 
+		    				 , p.image1
+		    				 , DISCOUNT_PERIOD
+		    				 , p.discount_rate
+      						 , p.CATEGORY_ID
+      	  				  FROM PRODUCT p JOIN STORE s
+      						ON p.STORE_ID  = s.STORE_ID 
+  						 WHERE (
+         						 SELECT PARENT_CATEGORY_ID
+          		  				   FROM CATEGORY c 
+          		 				  WHERE p.CATEGORY_ID = c.CATEGORY_ID 
+          						 ) = 'plant'
+       	  				 	AND s.SIGN_STORE != 'N'
+   		  				 	AND REG_STATE != '품절'  
+					 <isNotNull property="categoryId">
+          				    AND CATEGORY_ID = #categoryId#
+       				 </isNotNull>
+       	ORDER BY REG_DATE DESC )a)  b
+        WHERE rn >= #startIndex#  
+          AND rn <![CDATA[<=]]> #endIndex#
+	</select>
+	
 	<select id="mainDAO.selectPlantTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
       	  FROM PRODUCT p JOIN STORE s
@@ -185,6 +143,40 @@
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'plant'
 	
+	</select>
+	
+	<select id="mainDAO.selectFlowerList" resultClass = "egovMap" >
+	   SELECT b.*
+   	     FROM ( 
+   			    SELECT ROWNUM rn, a.*
+   			      FROM (SELECT p.product_id
+		    				 , p.store_id
+		    				 , p.product_name
+		    				 , p.product_description
+		    				 , p.product_price
+    						 , (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
+      		   				 	THEN PRODUCT_PRICE
+      		   				 	ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
+      		   				 	END) AS DISCOUNT_PRICE 
+		    				 , p.image1
+		    				 , DISCOUNT_PERIOD
+		    				 , p.discount_rate
+      						 , p.CATEGORY_ID
+      	  				  FROM PRODUCT p JOIN STORE s
+      						ON p.STORE_ID  = s.STORE_ID 
+  						 WHERE (
+         						 SELECT PARENT_CATEGORY_ID
+          		  				   FROM CATEGORY c 
+          		 				  WHERE p.CATEGORY_ID = c.CATEGORY_ID 
+          						 ) = 'flower'
+       	  				 	AND s.SIGN_STORE != 'N'
+   		  				 	AND REG_STATE != '품절'  
+					 <isNotNull property="categoryId">
+          				    AND CATEGORY_ID = #categoryId#
+       				 </isNotNull>
+       	ORDER BY REG_DATE DESC )a)  b
+        WHERE rn >= #startIndex#  
+          AND rn <![CDATA[<=]]> #endIndex#
 	</select>
 	
 	<select id="mainDAO.selectFlowerTotal" resultClass="java.lang.Integer">
@@ -201,6 +193,28 @@
 	
 	</select>
 	
+	<select id="mainDAO.selectDiscountList" resultClass="egovMap">
+    SELECT b.*
+         FROM ( 
+          SELECT ROWNUM rn, a.*
+            FROM (SELECT product_id
+                       , product_name
+                       , product_description
+                       , product_price
+                       , image1
+                       , discount_rate
+                       , DISCOUNT_PERIOD
+             FROM PRODUCT p JOIN STORE s
+             ON p.STORE_ID  = s.STORE_ID 
+                  WHERE s.SIGN_STORE != 'N'
+                    AND discount_rate BETWEEN 1 AND 100
+                       AND DISCOUNT_PERIOD >= SYSDATE
+                       AND REG_STATE != '품절' 
+                    )a)  b
+        WHERE rn >= #startIndex#  
+          AND rn <![CDATA[<=]]> #endIndex#
+	</select>
+		
 	<select id="mainDAO.selectDiscountTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
       	  FROM PRODUCT p JOIN STORE s
@@ -212,37 +226,69 @@
 	</select>
 	
 	<select id="mainDAO.selectSellerProductList" resultClass="egovMap">
-	  SELECT p.PRODUCT_ID 
-           , p.PRODUCT_NAME 
-           , p.IMAGE1
-           , to_char(p.REG_DATE,'yy-mm-dd') reg_Date 
-           , to_char(p.PRODUCT_PRICE, '999,999,999,999,999') PRODUCT_PRICE
-           , p.DISCOUNT_RATE
-           , to_char(p.PRODUCT_PRICE-(p.PRODUCT_PRICE * p.DISCOUNT_RATE/100), '999,999,999,999,999') DISCOUNT_PRICE
-           , p.PRODUCT_STOCK
-           , p.REG_STATE
-           , to_char(p.DISCOUNT_PERIOD,'yy-mm-dd') DISCOUNT_PERIOD
+	  
+	      SELECT b.*
+         	FROM ( 
+          			SELECT ROWNUM rn, a.*
+            		  FROM ( SELECT p.PRODUCT_ID 
+           						  , p.PRODUCT_NAME 
+           						  , p.IMAGE1
+           						  , to_char(p.REG_DATE,'yy-mm-dd') reg_Date 
+           						  , to_char(p.PRODUCT_PRICE, '999,999,999,999,999') PRODUCT_PRICE
+           						  , p.DISCOUNT_RATE
+           						  , to_char(p.PRODUCT_PRICE-(p.PRODUCT_PRICE * p.DISCOUNT_RATE/100), '999,999,999,999,999') DISCOUNT_PRICE
+           						  , p.PRODUCT_STOCK
+           						  , p.REG_STATE
+           						  , to_char(p.DISCOUNT_PERIOD,'yy-mm-dd') DISCOUNT_PERIOD
+        					   FROM PRODUCT p , STORE s
+       						  WHERE s.USER_ID = #userId#
+         						AND SIGN_STORE = 'Y'
+       	 						AND p.REG_STATE = '판매중'
+         						AND s.STORE_ID = p.STORE_ID
+               					ORDER BY REG_DATE DESC )a)  b
+        			  WHERE rn >= #startIndex#  
+          				AND rn <![CDATA[<=]]> #endIndex#
+	</select>
+	
+	<select id="mainDAO.selectSellerProductTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
         FROM PRODUCT p
            , STORE s
        WHERE s.USER_ID = #userId#
          AND SIGN_STORE = 'Y'
-       	
        	 AND p.REG_STATE = '판매중'
          AND s.STORE_ID = p.STORE_ID
 	</select>
 	
 	
+	
 	<select id="mainDAO.selectProductSearchList" resultClass="egovMap">
-	  SELECT p.PRODUCT_ID 
-           , p.PRODUCT_NAME 
-           , p.IMAGE1
-           , to_char(p.REG_DATE,'yy-mm-dd') reg_Date 
-           , to_char(p.PRODUCT_PRICE, '999,999,999,999,999') PRODUCT_PRICE
-           , p.DISCOUNT_RATE
-           , to_char(p.PRODUCT_PRICE-(p.PRODUCT_PRICE * p.DISCOUNT_RATE/100), '999,999,999,999,999') DISCOUNT_PRICE
-           , p.PRODUCT_STOCK
-           , p.REG_STATE
-           , to_char(p.DISCOUNT_PERIOD,'yy-mm-dd') DISCOUNT_PERIOD
+			      SELECT b.*
+	    	     	FROM ( 
+	          			SELECT ROWNUM rn, a.*
+	            		  FROM ( SELECT p.PRODUCT_ID 
+	           						  , p.PRODUCT_NAME 
+	           						  , p.IMAGE1
+	           						  , to_char(p.REG_DATE,'yy-mm-dd') reg_Date 
+	           						  , to_char(p.PRODUCT_PRICE, '999,999,999,999,999') PRODUCT_PRICE
+	           						  , p.DISCOUNT_RATE
+	           						  , to_char(p.PRODUCT_PRICE-(p.PRODUCT_PRICE * p.DISCOUNT_RATE/100), '999,999,999,999,999') DISCOUNT_PRICE
+	           						  , p.PRODUCT_STOCK
+	           						  , p.REG_STATE
+	           						  , to_char(p.DISCOUNT_PERIOD,'yy-mm-dd') DISCOUNT_PERIOD
+	        					   FROM PRODUCT p , STORE s
+	       						  WHERE s.USER_ID = #userId#
+	         						AND SIGN_STORE = 'Y'
+	         						AND $searchGubun$ like '%$searchText$%'
+	         						AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regStateList">#regStateList[]#</iterate>
+	         						AND s.STORE_ID = p.STORE_ID
+               						ORDER BY REG_DATE DESC )a)  b
+        			  WHERE rn >= #startIndex#  
+          				AND rn <![CDATA[<=]]> #endIndex#
+	</select>
+	
+	<select id="mainDAO.selectProductSearchTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
         FROM PRODUCT p
            , STORE s
        WHERE s.USER_ID = #userId#
@@ -560,32 +606,48 @@
 						)
 		</insert>
 		
-		<select id="mainDAO.selectMyOrderList" resultClass="egovMap">
-      SELECT (
-              SELECT DISCOUNT_WON
-                FROM PRODUCT_OPTION po 
-               WHERE po.OPTION_ID = p.OPTION_ID 
-              ) AS DISCOUNT_WON 
-              , 
-              (
-               SELECT TOTAL_NUM 
-                FROM PRODUCT_OPTION po 
-               WHERE po.OPTION_ID = p.OPTION_ID 
-              ) AS TOTAL_NUM  
-              , p.PRODUCT_ID 
-              , p.PRODUCT_NAME 
-              , p.PRODUCT_PRICE 
-              , p.IMAGE1 
-              , o.ORDER_ID 
-              , o.NUM_OF_PRODUCT 
-              , o.PURCHASE_DATE 
-              , o.DELIVERY_STATUS
-              , o.TOTAL_AMOUNT
-              , o.ORDER_OPTION
+	<select id="mainDAO.selectMyOrderListTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
       	FROM "ORDER" o join PRODUCT p 
        	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        WHERE USER_ID = #userId#
        ORDER BY o.PURCHASE_DATE DESC
+		
+	</select>
+		
+		
+		<select id="mainDAO.selectMyOrderList" resultClass="egovMap">
+				SELECT b.*
+	    	      FROM ( 
+	          			SELECT ROWNUM rn, a.*
+	            		  FROM (
+      							 SELECT (
+      							 		  SELECT DISCOUNT_WON
+      							 		    FROM PRODUCT_OPTION po 
+      							 		   WHERE po.OPTION_ID = p.OPTION_ID 
+              							) AS DISCOUNT_WON 
+              							,(
+               							  SELECT TOTAL_NUM 
+                			  			    FROM PRODUCT_OPTION po 
+               				 			   WHERE po.OPTION_ID = p.OPTION_ID 
+              							 ) AS TOTAL_NUM  
+              							, p.PRODUCT_ID 
+              							, p.PRODUCT_NAME 
+              							, p.PRODUCT_PRICE 
+              							, p.IMAGE1 
+              							, o.ORDER_ID 
+              							, o.NUM_OF_PRODUCT 
+              							, o.PURCHASE_DATE 
+              							, o.DELIVERY_STATUS
+              							, o.TOTAL_AMOUNT
+              							, o.ORDER_OPTION
+      								FROM "ORDER" o join PRODUCT p 
+       	  						  	  ON o.PRODUCT_ID = p.PRODUCT_ID 
+       							   WHERE USER_ID = #userId#
+       							   ORDER BY o.PURCHASE_DATE DESC
+       							   )a)  b
+        			  	  WHERE rn >= #startIndex#  
+          					AND rn <![CDATA[<=]]> #endIndex#
 		</select>
 	
 		<select id="mainDAO.selectOrderDetailList" resultClass="egovMap">
@@ -623,28 +685,9 @@
          AND ORDER_ID = #orderId#
 		</select>
 	
-	<select id="mainDAO.selectSearchByMyOrderList" resultClass="egovMap">
-      		SELECT 
-      		  (
-              SELECT DISCOUNT_WON
-                FROM PRODUCT_OPTION po 
-               WHERE po.OPTION_ID = p.OPTION_ID 
-              ) AS DISCOUNT_WON 
-              ,(
-              SELECT TOTAL_NUM 
-                FROM PRODUCT_OPTION po 
- 	           WHERE po.OPTION_ID = p.OPTION_ID 
-       	      ) AS TOTAL_NUM  
-              , p.PRODUCT_ID 
-              , p.PRODUCT_NAME 
-              , p.PRODUCT_PRICE 
-              , p.IMAGE1 
-              , o.ORDER_ID 
-              , o.NUM_OF_PRODUCT 
-              , o.PURCHASE_DATE 
-              , o.DELIVERY_STATUS
-              , o.TOTAL_AMOUNT
-              , o.ORDER_OPTION
+	
+	<select id="mainDAO.selectOrderListSearchTotal" resultClass="java.lang.Integer">
+		SELECT COUNT(*) total 
       	FROM "ORDER" o join PRODUCT p 
        	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        WHERE USER_ID = #userId#
@@ -652,39 +695,85 @@
          AND #startOrderPeriod# <![CDATA[<=]]>  o.PURCHASE_DATE
          AND #endOrderPeriod# >= o.PURCHASE_DATE
        ORDER BY o.PURCHASE_DATE DESC
+		
+	</select>
+	
+	<select id="mainDAO.selectSearchByMyOrderList" resultClass="egovMap">
+	
+				SELECT b.*
+	    	      FROM ( 
+	          			SELECT ROWNUM rn, a.*
+	            		  FROM (
+      							 SELECT (
+              					 		  SELECT DISCOUNT_WON
+                					 		FROM PRODUCT_OPTION po 
+               					 		   WHERE po.OPTION_ID = p.OPTION_ID 
+              					 		) AS DISCOUNT_WON 
+              							,(
+              					 		  SELECT TOTAL_NUM 
+                					 		FROM PRODUCT_OPTION po 
+ 	           					 		   WHERE po.OPTION_ID = p.OPTION_ID 
+       	      					 		) AS TOTAL_NUM  
+              					 		, p.PRODUCT_ID 
+              					 		, p.PRODUCT_NAME 
+              					 		, p.PRODUCT_PRICE 
+              					 		, p.IMAGE1 
+              					 		, o.ORDER_ID 
+              					 		, o.NUM_OF_PRODUCT 
+              					 		, o.PURCHASE_DATE 
+              					 		, o.DELIVERY_STATUS
+              					 		, o.TOTAL_AMOUNT
+              					 		, o.ORDER_OPTION
+      						 			FROM "ORDER" o join PRODUCT p 
+       	  					 			ON o.PRODUCT_ID = p.PRODUCT_ID 
+       					 			   WHERE USER_ID = #userId#
+         					 			 AND $searchGubun$ like '%$searchText$%'
+         					 		 	 AND #startOrderPeriod# <![CDATA[<=]]>  o.PURCHASE_DATE
+         					 			 AND #endOrderPeriod# >= o.PURCHASE_DATE
+       					 			ORDER BY o.PURCHASE_DATE DESC
+       							   )a)  b
+        			  	  WHERE rn >= #startIndex#  
+          					AND rn <![CDATA[<=]]> #endIndex#
 	</select>
 	
 	<select id="mainDAO.selectSellerOrderList" resultClass="egovMap">
-      SELECT (
-              SELECT DISCOUNT_WON
-                FROM PRODUCT_OPTION po 
-               WHERE po.OPTION_ID = p.OPTION_ID 
-              ) AS DISCOUNT_WON 
-              , 
-              (
-               SELECT TOTAL_NUM 
-                FROM PRODUCT_OPTION po 
-               WHERE po.OPTION_ID = p.OPTION_ID 
-              ) AS TOTAL_NUM  
-              , p.PRODUCT_ID 
-              , p.PRODUCT_NAME 
-              , p.PRODUCT_PRICE 
-              , p.IMAGE1 
-              , o.ORDER_ID 
-              , o.NUM_OF_PRODUCT 
-              , o.PURCHASE_DATE 
-              , o.DELIVERY_STATUS
-              , o.TOTAL_AMOUNT
-              , o.ORDER_OPTION
-      	FROM "ORDER" o join PRODUCT p 
-       	  ON o.PRODUCT_ID = p.PRODUCT_ID 
-       WHERE STORE_ID = (
-       					 SELECT STORE_ID 
-                           FROM STORE
-                          WHERE USER_ID = #userId#
-                            AND SIGN_STORE = 'Y'
-                         )
-       ORDER BY o.PURCHASE_DATE DESC
+      SELECT b.*
+	    	      FROM ( 
+	          			SELECT ROWNUM rn, a.*
+	            		  FROM (
+	            		        SELECT (
+	            		                 SELECT DISCOUNT_WON
+	            		                   FROM PRODUCT_OPTION po
+	            		                  WHERE po.OPTION_ID = p.OPTION_ID 
+	            		                 ) AS DISCOUNT_WON 
+	            		               ,(
+	            		                 SELECT TOTAL_NUM 
+	            		                   FROM PRODUCT_OPTION po 
+	            		                  WHERE po.OPTION_ID = p.OPTION_ID 
+	            		                 ) AS TOTAL_NUM
+	            		               , p.PRODUCT_ID 
+                		               , p.PRODUCT_NAME 
+                		               , p.PRODUCT_PRICE 
+                		               , p.IMAGE1 
+                		               , o.ORDER_ID 
+                		               , o.NUM_OF_PRODUCT 
+                		               , o.PURCHASE_DATE 
+                		               , o.DELIVERY_STATUS
+                		               , o.TOTAL_AMOUNT
+                		               , o.ORDER_OPTION
+      	  		               FROM "ORDER" o join PRODUCT p 
+       	    		               ON o.PRODUCT_ID = p.PRODUCT_ID 
+         		               WHERE STORE_ID = (
+       					   		                  SELECT STORE_ID 
+                             		                FROM STORE
+                            		               WHERE USER_ID = #userId#
+                              		                 AND SIGN_STORE = 'Y'
+                           		                )
+        		               ORDER BY o.PURCHASE_DATE DESC
+       						   )a)  b
+        			  	WHERE rn >= #startIndex#  
+          				  AND rn <![CDATA[<=]]> #endIndex#
+      
 		</select>
 		
 		

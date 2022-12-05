@@ -58,7 +58,7 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public List<?> selectSellerProductList(MemberVO vo) throws Exception {
+	public List<?> selectSellerProductList(MainVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return mainDAO.selectSellerProductList(vo);
 	}
@@ -195,6 +195,48 @@ public class MainServiceImpl implements MainService {
 	public String selectSellerType(MainVO mainVO) throws Exception {
 		// TODO Auto-generated method stub
 		return mainDAO.selectSellerType(mainVO);
+	}
+
+	@Override
+	public int selectPlantTotal(MainVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectPlantTotal(vo);
+	}
+
+	@Override
+	public int selectFlowerTotal(MainVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectFlowerTotal(vo);
+	}
+
+	@Override
+	public int selectDiscountTotal(MainVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectDiscountTotal(vo);
+	}
+
+	@Override
+	public int selectSellerProductTotal(MainVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectSellerProductTotal(vo);
+	}
+
+	@Override
+	public int selectProductSearchTotal(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectSellerSearchProductTotal(mainVO);
+	}
+
+	@Override
+	public int selectMyOrderListTotal(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectMyOrderListTotal(mainVO);
+	}
+
+	@Override
+	public int selectOrderListSearchTotal(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectOrderListSearchTotal(mainVO);
 	}
 
 

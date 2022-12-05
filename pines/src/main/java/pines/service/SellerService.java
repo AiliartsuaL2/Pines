@@ -17,6 +17,8 @@ public interface SellerService {
 	List<?> selectSellerOrderDetail(MainVO mainVO) throws Exception;
 
 	int updateDeliveryStatus(MainVO mainVO) throws Exception;
+
+	int selectSellerOrderInquiryTotal(MainVO mainVO) throws Exception;
 	
 
 }

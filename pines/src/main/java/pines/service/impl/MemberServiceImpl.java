@@ -66,9 +66,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int selectSellerCheck(MemberVO memberVO) throws Exception {
+	public int selectSellerCheck(MainVO mainVO) throws Exception {
 		// TODO Auto-generated method stub
-		return (int) memberDAO.selectSellerCheck(memberVO);
+		return (int) memberDAO.selectSellerCheck(mainVO);
 	}
 
 	@Override

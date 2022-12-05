@@ -28,11 +28,9 @@ public class MemberVO {
 		this.chargePoint = chargePoint;
 	}
 	public String getUserId() {
-		System.out.println("getUserId : "+userId);	
 		return userId;
 	}
 	public void setUserId(String userId) {
-		System.out.println("SetUserId : "+userId);	
 		this.userId = userId;
 	}
 	public String getPass() {

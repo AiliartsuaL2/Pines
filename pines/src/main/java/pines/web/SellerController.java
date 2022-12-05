@@ -43,11 +43,36 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
-			MemberVO vo = new MemberVO();
-			vo.setUserId(mainVO.getUserId());
-			int tmp = memberService.selectSellerCheck(vo);
+			int tmp = memberService.selectSellerCheck(mainVO);
 				
 			if(tmp == 1){ // 판매자일경우
+				
+				int unit = 5;
+				//총 데이터 개수 
+				int total = sellerService.selectSellerOrderInquiryTotal(mainVO);
+				
+				
+				int totalPage = (int) Math.ceil((double)total/unit);
+				
+				int viewPage = mainVO.getViewPage();
+				if(viewPage > totalPage || viewPage < 1){
+					viewPage = 1;
+				}
+				// 1-> 1 ,10 // 2->11,20 // 3->21,30
+				int startIndex = (viewPage-1)*unit + 1;
+				int endIndex = startIndex+(unit-1);
+				//total -> 34
+				// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+				int startRowNo = total- (viewPage-1)*unit;
+				
+				//VO에 태워서 넘김
+				mainVO.setStartIndex(startIndex);
+				mainVO.setEndIndex(endIndex);
+
+				model.addAttribute("rowNumber",startRowNo);
+				model.addAttribute("total",total);
+				model.addAttribute("totalPage",totalPage);
+				
 				List<?> orderList = mainService.selectSellerOrderList(mainVO);
 				model.addAttribute("orderList", orderList);
 				return "seller/sellerOrderInquiry";
@@ -229,9 +254,7 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
-			MemberVO vo = new MemberVO();
-			vo.setUserId(mainVO.getUserId());
-			int tmp = memberService.selectSellerCheck(vo);
+			int tmp = memberService.selectSellerCheck(mainVO);
 			if(tmp == 1){ // 판매자일경우
 				return "seller/sellerRemove";
 			}

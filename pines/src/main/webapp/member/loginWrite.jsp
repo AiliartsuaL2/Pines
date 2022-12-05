@@ -41,6 +41,8 @@ $(function(){
 			return false;
 		}
 		var rawUserId = userId;
+		
+		
 		var rsa = new RSAKey();
 		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
 		userId = rsa.encrypt(userId);

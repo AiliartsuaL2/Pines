@@ -45,4 +45,9 @@ public class SellerDAO extends EgovAbstractDAO{
 		return (int) update("sellerDAO.updateDeliveryStatus",mainVO);
 	}
 
+	public int selectSellerOrderInquiryTotal(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) select("sellerDAO.selectSellerOrderInquiryTotal",mainVO);
+	}
+
 }

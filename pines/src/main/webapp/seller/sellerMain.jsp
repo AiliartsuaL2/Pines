@@ -38,7 +38,6 @@ $(function(){
 				html+="<th class='table_cell' width='6%'>수량</th>";
 				html+="<th class='table_cell' width='8%'>상태</th>";
 				html+="<th class='table_cell' width='8%'>수정</th>";
-				
 				for(var i=0; i<data['obj1'].length;i++){
 					html+="<tr class='pr_tr' align='center'>";
 			  		html+="<td class='table_cell'>"+JSON.stringify(data['obj1'][i]['productId']).replace(/\"/gi, "")+"</td>";
@@ -55,6 +54,13 @@ $(function(){
 			  		html+="</tr>";
 				}
 				html+="</table>";
+				var totalPage = parseInt(JSON.stringify(data['obj2'][0]['totalPage']));
+
+				if(totalPage > 1 ){
+					for(var i=1; i<=totalPage; i++){
+						html +="<input type='button' class='btn_viewPage' id='btn_viewPage' value='"+i+"'>"
+					}
+				}
 				$("#ajaxDiv").append(html);
 			},
 			error: function(request,status,error){	// 시스템적인 에러..SQL이라던지 등,,
@@ -139,6 +145,21 @@ $(function(){
 			ajaxLoad();
 		}
 	});
+	
+	
+	$(document).on("click","#btn_viewPage",function(){
+		var btnValue = this.value;
+		$('#hidden_viewPage').val(btnValue);
+		
+		if(onSale == false && soldOut == false){
+			$("#ajaxDiv").empty();// 요소 내용 제거	
+		}
+		else{
+			$("#ajaxDiv").empty();// 요소 내용 제거	
+			ajaxLoad();
+		}
+	});
+
 });
 </script>
 
@@ -264,6 +285,18 @@ input, progress {
   display: flex;
   flex-wrap: wrap;
 }
+.btn_viewPage{
+	background-color:white;
+	color:#A5A5A5;
+	cursor : pointer;
+	border:0;
+	
+}
+
+.btn_viewPage:hover{
+	background:#A5A5A5;
+	color:white;
+}
 
 </style>
 
@@ -319,6 +352,7 @@ input, progress {
 			<input type="button" id="btn_reg" class="btn_reg" value="상품 등록" onclick= "location='productWrite.do'">
 			</div>
 		</div>
+		<input type='hidden' id='hidden_viewPage' name='viewPage' value="1">
 	</form>
 		</div>
 	<div id = "ajaxDiv">
@@ -352,7 +386,15 @@ input, progress {
 	</tr>
 	</c:forEach>
 	</table>
+		<c:choose> 
+			<c:when test="${totalPage > 1}">
+			<c:forEach var="i" begin="1" end="${totalPage}">
+				<input type="button" class="btn_viewPage" value="${i}" onclick="location='sellerCheck.do?viewPage=${i}'">
+			</c:forEach>
+			</c:when> 
+		</c:choose> 
 	</div>
+
 	</div>
 </div>
 </main>
