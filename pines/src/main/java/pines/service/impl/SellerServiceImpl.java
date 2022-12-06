@@ -69,4 +69,16 @@ public class SellerServiceImpl implements SellerService{
 		return sellerDAO.selectSearchBySellerOrderListTotal(mainVO);
 	}
 
+	@Override
+	public List<?> selectSellerInfo(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sellerDAO.selectSellerInfo(mainVO);
+	}
+
+	@Override
+	public int updateSellerModify(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sellerDAO.updateSellerModify(mainVO);
+	}
+
 }

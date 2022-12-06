@@ -166,7 +166,7 @@ a { text-decoration:none }
 	border: 0;
 	position : absolute;
 	width : 48%;
-	top:38%;
+	top:43%;
 	left:30%;	
 }
 .name_box{
