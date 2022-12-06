@@ -398,7 +398,7 @@
 						  , #shippingCost#
 						  , #freeShippingPrice#
 						  , SYSDATE
-						  , #discountPeriod#
+						  , TO_DATE(#discountPeriod#,'YYYYMMDDHH24MISS')
 						  , OPTION_SEQ.NEXTVAL 		
 						)
 					SELECT * FROM DUAL
@@ -778,40 +778,46 @@
 		
 		
 	<select id="mainDAO.selectSearchBySellerOrderList" resultClass="egovMap">
-      		SELECT 
-      		  (
-              SELECT DISCOUNT_WON
-                FROM PRODUCT_OPTION po 
-               WHERE po.OPTION_ID = p.OPTION_ID 
-              ) AS DISCOUNT_WON 
-              ,(
-              SELECT TOTAL_NUM 
-                FROM PRODUCT_OPTION po 
- 	           WHERE po.OPTION_ID = p.OPTION_ID 
-       	      ) AS TOTAL_NUM  
-              , p.PRODUCT_ID 
-              , p.PRODUCT_NAME 
-              , p.PRODUCT_PRICE 
-              , p.IMAGE1 
-              , o.ORDER_ID 
-              , o.NUM_OF_PRODUCT 
-              , o.PURCHASE_DATE 
-              , o.DELIVERY_STATUS
-              , o.TOTAL_AMOUNT
-              , o.ORDER_OPTION
-      	FROM "ORDER" o join PRODUCT p 
-       	  ON o.PRODUCT_ID = p.PRODUCT_ID 
-       WHERE STORE_ID = (
-       					 SELECT STORE_ID 
-                           FROM STORE
-                          WHERE USER_ID = #userId#
-                            AND SIGN_STORE = 'Y'
-                         )
-         AND $searchGubun$ like '%$searchText$%'
-         AND #startOrderPeriod# <![CDATA[<=]]>  o.PURCHASE_DATE
-         AND #endOrderPeriod# >= o.PURCHASE_DATE
-       ORDER BY o.PURCHASE_DATE DESC
-	</select>
+      		      SELECT b.*
+	    	      FROM ( 
+	          			SELECT ROWNUM rn, a.*
+	            		  FROM (	SELECT 
+							      		  (
+              			      		  		SELECT DISCOUNT_WON
+              			      		  		  FROM PRODUCT_OPTION po 
+              			      		  		 WHERE po.OPTION_ID = p.OPTION_ID
+              			      		  		 ) AS DISCOUNT_WON
+              			      		  	,(
+              			      		 		SELECT TOTAL_NUM
+              			      		 		  FROM PRODUCT_OPTION po 
+              			      		 		 WHERE po.OPTION_ID = p.OPTION_ID
+              			      		 	  ) AS TOTAL_NUM  
+              			      		 	, p.PRODUCT_ID
+              			      		 	, p.PRODUCT_NAME
+              			      		 	, p.PRODUCT_PRICE
+              			      		 	, p.IMAGE1
+              			      		 	, o.ORDER_ID
+              			      		 	, o.NUM_OF_PRODUCT
+              			      		 	, o.PURCHASE_DATE
+              			      		 	, o.DELIVERY_STATUS
+              			      		 	, o.TOTAL_AMOUNT
+              			      		 	, o.ORDER_OPTION
+              			      		FROM "ORDER" o join PRODUCT p
+              			      		  ON o.PRODUCT_ID = p.PRODUCT_ID
+              			      	   WHERE STORE_ID = (
+              			      	   					 SELECT STORE_ID 
+              			      	   					   FROM STORE
+              			      	   					  WHERE USER_ID = #userId#
+              			      	   					    AND SIGN_STORE = 'Y'
+              			      	   					  )
+              			      	   	AND $searchGubun$ like '%$searchText$%'
+              			      	   	AND TO_DATE(#startOrderPeriod#,'YYYYMMDDHH24MISS') <![CDATA[<=]]>  o.PURCHASE_DATE
+         	  						AND TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= o.PURCHASE_DATE
+              			      	   	ORDER BY o.PURCHASE_DATE DESC
+       						   )a)  b
+        			  	WHERE rn >= #startIndex#  
+          				  AND rn <![CDATA[<=]]> #endIndex#
+    </select>
 	
 	<select id="mainDAO.selectSellerOrderNumberList" resultClass="egovMap">
       	SELECT to_char(PURCHASE_DATE,'yyyy-mm-dd') AS SALES_DATE 
@@ -843,8 +849,8 @@
                           	 WHERE USER_ID = #userId#
                                AND SIGN_STORE = 'Y'
                           )
-          AND PURCHASE_DATE > #salesDate#
-          AND PURCHASE_DATE <![CDATA[<]]> #salesDateNext#
+          AND PURCHASE_DATE > TO_DATE(#salesDate#,'YYYYMMDDHH24MISS')
+          AND PURCHASE_DATE <![CDATA[<]]> TO_DATE(#salesDateNext#,'YYYYMMDDHH24MISS')
        GROUP BY to_char(PURCHASE_DATE,'yyyy-mm-dd') 
        HAVING 1=1 
        
@@ -869,7 +875,7 @@
 					  		        FROM STORE
 					  		       WHERE USER_ID = #userId#
 					  		     )
-					  		  , #salesDate#
+					  		  , TO_DATE(#salesDate#,'YYYYMMDDHH24MISS')
 						)
 	</insert>
 	
@@ -885,8 +891,8 @@
          				)
      			  SET REVENUE_STATUS = 'Y'
     			WHERE 1=1
-      			  AND PURCHASE_DATE > #salesDate#
-			      AND PURCHASE_DATE <![CDATA[<]]> #salesDateNext#
+      			  AND PURCHASE_DATE > TO_DATE(#salesDate#,'YYYYMMDDHH24MISS')
+			      AND PURCHASE_DATE <![CDATA[<]]> TO_DATE(#salesDateNext#,'YYYYMMDDHH24MISS')
       			  AND STORE_ID = (
                        				SELECT STORE_ID
                          			  FROM STORE s 

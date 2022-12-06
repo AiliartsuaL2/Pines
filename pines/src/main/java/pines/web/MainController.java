@@ -379,6 +379,9 @@ public class MainController {
 		String message = "";
 		String result = "";
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		String[] DiscountDate = mainVO.getDiscountPeriod().split("-");
+		String discountPeriod = DiscountDate[0]+DiscountDate[1]+DiscountDate[2]+"23"+"59"+"59";
+		mainVO.setDiscountPeriod(discountPeriod);
 		
 		result = mainService.insertProduct(mainVO);
 		

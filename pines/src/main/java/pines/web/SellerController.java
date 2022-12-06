@@ -1,5 +1,7 @@
 package pines.web;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -50,8 +52,7 @@ public class SellerController {
 				int unit = 5;
 				//총 데이터 개수 
 				int total = sellerService.selectSellerOrderInquiryTotal(mainVO);
-				
-				
+								
 				int totalPage = (int) Math.ceil((double)total/unit);
 				
 				int viewPage = mainVO.getViewPage();
@@ -147,10 +148,70 @@ public class SellerController {
 	public ModelAndView selectSearchBySellerOrderList(MainVO mainVO, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		
+		int unit = 5;
+		//총 데이터 개수 
+
+
+		String startOrderPeriod = mainVO.getStartOrderPeriod();
+		String[] startDate = startOrderPeriod.split("-");
+		if(Integer.parseInt(startDate[1]) < 10){
+			startDate[1] = "0"+startDate[1];
+		}
+		if(Integer.parseInt(startDate[2]) < 10){
+			startDate[2] = "0"+startDate[2];
+		}
+		String startOrderDay = startDate[0]+startDate[1]+startDate[2]+"00"+"00"+"00";
+		mainVO.setStartOrderPeriod(startOrderDay);
+		
+		
+		String endOrderPeriod = mainVO.getEndOrderPeriod();
+		String[] endDate = endOrderPeriod.split("-");
+		if(Integer.parseInt(endDate[1]) < 10){
+			endDate[1] = "0"+endDate[1];
+		}
+		if(Integer.parseInt(endDate[2]) < 10){
+			endDate[2] = "0"+endDate[2];
+		}
+		
+		String endOrderDay = endDate[0]+endDate[1]+endDate[2]+"23"+"59"+"59";
+		mainVO.setEndOrderPeriod(endOrderDay);
+		
+		int total = sellerService.selectSearchBySellerOrderListTotal(mainVO);
+		
+		int totalPage = (int) Math.ceil((double)total/unit);
+		
+		
+		
+		int viewPage = mainVO.getViewPage();
+		if(viewPage > totalPage || viewPage < 1){
+			viewPage = 1;
+		}
+		// 1-> 1 ,10 // 2->11,20 // 3->21,30
+		int startIndex = (viewPage-1)*unit + 1;
+		int endIndex = startIndex+(unit-1);
+		//total -> 34
+		// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+		int startRowNo = total- (viewPage-1)*unit;
+		
+		//VO에 태워서 넘김
+		mainVO.setStartIndex(startIndex);
+		mainVO.setEndIndex(endIndex);
+		
+		HashMap<String,Integer> cntMap = new HashMap<>();
+		cntMap.put("rowNumber", startRowNo);
+		cntMap.put("total", total);
+		cntMap.put("totalPage", totalPage);
+
 		List<?> list = mainService.selectSearchBySellerOrderList(mainVO);
+		List<HashMap<String,Integer>> list2 = new LinkedList<>();
+		list2.add(cntMap);
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("obj1", list); 
+		mv.addObject("obj2", list2); 
 	    mv.setViewName("jsonView");
+	    
 	    return mv;
 	}
 
@@ -181,10 +242,19 @@ public class SellerController {
 		}
 		else{
 			String[] setDate = mainVO.getSalesDate().split("-"); // 연 월 일로 배열 생성
-			int nextDay = Integer.parseInt(setDate[2])+1; // day에 하루 추가
-			String nextDate = setDate[0]+"-"+setDate[1]+"-"; //연 -월 -로 데이터 생성
-			nextDate+=Integer.toString(nextDay); // 일 추가
-			mainVO.setSalesDateNext(nextDate);// 연-월-일 데이터 세팅
+			if(Integer.parseInt(setDate[1])<10){
+				setDate[1] = "0"+setDate[1];
+			}
+			if(Integer.parseInt(setDate[2])<10){
+				setDate[2] = "0"+setDate[2];
+			}
+			
+			String today =  setDate[0]+setDate[1]+setDate[2]+"00"+"00"+"00";
+			String nextDay = setDate[0]+setDate[1]+setDate[2]+"23"+"59"+"59";
+			
+			mainVO.setSalesDate(today);
+			mainVO.setSalesDateNext(nextDay);
+			
 			List<?> revenueList = mainService.selectRevenueDetail(mainVO);
 			model.addAttribute("revenueList", revenueList);
 		    return "seller/revenueDetail";
@@ -203,11 +273,23 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
+	
 			String[] setDate = mainVO.getSalesDate().split("-"); // 연 월 일로 배열 생성
-			int nextDay = Integer.parseInt(setDate[2])+1; // day에 하루 추가
-			String nextDate = setDate[0]+"-"+setDate[1]+"-"; //연 -월 -로 데이터 생성
-			nextDate+=Integer.toString(nextDay); // 일 추가
-			mainVO.setSalesDateNext(nextDate);// 연-월-일 데이터 세팅
+			if(Integer.parseInt(setDate[1])<10){
+				setDate[1] = "0"+setDate[1];
+			}
+			if(Integer.parseInt(setDate[2])<10){
+				setDate[2] = "0"+setDate[2];
+			}
+			
+			String today =  setDate[0]+setDate[1]+setDate[2]+"00"+"00"+"00";
+			String nextDay = setDate[0]+setDate[1]+setDate[2]+"23"+"59"+"59";
+			
+			mainVO.setSalesDate(today);
+			mainVO.setSalesDateNext(nextDay);
+			
+			
+			
 			result = mainService.insertRevenue(mainVO);
 			if(result == null){ // 성공
 				logger.info("revenue insert 성공,");

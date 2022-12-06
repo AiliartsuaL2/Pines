@@ -117,6 +117,22 @@
                          		)
        		ORDER BY o.PURCHASE_DATE DESC
 		</select>
+		
+		<select id="sellerDAO.selectSearchBySellerOrderListTotal" resultClass="java.lang.Integer">
+			SELECT COUNT(*) total 
+      		  FROM "ORDER" o join PRODUCT p 
+       	  	    ON o.PRODUCT_ID = p.PRODUCT_ID 
+       		 WHERE STORE_ID = (
+       							 SELECT STORE_ID 
+                    		       FROM STORE
+                          		  WHERE USER_ID = #userId#
+                            		AND SIGN_STORE = 'Y'
+                         		)
+         	  AND $searchGubun$ like '%$searchText$%'
+         	  AND TO_DATE(#startOrderPeriod#,'YYYYMMDDHH24MISS') <![CDATA[<=]]>  o.PURCHASE_DATE
+         	  AND  TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= o.PURCHASE_DATE
+       		ORDER BY o.PURCHASE_DATE DESC
+		</select>
 	
 	
 	

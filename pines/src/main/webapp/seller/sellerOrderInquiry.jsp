@@ -56,6 +56,14 @@
 			ajaxLoad();
 			
 		});
+
+		$(document).on("click","#btn_viewPage",function(){
+			var btnValue = this.value;
+			$('#hidden_viewPage').val(btnValue);
+			$("#ajaxDiv").empty();// 요소 내용 제거	
+			ajaxLoad();
+			
+		});
 	  	
 		function ajaxLoad(){
 			var formData2 = $("#searchForm").serialize(); 
@@ -97,9 +105,17 @@
 						html += "<input type='button' class='btn_detail' value='주문 상세'  onclick='location=&#39;orderDetail.do?orderId="+JSON.stringify(data['obj1'][i]['orderId']).replace(/\"/gi, "")+"&#39;'>";
 						html += "<input type='button' class='btn_detail' value='상품 상세보기'  onclick='location=&#39;productDetail.do?productId="+JSON.stringify(data['obj1'][i]['productId']).replace(/\"/gi, "")+"&#39;'>";
 						html += "</div>";
-						html += "</div>";					
-					}
-					$("#ajaxDiv").append(html);
+						html += "</div>";
+						}
+						var totalPage = parseInt(JSON.stringify(data['obj2'][0]['totalPage']));
+						if(totalPage > 1 ){
+							html += "<div class='btn_page'>";
+							for(var i=1; i<=totalPage; i++){
+								html +="<input type='button' class='btn_viewPage' id='btn_viewPage' value='"+i+"'>";
+							}
+							html += "</div>";
+						}
+						$("#ajaxDiv").append(html);
 				},	
 				error: function(request,status,error){	// 시스템적인 에러..SQL이라던지 등,,
 					alert("오류발생");
@@ -481,7 +497,7 @@ a { text-decoration:none }
 				<input type = "button" id="btn_3month" name="btn_3month" class="date_btn" value="3개월">
 				<input type = "button" id="btn_6month" name="btn_6month" class="date_btn" value="6개월">
 			</div>
-			
+			<input type='hidden' id='hidden_viewPage' name='viewPage' value="1">
 		</form>
 	</div>
 	<div class="id_input_box" id="ajaxDiv">

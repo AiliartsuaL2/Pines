@@ -20,6 +20,7 @@
 
 $(function(){
 	
+	
 	$( "#discountPeriod" ).datepicker({
 	      changeMonth: true,
 	      changeYear: true
@@ -98,7 +99,20 @@ $(function(){
 			});
 	});
 	
-
+	
+$("#rawImage1").click(function(){
+	return false;
+});
+$("#rawImage2").click(function(){
+	return false;
+});
+$("#rawImage3").click(function(){
+	return false;
+});
+$("#rawImage4").click(function(){
+	return false;
+});
+	
 $("#btn_submit").click(function(){
 		var productName = $.trim($("#productName").val());
 		var productPrice = $.trim($("#productPrice").val());
@@ -700,6 +714,7 @@ a { text-decoration:none }
 .raw_img{
 	width : 100%;
 	height: 100%;
+	cursor : default;
 }
 </style>
 
@@ -849,7 +864,7 @@ a { text-decoration:none }
 	      						<label class="img_label">이미지1</label>
 	      					</div>
 	      					<div class="img_display">
-	      						<input type="image" name="fileItem1" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
+	      						<input type="image" id="rawImage1"  name="fileItem1" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
 							</div>		
 	      					<div class="img_upload1">
 	      					<label class="img_upload_css" for="fileItem1">업로드</label>
@@ -861,7 +876,7 @@ a { text-decoration:none }
 	      						<label class="img_label">이미지2</label>
 	      					</div>
 	      					<div class="img_display">
-	      						<input type="image" name="fileItem2" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
+	      						<input type="image" id="rawImage2" name="fileItem2" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
 							</div>		
 	      					<div class="img_upload1">
 	      					<label class="img_upload_css" for="fileItem2">업로드</label>
@@ -873,7 +888,7 @@ a { text-decoration:none }
 	      						<label class="img_label">이미지3</label>
 	      					</div>
 	      					<div class="img_display">
-	      						<input type="image" name="fileItem3" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
+	      						<input type="image" id="rawImage3" name="fileItem3" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
 							</div>		
 	      					<div class="img_upload1">
 	      					<label class="img_upload_css" for="fileItem3">업로드</label>
@@ -885,7 +900,7 @@ a { text-decoration:none }
 	      						<label class="img_label">이미지4</label>
 	      					</div>
 	      					<div class="img_display">
-	      						<input type="image" name="fileItem4" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
+	      						<input type="image" id="rawImage4" name="fileItem4" src="#" alt="" class ="raw_img" onerror="this.src='images/noImage.jpg'">
 							</div>		
 	      					<div class="img_upload1">
 	      					<label class="img_upload_css" for="fileItem4">업로드</label>
