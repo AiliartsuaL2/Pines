@@ -36,7 +36,7 @@
     text-align-last: center;">상품</a></th>
 		<th width="80" align="left"><a class="a1" href="/pines/sellerOrderInquiry.do" style="text-decoration:none; margin-left:15%; 
     text-align-last: center;">주문 / 정산</a></th>
-		<th width="80" align="left"><a class="a1" href="/pines/sellerWrite.do" style="text-decoration:none; 
+		<th width="80" align="left"><a class="a1" href="/pines/sellerInfoCheck.do" style="text-decoration:none; 
     text-align-last: center;">판매자 설정</a></th>
 		
 	<%	

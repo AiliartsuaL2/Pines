@@ -115,7 +115,30 @@ public class MainController {
 		vo.setEndIndex(endIndex);
 		
 		List<?> list = mainService.selectPlantList(vo);
+
 		
+
+		String categoryId = "";
+		if(vo.getCategoryId() != null){
+			
+			switch(vo.getCategoryId()){
+				case "seed": categoryId="묘목 / 묘종";
+					break;
+				case "airplant": categoryId="식물 / 공중식물";
+					break;
+				case "potted": categoryId="관엽 / 공기정화";
+					break;
+				case "succulents": categoryId="다육 / 선인장";
+					break;
+				case "orchid": categoryId="동양란 / 서양란";
+					break;
+				case "herb": categoryId="야생 / 허브 / 분재";
+				break;
+			}
+			
+		}
+		
+		model.addAttribute("categoryId",categoryId);
 		model.addAttribute("rowNumber",startRowNo);
 		model.addAttribute("total",total);
 		model.addAttribute("totalPage",totalPage);
@@ -149,7 +172,23 @@ public class MainController {
 		vo.setEndIndex(endIndex);
 		
 		List<?> list = mainService.selectFlowerList(vo);
+
+		String categoryId = "";
+		if(vo.getCategoryId() != null){
+			
+			switch(vo.getCategoryId()){
+				case "anniversary": categoryId="생일 / 기념일";
+					break;
+				case "opening": categoryId="개업 / 이전";
+					break;
+				case "promotion": categoryId="승진 / 취임";
+					break;
+				case "remembrance": categoryId="추모 / 근조";
+					break;
+			}
+		}
 		
+		model.addAttribute("categoryId",categoryId);
 		model.addAttribute("rowNumber",startRowNo);
 		model.addAttribute("total",total);
 		model.addAttribute("totalPage",totalPage);
@@ -636,20 +675,8 @@ public class MainController {
 			return "myPage/orderDetail";
 		}
 	}
-	@RequestMapping("/myCart.do")
-	public String selectMyCart(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
-		HttpSession session = request.getSession(true);
-		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		if(mainVO.getUserId() == null){ // 로그인 안된경우
-			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
-			model.addAttribute("url", "loginWrite.do");
-			return "main/alert";
-		}
-		else{
-			
-			return "myPage/myCart";
-		}
-	}
+	
+	
 	
 	
 }

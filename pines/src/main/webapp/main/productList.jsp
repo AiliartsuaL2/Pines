@@ -93,6 +93,9 @@ a { text-decoration:none }
 	    <c:set var="i" value="${i+1 }" />
 	  </c:forEach>
 	</table>
+		<c:if test="${empty resultList }">
+    		<span> 검색하신 상품이 존재하지 않습니다.</span>
+		</c:if>
 </div>
 </div>
 </main>

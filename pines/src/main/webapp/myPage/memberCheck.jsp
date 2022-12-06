@@ -153,6 +153,7 @@ a { text-decoration:none }
     margin-left: 20px;
     width: 95%;
     font-size: 16px;
+    background-color: white;
 }
 
 
@@ -239,7 +240,7 @@ a { text-decoration:none }
 				<div class = "category_box">
 	      				<label class="name_category_case">아이디</label>
 	      			<div class = "empty_box">
-	      				<input type="text" id="userId" name="userId" class="category_value" value="${mainVO.userId}">
+	      				<input disabled type="text" id="userId" name="userId" class="category_value" value="${mainVO.userId}">
 	      			</div>
 				</div>
 				<div class = "category_box">

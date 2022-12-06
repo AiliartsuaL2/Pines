@@ -133,6 +133,27 @@
          	  AND  TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= o.PURCHASE_DATE
        		ORDER BY o.PURCHASE_DATE DESC
 		</select>
+		
+		<select id="sellerDAO.selectSellerInfo" resultClass="egovMap">
+      		SELECT BUSINESS_REG_NUM
+      			 , STORE_NAME
+      			 , SELLER_TYPE
+      			 , SIGN_STORE
+      			 , ACCOUNT_NUMBER
+      			 , BANK_NAME
+      			 , ACCOUNT_HOLDER
+      		 FROM STORE
+      		WHERE USER_ID = #userId#
+		</select>
+		
+		<update id="sellerDAO.updateSellerModify">
+  			UPDATE "STORE"
+  			SET ACCOUNT_NUMBER = #accountNumber#
+  			  , BANK_NAME = #bankName#
+  			  , ACCOUNT_HOLDER = #accountHolder#
+  			WHERE USER_ID = #userId#
+		</update>
+		
 	
 	
 	

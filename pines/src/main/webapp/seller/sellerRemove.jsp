@@ -124,16 +124,10 @@ footer {
 }
 a { text-decoration:none }
 
-.div_table_title{
-	width : 1920px;
-}
-
-.table_title{    
-    margin-left: 30%;
-    margin-top: 2%;
-	font-size:15pt;
-	font-weight:bold;
-    height: 30px;
+.table_title{   
+	 margin-left: 13%;
+    font-size: 15pt;
+    font-weight: bold;
 }
 
 .table_sub_title{
@@ -150,8 +144,8 @@ a { text-decoration:none }
 	border: 0;
 	position : absolute;
 	width : 48%;
-	top:38%;
-	left:30%;	
+	top:32%;
+	left:35%;	
 }
 .name_box{
     border: 1px solid #BABABA;
@@ -255,7 +249,8 @@ a { text-decoration:none }
 	font-wight : bold;
     cursor: pointer;
     background-color: #FA6A6A;
-    color : #FFFFFF;
+    color : #FFFFFF;    
+    margin-bottom: 5%;
 }
 .btn_confirm{
 	display :inline-block;
@@ -311,6 +306,29 @@ a { text-decoration:none }
     height: 30px;
     margin-top: 5%;
 }
+
+
+.category_btn_order{
+	width:90%;
+	height:100%;
+	border: 1px solid #A5A5A5;
+	font-size : 15px;
+	font-weight : bold;
+	background-color:white;
+	color:#FA6A6A;
+    cursor: pointer;
+}
+.category_btn_info{
+	width:90%;
+	height:100%;
+	border: 1px solid #A5A5A5;
+	font-size : 15px;
+	font-weight : bold;
+	background-color:white;
+	color:#A5A5A5;
+    cursor: pointer;
+}
+
 </style>
 
 <%
@@ -335,11 +353,10 @@ a { text-decoration:none }
 
 <main>
 <%@ include file="../include/searchBar.jsp" %>
-<%@ include file="../include/sellerTopMenu.jsp" %>
-<div class = "div_table_title">
-	<p class = "table_title"> 판매자 해지</p>
-</div>
+<%@ include file="../include/sellerSettingTopMenu.jsp" %>
+
 		<div class="id_input_box">
+	<p class = "table_title"> 판매자 해지</p>
 			<div class = "name_box">
 	      			<div class = "empty_box">
 						<label class="labelClass"><b>판매처 해지 전, 유의사항을 확인해주시기 바랍니다.</b></label><br>

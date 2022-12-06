@@ -441,6 +441,56 @@ public class SellerController {
 		}
 		return message;
 	}
-	
-	
+	@RequestMapping("/sellerInfoCheck.do")
+	public String selectSellerInfoCheck(ModelMap model, MainVO mainVO, HttpSession session) throws Exception{
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+
+			int tmp = memberService.selectSellerCheck(mainVO);
+			if(tmp == 1){
+				model.addAttribute("mainVO", mainVO);
+				return "seller/sellerInfoCheck";
+			}
+			else{
+				model.addAttribute("msg", "판매자로 등록된 사용자만 사용 가능한 메뉴입니다.");
+				model.addAttribute("url", "sellerWrite.do");
+				return "main/alert";	
+			}
+			
+		}
+	}
+	@RequestMapping("/sellerInfo.do")
+	public String selectSellerInfo(ModelMap model, MainVO mainVO, HttpSession session) throws Exception{
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		if(mainVO.getUserId() == null){ // 로그인 안된경우
+			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
+			model.addAttribute("url", "loginWrite.do");
+			return "main/alert";
+		}
+		else{
+			List<?> list = sellerService.selectSellerInfo(mainVO);
+			model.addAttribute("sellerList", list);
+			return "seller/sellerInfo";
+		}
+	}
+	@RequestMapping("/sellerInfoModify.do")
+	@ResponseBody
+	public String updateSellerInfoModify(ModelMap model, MainVO mainVO, HttpSession session) throws Exception{
+		String message = "";
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		int count = sellerService.updateSellerModify(mainVO);
+		if(count == 1){ // 성공
+			message = "ok";
+			logger.info("판매처 정보 수정 성공");
+		}
+		else{
+			logger.info("판매처 정보 수정 실패");
+		}
+		return message;
+	}
 }

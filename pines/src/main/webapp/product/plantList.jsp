@@ -99,7 +99,13 @@ a { text-decoration:none }
 <%@ include file="../include/navigationBar.jsp" %>
 
 	<div class = "div_table_title">
-		<p class = "table_title"> 식물</p>
+		<c:if test="${empty categoryId}">
+			<p class = "table_title"> 식물 </p>
+		</c:if>
+		<c:if test="${not empty categoryId}">
+			<p class = "table_title">  식물 - ${categoryId} </p>
+		</c:if>
+		
 	</div>
 	<div class = "div_Wrap">
 	<div class="div3">
@@ -120,6 +126,14 @@ a { text-decoration:none }
 	    <c:set var="i" value="${i+1 }" />
 	  </c:forEach>
 	</table>
+		<c:if test="${empty plantList}">
+			<c:if test="${empty categoryId}">
+    			<span>상품이 존재하지 않습니다.</span>
+			</c:if>
+			<c:if test="${not empty categoryId}">
+    			<span>${categoryId} 상품이 존재하지 않습니다.</span>
+			</c:if>
+		</c:if>
 </div>
 </div>
 </main>

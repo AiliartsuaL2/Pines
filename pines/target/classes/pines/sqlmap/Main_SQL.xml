@@ -864,6 +864,9 @@
 								, SETTLE_AMOUNT
 								, STORE_ID
 								, SALES_DATE
+								, ACCOUNT_NUMBER
+								, ACCOUNT_HOLDER
+								, BANK_NAME
 							 )
 					  VALUES(
 					  		    REVENUE_SEQ.NEXTVAL
@@ -876,6 +879,10 @@
 					  		       WHERE USER_ID = #userId#
 					  		     )
 					  		  , TO_DATE(#salesDate#,'YYYYMMDDHH24MISS')
+					  		  , (SELECT ACCOUNT_NUMBER FROM STORE WHERE USER_ID = #userId#)
+					  		  , (SELECT ACCOUNT_Holder FROM STORE WHERE USER_ID = #userId#)
+					  		  , (SELECT BANK_NAME FROM STORE WHERE USER_ID = #userId#)
+					  		  
 						)
 	</insert>
 	
@@ -908,6 +915,10 @@
 				 , SETTLE_AMOUNT
 				 , NUM_OF_SALES
 				 , TO_CHAR(SALES_DATE,'yyyy-mm-dd') AS SALES_DATE
+		         ,  ACCOUNT_NUMBER 
+     			 ,  BANK_NAME 
+     			 ,  ACCOUNT_HOLDER 
+				 
   			  FROM REVENUE r 
  			 WHERE STORE_ID = (
                     			SELECT STORE_ID

@@ -98,7 +98,7 @@
 		<div class="topBar">
 			<input type="button" class="page_btn" value="상품" onclick="location='sellerCheck.do'">
 			<input type="button" class="page_btn" value="주문 / 정산" onclick="location='sellerOrderInquiry.do'">
-			<input type="button" class="page_btn" value="판매자 설정" onclick="location='sellerWrite.do'">
+			<input type="button" class="page_btn" value="판매자 설정" onclick="location='sellerInfoCheck.do'">
 			
 		<%	
 		if(USERID == null){ // 로그인 안했을경우

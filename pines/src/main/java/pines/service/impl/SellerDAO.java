@@ -55,4 +55,14 @@ public class SellerDAO extends EgovAbstractDAO{
 		return (int) select("sellerDAO.selectSearchBySellerOrderListTotal",mainVO);
 	}
 
+	public List<?> selectSellerInfo(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return list("sellerDAO.selectSellerInfo",mainVO);
+	}
+
+	public int updateSellerModify(MainVO mainVO) {
+		// TODO Auto-generated method stub
+		return (int) update("sellerDAO.updateSellerModify",mainVO);
+	}
+
 }

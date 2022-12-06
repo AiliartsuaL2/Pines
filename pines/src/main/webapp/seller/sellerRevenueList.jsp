@@ -15,6 +15,12 @@
 <script src="/pines/script/jquery-ui.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+<script>
+
+
+</script>
+
+
 </head>
 
 <style>
@@ -143,6 +149,71 @@ a { text-decoration:none }
     border: none;
     background-color: white;
 }
+.bank_head{
+	width:101.6%;
+	margin-top:-0.1%;
+}
+.bank_account{
+	width:101.6%;
+	margin-bottom:5%;
+	margin-top:-0.5%;
+}
+
+
+.userInfo{
+	color: black;
+    background: #FCDDDC;
+    width: 27%;
+    border: 1px solid #A8A5A5;
+    font-size: 11pt;
+    font-weight: bold;
+    text-align: center;
+    height: 25px;
+
+}
+.userData{
+    color: black;
+    background: white;
+    border: 1px solid #A8A5A5;
+    width: 15%;
+    font-size: 11pt;
+    text-align: center;
+    font-weight: bold;
+    margin-left: -1.05%;
+    height: 25px;	
+}
+.bankInfo{
+    color: black;
+    border: 1px solid #A8A5A5;
+    background: #FCDDDC;
+    width: 26.9%;
+    text-align: center;
+    margin-left: -1%;
+    font-size: 11pt;
+    font-weight: bold;
+    height: 25px;
+}
+.bankName{
+	color: black;
+    background: white;
+    border: 1px solid #A8A5A5;
+    width: 26.9%;
+    margin-left: -1%;
+    text-align: center;
+    font-size: 11pt;
+    font-weight: bold;
+    height: 25px;
+}
+.accountNum{
+	color: black;
+    background: white;
+    border: 1px solid #A8A5A5;
+    width: 70%;
+    margin-left: -1%;
+    text-align: center;
+    font-size: 14pt;
+    height: 25px;
+}
 </style>
 
 <%
@@ -174,13 +245,13 @@ a { text-decoration:none }
 	</div>
 	<div class="id_input_box">
 	<form id="frmData">
-	<table class = "product_table">
 		<c:forEach items="${revenueList}" var="revenue" varStatus="status">
+		<table class = "product_table">
 		<tr>
-			<th class="table_head" width="6%">매출 일자</th>
+			<th class="table_head" width="7%">매출 일자</th>
 			<th class="table_head" width="4%">매출 건수</th>
 			<th class="table_head" width="7%">매출액</th>
-			<th class="table_head" width="6%">정산일자</th>
+			<th class="table_head" width="7%">정산일자</th>
 		</tr>
 		<tr class="pr_tr" align="center">
 			<td class="table_cell"><input class="val" id="salesDate" name="salesDate" type="text" disabled value="${revenue.salesDate}"></td>
@@ -188,8 +259,22 @@ a { text-decoration:none }
 			<td class="table_cell"><input class="val" id="settleAmount" name="dayAmount" type="text" disabled value="${revenue.settleAmount}">원</td>
 			<td class="table_cell"><input class="val" id="settleDate" name="dayAmount" type="text" disabled value="${revenue.settleDate}"></td>
 		</tr>
+		</table>
+		
+		<div class="bank_head">
+			<input class="userInfo" disabled type="text" value="예금주">
+			<input class="userData" disabled type="text" value="${revenue.accountHolder}">
+			
+			<input class="bankInfo" disabled type="text" value="은행명">
+			<input class="bankName" disabled type="text" value="${revenue.bankName}">
+		</div>
+		<div class="bank_account">
+			<input class= "userInfo" disabled type="text" value="계좌번호">
+			<input disabled class="accountNum" type="text" value="${revenue.accountNumber}">
+		</div>
+		
+		
 		</c:forEach>
-	</table>
 		<c:if test="${empty revenueList }">
     		<span> 정산을 완료한 일자가 존재하지 않습니다.</span>
 		</c:if>

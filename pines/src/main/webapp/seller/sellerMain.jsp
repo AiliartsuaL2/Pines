@@ -57,9 +57,11 @@ $(function(){
 				var totalPage = parseInt(JSON.stringify(data['obj2'][0]['totalPage']));
 
 				if(totalPage > 1 ){
+					html += "<div class='btn_page'>";
 					for(var i=1; i<=totalPage; i++){
 						html +="<input type='button' class='btn_viewPage' id='btn_viewPage' value='"+i+"'>"
 					}
+					html += "</div>";
 				}
 				$("#ajaxDiv").append(html);
 			},
@@ -189,10 +191,12 @@ footer {
     height: 310px;
 }
 a { text-decoration:none }
-.div_Wrap{
+
+.div_Wrap1{
   display: flex;
   justify-content: left;
 }
+
 .table_title{
 	margin-left:12%;
 	margin-top:2%;
@@ -285,6 +289,13 @@ input, progress {
   display: flex;
   flex-wrap: wrap;
 }
+
+.btn_page{
+	margin-top : 5%; 
+    text-align: center;
+    margin-bottom : 5%;
+}
+
 .btn_viewPage{
 	background-color:white;
 	color:#A5A5A5;
@@ -329,7 +340,7 @@ input, progress {
 	<p class = "table_title"> 상품 목록 </p>
 </div>
 
-	<div class = "div_Wrap">
+	<div class = "div_Wrap1">
 	<div class="div3">
 		<div class="search_bar">		
 	<form name="frm_search" id="frm_search">
@@ -388,9 +399,11 @@ input, progress {
 	</table>
 		<c:choose> 
 			<c:when test="${totalPage > 1}">
+			<div class="btn_page">
 			<c:forEach var="i" begin="1" end="${totalPage}">
 				<input type="button" class="btn_viewPage" value="${i}" onclick="location='sellerCheck.do?viewPage=${i}'">
 			</c:forEach>
+			</div>
 			</c:when> 
 		</c:choose> 
 	</div>
