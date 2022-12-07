@@ -26,9 +26,9 @@ public class MemberDAO extends EgovAbstractDAO{
 		return (int) select("memberDAO.selectIdFindCount",vo);
 	}
 
-	public MemberVO selectIdFind(MemberVO vo) {
+	public String selectIdFind(MemberVO vo) {
 		// TODO Auto-generated method stub
-		return (MemberVO) select("memberDAO.selectIdFind",vo);
+		return (String) select("memberDAO.selectIdFind",vo);
 	}
 
 	public int selectMemberIdCheck(String userId) {

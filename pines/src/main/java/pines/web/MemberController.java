@@ -39,24 +39,70 @@ public class MemberController {
 	 * 회원 등록 프로그램
 	 */
 	@RequestMapping("/memberWrite.do")
-	public String memberWrite() throws Exception{
+	public String memberWrite(HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession(true);
+		
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+		generator.initialize(1024);
+		KeyPair keyPair = generator.genKeyPair();
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+		PublicKey publicKey = keyPair.getPublic();
+		PrivateKey privateKey = keyPair.getPrivate();
+		
+		session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+		RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+		String publicKeyModulus = publicSpec.getModulus().toString(16);
+		String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+		
+		request.setAttribute("RSAModulus", publicKeyModulus);
+		request.setAttribute("RSAExponent", publicKeyExponent);
+		
 		logger.info("회원가입창 진입");
 		return "member/memberWrite";
 	}
 	
 	@RequestMapping("/memberWriteSave.do")
 	@ResponseBody
-	public String memberWriteSave(MemberVO vo) throws Exception{
+	public String memberWriteSave(MemberVO vo, HttpServletRequest request) throws Exception{
 		String message = "";
 		String result = "";
-		result = memberService.insertMember(vo);
-		
-		if(result == null){ // 성공
-			message = "ok";
-			logger.info("회원가입 성공");
+
+		String userId = vo.getUserId();
+		String pass = vo.getPass();
+		String name = vo.getName();
+
+		logger.info("암호화된 아이디 : "+userId);
+
+		HttpSession session = request.getSession();
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_key_");//개인키를 다시 세션에서  받아옴
+		if(privateKey == null){
+			logger.info("로그인체크 실패");
+			message="false";
 		}
 		else{
-			logger.info("회원가입창 실패");
+			try{
+				String _userId = decryptRsa(privateKey,userId); // 복호화 
+				String _pass = decryptRsa(privateKey,pass);
+				String _name = decryptRsa(privateKey,name);
+				
+				vo.setUserId(_userId);
+				vo.setPass(_pass);
+				vo.setName(_name);
+				
+				result = memberService.insertMember(vo);	
+				
+				if(result == null){ // 성공
+					message = "ok";
+					logger.info("회원가입 성공");
+				}
+				else{
+					logger.info("회원가입창 실패");
+				}
+				
+			}catch(Exception e){
+				logger.info("로그인 체크 에러"+e.getMessage());
+				message="false";
+			}	
 		}
 		return message;
 	}
@@ -188,15 +234,68 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/idFind.do")
-	public String memberIdFind() throws Exception{
+	public String memberIdFind(HttpServletRequest request) throws Exception{
+
+		HttpSession session = request.getSession(true);
+		
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+		generator.initialize(1024);
+		KeyPair keyPair = generator.genKeyPair();
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+		PublicKey publicKey = keyPair.getPublic();
+		PrivateKey privateKey = keyPair.getPrivate();
+		
+		session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+		RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+		String publicKeyModulus = publicSpec.getModulus().toString(16);
+		String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+		
+		request.setAttribute("RSAModulus", publicKeyModulus);
+		request.setAttribute("RSAExponent", publicKeyExponent);
+		
 		logger.info("아이디 찾기 창 진입");
 		return "member/memberIdFind";
 	}
 	
 	@RequestMapping("/idFindOk.do")
-	public String memberIdFindOk(MemberVO vo, ModelMap model) throws Exception{
-		MemberVO memberVO= memberService.selectIdFind(vo);
-		model.addAttribute("memberVO",memberVO);
+	public String memberIdFindOk(MemberVO vo, ModelMap model,  HttpServletRequest request) throws Exception{
+		
+		String name = vo.getName();
+		String birth = vo.getBirth();
+		String phone = vo.getPhone();
+		
+		HttpSession session = request.getSession();
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_key_");//개인키를 다시 세션에서  받아옴
+		
+		if(privateKey == null){
+			logger.info("rsa 체크 실패");
+			model.addAttribute("message","에러가 발생하였습니다.");
+		}
+		else{
+			try{
+				String _name = decryptRsa(privateKey,name); // 복호화 
+				String _birth = decryptRsa(privateKey,birth);
+				String _phone = decryptRsa(privateKey,phone);
+				
+				vo.setName(_name);
+				vo.setBirth(_birth);
+				vo.setPhone(_phone);
+
+				String userId = memberService.selectIdFind(vo);
+				
+				
+				if(userId==null){ // 일치하지 않을경우
+					model.addAttribute("message","회원정보가 일치하지 않습니다.");
+				}
+				else{ //일치할경우
+					model.addAttribute("userId",userId);
+				}
+				
+			}catch(Exception e){
+				model.addAttribute("message","에러가 발생하였습니다.");
+				logger.info("로그인 체크 에러"+e.getMessage());
+			}	
+		}
 		return "member/findPopUp";
 	}
 	

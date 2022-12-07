@@ -53,7 +53,7 @@
 		   AND DELETE_STATUS = 'N'
 	</select>
 	
-	<select id="memberDAO.selectIdFind"  resultMap="memRe" >
+	<select id="memberDAO.selectIdFind"  resultClass="java.lang.String" >
 		SELECT user_Id
 		  FROM MEMBER
 		 WHERE name = #name#

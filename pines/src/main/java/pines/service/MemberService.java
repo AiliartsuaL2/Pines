@@ -9,7 +9,7 @@ public interface MemberService {
 
 	public int selectIdFindCount(MemberVO vo) throws Exception;
 
-	public MemberVO selectIdFind(MemberVO vo) throws Exception;
+	public String selectIdFind(MemberVO vo) throws Exception;
 
 	public int selectMemberIdCheck(String userId) throws Exception;
 

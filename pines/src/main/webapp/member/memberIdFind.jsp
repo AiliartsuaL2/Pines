@@ -10,6 +10,11 @@
  <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/jsbn.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rsa.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
+
 
 <script>
   $( function() {  
@@ -27,17 +32,28 @@
 		  $("#name").focus();
 		  return false;
 	  }
-	  else if(phone == ""){
+	  if(phone == ""){
 		  alert("휴대폰 번호를 입력해주세요.");
 		  $("#phone").focus();
 		  return false;
 	  }
-	  else if(birth == ""){
+	  if(birth == ""){
 		  alert("생년월일을 입력해주세요.");
 		  $("#birth").focus();
 		  return false;
 	  }
-	  else{
+
+		var rsa = new RSAKey();
+		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
+		name = rsa.encrypt(name);
+		phone = rsa.encrypt(phone);
+		birth = rsa.encrypt(birth);
+		
+
+		  $("#name").val(name);
+		  $("#phone").val(phone);
+		  $("#birth").val(birth);
+		
 		  var url = "";
 		  var windowTargetName = "targetName";
 		  var features = "scrollbars=yes,width=500,height=300,location=no, resizable=yes";
@@ -49,7 +65,10 @@
 		  frm.target=windowTargetName;
 		  frm.submit();
 		  //document.frm.submit();
-	  }
+
+		  $("#name").val("");
+		  $("#phone").val("");
+		  $("#birth").val("");
     });
   });
   </script>
@@ -216,6 +235,8 @@
 <div class = "whole_wrap">
 
 <form name ="frm" method="post" id="frm" action="idFindOk.do">
+<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+<input type="hidden" id="RSAExponent" value="${RSAExponent}">
 <div class="wrapper">
 	<div class="wrap">
 			<div class="subjecet">

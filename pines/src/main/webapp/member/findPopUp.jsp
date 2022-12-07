@@ -11,22 +11,11 @@
 <title>Insert title here</title>
 </head>
 <body>	
-
-
-<%
-		MemberVO memberVO = (MemberVO) request.getAttribute("memberVO") ;
-%>
-
-		<%
-		if(memberVO == null){ // 아이디가 없을경우
-		%>
-			<span>일치하는 회원 정보가 없습니다.</span>
-		<%
-		} else { // 로그인 성공시
-		%>
-			<span>회원님의 아이디는 : ${memberVO.userId} 입니다.</span>	
-		<%
-		}
-		%>
+		<c:if test="${empty userId}">
+			<span>${message}</span>
+		</c:if>
+		<c:if test="${not empty userId}">
+    		<span>회원님의 아이디는 : ${userId} 입니다.</span>
+		</c:if>
 </body>
 </html>
