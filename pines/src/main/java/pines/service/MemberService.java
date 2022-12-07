@@ -31,5 +31,7 @@ public interface MemberService {
 
 	public int deleteMember(MemberVO memberVO) throws Exception;
 
+	public int selectPreMemberPw(MemberVO vo) throws Exception;
+
 
 }

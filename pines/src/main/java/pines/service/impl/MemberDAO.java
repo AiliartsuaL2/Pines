@@ -80,4 +80,9 @@ public class MemberDAO extends EgovAbstractDAO{
 		// TODO Auto-generated method stub
 		return (int) update("memberDAO.deleteMember",memberVO);
 	}
+
+	public int selectPreMemberPw(MemberVO vo) {
+		// TODO Auto-generated method stub
+		return (int) select("memberDAO.selectPreMemberPw",vo);
+	}
 }

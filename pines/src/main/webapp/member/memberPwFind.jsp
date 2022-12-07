@@ -10,6 +10,10 @@
  <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/jsbn.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rsa.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
 
 <script>
   $( function() {  
@@ -45,6 +49,14 @@
 		  return false;
 	  }
 
+		var rsa = new RSAKey();
+		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
+		
+		name = rsa.encrypt(name);
+		phone = rsa.encrypt(phone);
+		birth = rsa.encrypt(birth);
+		
+		
 	  $("#userId").val(userId);
 	  $("#name").val(name);
 	  $("#phone").val(phone);
@@ -64,8 +76,15 @@
     			if(result == "ok") {
    				  	document.frm.submit();
     			}
-    			else{
+    			else if(result == "false"){
     				alert("회원 정보가 올바르지 않습니다.");
+    				  $("#userId").val("");
+    				  $("#name").val("");
+    				  $("#phone").val("");
+    				  $("#birth").val("");
+    			}
+    			else if(result == "error"){
+    				alert("에러가 발생하였습니다. 관리자에게 문의 바랍니다.");
     			}
     		},
     		error: function() {  // 장애발생
@@ -258,7 +277,9 @@
 <body>
 <div class = "whole_wrap">
 
-<form name ="frm" id="frm" action="pwSub.do" >
+<form name ="frm" id="frm" method="post" action="pwSub.do" >
+<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+<input type="hidden" id="RSAExponent" value="${RSAExponent}">
 <div class="wrapper">
 	<div class="wrap">
 			<div class="subjecet">

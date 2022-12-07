@@ -146,6 +146,14 @@
 		 WHERE USER_ID = #userId#
 	</update>
 	
+	<select id="memberDAO.selectPreMemberPw" resultClass = "java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE USER_ID = #userId#
+		   AND PASS = #pass#
+	</select>
+	
+	
 	
 	
 </sqlMap>

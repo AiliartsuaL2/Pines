@@ -300,44 +300,144 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/pwFind.do")
-	public String memberPwFind() throws Exception{
+	public String memberPwFind( HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession(true);
+		
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+		generator.initialize(1024);
+		KeyPair keyPair = generator.genKeyPair();
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+		PublicKey publicKey = keyPair.getPublic();
+		PrivateKey privateKey = keyPair.getPrivate();
+		
+		session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+		RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+		String publicKeyModulus = publicSpec.getModulus().toString(16);
+		String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+		
+		request.setAttribute("RSAModulus", publicKeyModulus);
+		request.setAttribute("RSAExponent", publicKeyExponent);
+		
 		return "member/memberPwFind";
 	}
 
 	@RequestMapping("/pwCheck.do")
 	@ResponseBody
-	public String memberPwFindSub(MemberVO vo, HttpSession session) throws Exception{
+	public String memberPwFindSub(MemberVO vo, HttpServletRequest request) throws Exception{
 		String message = "";
-		int count = memberService.selectPwFindCount(vo);
-		if(count == 1){
-			message = "ok";
-			logger.info("비밀번호 변경1_정보일치");
+		
+		String userId = vo.getUserId();
+		String name = vo.getName();
+		String phone = vo.getPhone();
+		String birth = vo.getBirth();
+		
+		HttpSession session = request.getSession();
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_key_");//개인키를 다시 세션에서  받아옴
+		
+		
+		if(privateKey == null){
+			logger.info("rsa 체크 실패");
+			message = "failCheck";
 		}
 		else{
-			logger.info("비밀번호 변경1_정보 불일치");
+			try{
+				String _name = decryptRsa(privateKey,name); // 복호화 
+				String _birth = decryptRsa(privateKey,birth);
+				String _phone = decryptRsa(privateKey,phone);
+
+				vo.setName(_name);
+				vo.setBirth(_birth);
+				vo.setPhone(_phone);
+
+				int count = memberService.selectPwFindCount(vo);
+				if(count == 1){
+					message = "ok";
+					logger.info("비밀번호 변경1_정보일치");
+				}
+				else{
+					message = "false";
+					logger.info("비밀번호 변경1_정보 불일치");
+				}
+				
+			}catch(Exception e){
+				message = "error";
+				logger.info("로그인 체크 에러"+e.getMessage());
+			}	
 		}
 		return message;
 	}
+	
+	
 	@RequestMapping("/pwSub.do")
-	public String memberPwSub(HttpServletRequest httpServletRequest,ModelMap model) throws Exception{
-		String userId = httpServletRequest.getParameter("userId");
-        model.addAttribute("userId",userId);
+	public String memberPwSub(HttpServletRequest request) throws Exception{
+		String userId = request.getParameter("userId");
+        HttpSession session = request.getSession(true);
+		
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+		generator.initialize(1024);
+		KeyPair keyPair = generator.genKeyPair();
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+		PublicKey publicKey = keyPair.getPublic();
+		PrivateKey privateKey = keyPair.getPrivate();
+		
+		session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+		RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+		String publicKeyModulus = publicSpec.getModulus().toString(16);
+		String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+		
+		request.setAttribute("RSAModulus", publicKeyModulus);
+		request.setAttribute("RSAExponent", publicKeyExponent);
+		request.setAttribute("userId",userId);
+        
 		return "member/memberPwSub";
 	}
 
 	@RequestMapping("/pwCheck2.do")
 	@ResponseBody
-	public String memberPwCheck2(MemberVO vo) throws Exception{
+	public String memberPwCheck2(HttpServletRequest request, MemberVO vo) throws Exception{
 		String message = "";
-		int count = memberService.updateMemberPw(vo);
-		if(count == 1){
-			message = "ok";
-			logger.info("비밀번호 변경 성공");
+		
+		String userId = vo.getUserId();
+		String pass = vo.getPass();
+		
+		System.out.println("userId : "+userId);
+		
+		HttpSession session = request.getSession();
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_key_");//개인키를 다시 세션에서  받아옴
+		
+		if(privateKey == null){
+			logger.info("rsa 체크 실패");
+			message = "failCheck";
 		}
 		else{
-			message = "fail";
+			try{
+				String _userId = decryptRsa(privateKey,userId); // 복호화 
+				String _pass = decryptRsa(privateKey,pass); // 복호화 
+
+				vo.setUserId(_userId);
+				vo.setPass(_pass);
+				
+				int cnt = memberService.selectPreMemberPw(vo);
+				if(cnt == 1){
+					logger.info("이전 비밀번호 사용");
+					return "prePass";
+				}
+				
+				int count = memberService.updateMemberPw(vo);
+				if(count == 1){
+					message = "ok";
+					logger.info("비밀번호 변경2_정보일치");
+				}
+				else{
+					message = "false";
+					logger.info("비밀번호 변경2_정보 불일치");
+				}
+				
+			}catch(Exception e){
+				message = "error";
+				logger.info("로그인 체크 에러"+e.getMessage());
+			}	
 		}
-		System.out.println(count);
 		return message;
 	}
 	

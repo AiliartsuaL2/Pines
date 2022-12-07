@@ -10,17 +10,21 @@
  <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/jsbn.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rsa.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
 
 
 
 <script>
 $(function(){
-	
+
 	$("#btn_submit").click(function(){
-		var userId = '${userId}';
+		var rawUserId = $("#userId").val();
 		var pass = $.trim($("#pass").val());
 		var pw2nd = $.trim($("#pw2nd").val());
-	
+		
 		if( pass == "" ) {
 			alert("비밀번호를 입력해주세요.");
 			$("#pass").focus();
@@ -31,34 +35,54 @@ $(function(){
 			$("#pw2nd").focus();
 			return false;
 		}
-		else{
-			if (pass==pw2nd){
-				$.ajax({
-	    		type:"POST",
-	    		data: "userId="+userId+"&pass="+pass,   // json(전송)타입
-	    		url:"pwCheck2.do",
-	    		dataType:"text",     // 리턴 타입
-	    		success: function(result) {
-	    			if(result == "ok") {
-	    				alert("비밀번호를 성공적으로 변경하였습니다.");
-	    				location="loginWrite.do";
-	    			}
-	    			else{
-	    				alert("변경에 실패하였습니다. 관리자에게 문의해주세요");
-	    			}
-	    		},
-	    		error: function() {  // 장애발생
-	    			alert("오류발생");
-	    		}
-				});
-			}
-			else{
-				alert("비밀번호가 일치하지 않습니다.");
-				$("#pw2nd").focus();
-				return false;
-			}
-		}
 
+		if (pass!=pw2nd){
+			alert("비밀번호가 일치하지 않습니다.");
+			$("#pw2nd").focus();
+			return false;
+		}
+		
+		var rsa = new RSAKey();
+		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
+		
+		var userId = rsa.encrypt(rawUserId); //암호화
+		pass = rsa.encrypt(pass);
+		pw2nd = rsa.encrypt(pw2nd);
+		
+		
+		$("#userId").val(userId);
+		$("#pass").val(pass);
+		$("#pw2nd").val(pw2nd);
+		
+		var formData = $("#frm").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
+		
+		$.ajax({
+	    	type:"POST",
+	    	data: formData,   // json(전송)타입
+	    	url:"pwCheck2.do",
+	    	dataType:"text",     // 리턴 타입
+	    	success: function(result) {
+	    		if(result == "prePass"){
+    				alert("기존에 사용중인 비밀번호입니다. 새로운 비밀번호를 입력 바랍니다.");
+    				$("#userId").val(rawUserId);
+    				$("#pass").val("");
+    				$("#pw2nd").val("");
+	    		}
+	    		else if(result == "ok") {
+	    			alert("비밀번호를 성공적으로 변경하였습니다.");
+	    			location="loginWrite.do";
+	    		}
+    			else if(result == "false"){
+    				alert("회원 정보가 올바르지 않습니다.");
+    			}
+    			else if(result == "error"){
+    				alert("에러가 발생하였습니다. 관리자에게 문의 바랍니다.");
+    			}
+	    	},
+	    	error: function() {  // 장애발생
+	    		alert("오류발생");
+	    	}
+		});
 	});
 });
 </script>
@@ -207,7 +231,10 @@ $(function(){
 <div class = "whole_wrap">
 
 
-<form name ="frm" method="post" id="frm">
+<form name ="frm" id="frm">
+<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+<input type="hidden" id="RSAExponent" value="${RSAExponent}">
+<input type="hidden" id="userId" name="userId" value="${userId}">
 <div class="wrapper">
 	<div class="wrap">
 			<div class="subjecet">
