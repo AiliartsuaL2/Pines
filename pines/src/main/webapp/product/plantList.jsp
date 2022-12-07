@@ -19,22 +19,22 @@ $(function(){
 	var categoryId =$("#categoryId").val();
 	var parentCategoryId =$("#parentCategoryId").val();
 	if(parentCategoryId == ""){
-		if(categoryId == 'seed'){
+		if(categoryId == '묘목 / 묘종'){
 			$(".btn_seed").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'airplant'){
+		else if(categoryId == '식물 / 공중식물'){
 			$(".btn_airplant").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'potted'){
+		else if(categoryId == '관엽 / 공기정화'){
 			$(".btn_potted").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'succulents'){
+		else if(categoryId == '다육 / 선인장'){
 			$(".btn_succulents").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'orchid'){
+		else if(categoryId == '동양란 / 서양란'){
 			$(".btn_orchid").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'herb'){
+		else if(categoryId == '야생 / 허브 / 분재'){
 			$(".btn_herb").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}	
 	}
@@ -110,11 +110,11 @@ a { text-decoration:none }
 	<div class = "div_Wrap">
 	<div class="div3">
 	<input type="hidden" id="parentCategoryId" value="${parentCategoryId.parentCategoryId}">
+	  <input type="hidden" id="categoryId" value="${categoryId}">
 	<c:set var="i" value="0" />
 	<c:set var="j" value="3" />
 	<table class = "table_product" width="850">
 	  <c:forEach items="${plantList}" var="result">
-	  <input type="hidden" id="categoryId" value="${result.categoryId}">
 	    <c:if test="${i%j == 0 }">
 	    <tr>
 	    </c:if>

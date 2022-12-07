@@ -63,7 +63,6 @@ $(function(){
     				alert("로그인 정보를 다시 확인해주세요.");
     			}
     			else{
-    				
     				alert(rawUserId+"님 로그인 되었습니다.");
     				if(url == "null"){
         				location="mainList.do";

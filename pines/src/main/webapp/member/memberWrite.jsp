@@ -31,6 +31,7 @@
                 }
             }).open();
         });
+        
     $("#btn_idcheck").click(function(){
       var userId = $("#userId").val();
       userId = $.trim(userId);

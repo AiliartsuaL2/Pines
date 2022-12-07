@@ -611,8 +611,9 @@
       	FROM "ORDER" o join PRODUCT p 
        	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        WHERE USER_ID = #userId#
+         AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
+         AND SYSDATE >= PURCHASE_DATE
        ORDER BY o.PURCHASE_DATE DESC
-		
 	</select>
 		
 		
@@ -644,6 +645,8 @@
       								FROM "ORDER" o join PRODUCT p 
        	  						  	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        							   WHERE USER_ID = #userId#
+       							     AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
+       							     AND SYSDATE >= PURCHASE_DATE
        							   ORDER BY o.PURCHASE_DATE DESC
        							   )a)  b
         			  	  WHERE rn >= #startIndex#  
@@ -692,8 +695,8 @@
        	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        WHERE USER_ID = #userId#
          AND $searchGubun$ like '%$searchText$%'
-         AND #startOrderPeriod# <![CDATA[<=]]>  o.PURCHASE_DATE
-         AND #endOrderPeriod# >= o.PURCHASE_DATE
+         AND TO_DATE(#startOrderPeriod#,'YYYYMMDDHH24MISS') <![CDATA[<=]]>  o.PURCHASE_DATE
+         AND TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= o.PURCHASE_DATE
        ORDER BY o.PURCHASE_DATE DESC
 		
 	</select>
@@ -728,8 +731,9 @@
        	  					 			ON o.PRODUCT_ID = p.PRODUCT_ID 
        					 			   WHERE USER_ID = #userId#
          					 			 AND $searchGubun$ like '%$searchText$%'
-         					 		 	 AND #startOrderPeriod# <![CDATA[<=]]>  o.PURCHASE_DATE
-         					 			 AND #endOrderPeriod# >= o.PURCHASE_DATE
+              			      	   		 AND TO_DATE(#startOrderPeriod#,'YYYYMMDDHH24MISS') <![CDATA[<=]]>  o.PURCHASE_DATE
+         	  							 AND TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= o.PURCHASE_DATE
+         					 			 
        					 			ORDER BY o.PURCHASE_DATE DESC
        							   )a)  b
         			  	  WHERE rn >= #startIndex#  
@@ -769,6 +773,8 @@
                             		               WHERE USER_ID = #userId#
                               		                 AND SIGN_STORE = 'Y'
                            		                )
+                           		 AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
+                            	 AND SYSDATE >= PURCHASE_DATE
         		               ORDER BY o.PURCHASE_DATE DESC
        						   )a)  b
         			  	WHERE rn >= #startIndex#  
@@ -909,23 +915,35 @@
 	</update>
 	
 		<select id="mainDAO.selectSellerRevenueList" resultClass="egovMap">
-			SELECT REVENUE_ID
-				 , STORE_ID
-				 , TO_CHAR(SETTLE_DATE,'yyyy-mm-dd') AS SETTLE_DATE
-				 , SETTLE_AMOUNT
-				 , NUM_OF_SALES
-				 , TO_CHAR(SALES_DATE,'yyyy-mm-dd') AS SALES_DATE
-		         ,  ACCOUNT_NUMBER 
-     			 ,  BANK_NAME 
-     			 ,  ACCOUNT_HOLDER 
+		
+      		SELECT b.*
+	    	   FROM ( 
+	          		 SELECT ROWNUM rn, a.*
+	            	   FROM (
+							  SELECT REVENUE_ID
+						    , STORE_ID
+				 		    , TO_CHAR(SETTLE_DATE,'yyyy-mm-dd') AS SETTLE_DATE
+				 		    , SETTLE_AMOUNT
+				 		    , NUM_OF_SALES
+				 		    , TO_CHAR(SALES_DATE,'yyyy-mm-dd') AS SALES_DATE
+		         		    ,  ACCOUNT_NUMBER 
+     			 		    ,  BANK_NAME 
+     			 		    ,  ACCOUNT_HOLDER 
 				 
-  			  FROM REVENUE r 
- 			 WHERE STORE_ID = (
-                    			SELECT STORE_ID
-                      			  FROM STORE s 
-                     			 WHERE USER_ID = #userId#
-                                   AND SIGN_STORE = 'Y'
-                    		   )
+  			  		    FROM REVENUE r 
+ 					   WHERE STORE_ID = (
+                    					    SELECT STORE_ID
+                      			  		    FROM STORE s 
+                     			 		    WHERE USER_ID = #userId#
+                                   		    AND SIGN_STORE = 'Y'
+                    		   		    )
+                    		   
+       		   		     AND to_char(add_months(sysdate,-1),'yyyy-mm-dd') <![CDATA[<=]]> SALES_DATE
+       		   		     AND SYSDATE >= SALES_DATE
+       	  		    ORDER BY SALES_DATE 
+       				)a)  b
+              WHERE rn >= #startIndex#  
+          		AND rn <![CDATA[<=]]> #endIndex#
 		</select>
 	
 	

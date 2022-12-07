@@ -605,9 +605,26 @@ public class MainController {
 	public ModelAndView selectOrderListSearch(MainVO mainVO, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		
+
 		int unit = 5;
 		//총 데이터 개수 
+		
+		//오늘 데이터까지 조회하도록 데이터 설정
+		String startOrderPeriod = mainVO.getStartOrderPeriod();
+		String[] startDate = startOrderPeriod.split("-");
+		
+		String startOrderDay = startDate[0]+startDate[1]+startDate[2]+"00"+"00"+"00";
+		mainVO.setStartOrderPeriod(startOrderDay);
+		
+		
+		String endOrderPeriod = mainVO.getEndOrderPeriod();
+		String[] endDate = endOrderPeriod.split("-");
+		
+		String endOrderDay = endDate[0]+endDate[1]+endDate[2]+"23"+"59"+"59";
+		mainVO.setEndOrderPeriod(endOrderDay);
+		//오늘 데이터까지 조회하도록 데이터 설정
+		
+		
 		int total = mainService.selectOrderListSearchTotal(mainVO);
 		
 		int totalPage = (int) Math.ceil((double)total/unit);

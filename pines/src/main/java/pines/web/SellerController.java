@@ -46,9 +46,7 @@ public class SellerController {
 		}
 		else{
 			int tmp = memberService.selectSellerCheck(mainVO);
-				
 			if(tmp == 1){ // 판매자일경우
-				
 				int unit = 5;
 				//총 데이터 개수 
 				int total = sellerService.selectSellerOrderInquiryTotal(mainVO);
@@ -155,24 +153,13 @@ public class SellerController {
 
 		String startOrderPeriod = mainVO.getStartOrderPeriod();
 		String[] startDate = startOrderPeriod.split("-");
-		if(Integer.parseInt(startDate[1]) < 10){
-			startDate[1] = "0"+startDate[1];
-		}
-		if(Integer.parseInt(startDate[2]) < 10){
-			startDate[2] = "0"+startDate[2];
-		}
+		
 		String startOrderDay = startDate[0]+startDate[1]+startDate[2]+"00"+"00"+"00";
 		mainVO.setStartOrderPeriod(startOrderDay);
 		
 		
 		String endOrderPeriod = mainVO.getEndOrderPeriod();
 		String[] endDate = endOrderPeriod.split("-");
-		if(Integer.parseInt(endDate[1]) < 10){
-			endDate[1] = "0"+endDate[1];
-		}
-		if(Integer.parseInt(endDate[2]) < 10){
-			endDate[2] = "0"+endDate[2];
-		}
 		
 		String endOrderDay = endDate[0]+endDate[1]+endDate[2]+"23"+"59"+"59";
 		mainVO.setEndOrderPeriod(endOrderDay);
@@ -320,12 +307,97 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
+			int unit = 3;
+			//총 데이터 개수 
+			int total = sellerService.selectSellerRevenueTotal(mainVO);
+			
+			int totalPage = (int) Math.ceil((double)total/unit);
+			
+			int viewPage = mainVO.getViewPage();
+			if(viewPage > totalPage || viewPage < 1){
+				viewPage = 1;
+			}
+			// 1-> 1 ,10 // 2->11,20 // 3->21,30
+			int startIndex = (viewPage-1)*unit + 1;
+			int endIndex = startIndex+(unit-1);
+			//total -> 34
+			// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+			int startRowNo = total- (viewPage-1)*unit;
+			
+			//VO에 태워서 넘김
+			mainVO.setStartIndex(startIndex);
+			mainVO.setEndIndex(endIndex);
+
+			model.addAttribute("rowNumber",startRowNo);
+			model.addAttribute("total",total);
+			model.addAttribute("totalPage",totalPage);
+			
+			
 			List<?> revenueList = mainService.selectSellerRevenueList(mainVO);
 			model.addAttribute("revenueList", revenueList);
 		    return "seller/sellerRevenueList";
 		}
 	}
+	
+	@RequestMapping("sellerRevenueListSearch.do")
+	public ModelAndView selectSearchBySellerRevenueList(MainVO mainVO, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession(true);
+		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
+		int unit = 3;
+		//총 데이터 개수 
+		String startOrderPeriod = mainVO.getStartOrderPeriod();
+		String[] startDate = startOrderPeriod.split("-");
 
+		String startOrderDay = startDate[0]+startDate[1]+startDate[2]+"00"+"00"+"00";
+		mainVO.setStartOrderPeriod(startOrderDay);
+		
+		
+		String endOrderPeriod = mainVO.getEndOrderPeriod();
+		String[] endDate = endOrderPeriod.split("-");
+
+		
+		String endOrderDay = endDate[0]+endDate[1]+endDate[2]+"23"+"59"+"59";
+		mainVO.setEndOrderPeriod(endOrderDay);
+		
+		int total = sellerService.selectSearchBySellerRevenueListTotal(mainVO);
+		
+		int totalPage = (int) Math.ceil((double)total/unit);
+		
+		
+		
+		int viewPage = mainVO.getViewPage();
+		if(viewPage > totalPage || viewPage < 1){
+			viewPage = 1;
+		}
+		// 1-> 1 ,10 // 2->11,20 // 3->21,30
+		int startIndex = (viewPage-1)*unit + 1;
+		int endIndex = startIndex+(unit-1);
+		//total -> 34
+		// 1 : 34~25, 2:24~15 , 3:14~5, 4:4~1
+		int startRowNo = total- (viewPage-1)*unit;
+		
+		//VO에 태워서 넘김
+		mainVO.setStartIndex(startIndex);
+		mainVO.setEndIndex(endIndex);
+		
+		HashMap<String,Integer> cntMap = new HashMap<>();
+		cntMap.put("rowNumber", startRowNo);
+		cntMap.put("total", total);
+		cntMap.put("totalPage", totalPage);
+
+		List<?> list = sellerService.selectSearchBySellerRevenueList(mainVO);
+		List<HashMap<String,Integer>> list2 = new LinkedList<>();
+		list2.add(cntMap);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("obj1", list); 
+		mv.addObject("obj2", list2); 
+	    mv.setViewName("jsonView");
+	    
+	    return mv;
+	}
+	
+	
 	@RequestMapping("/sellerWrite.do")
 	public String sellerWrite(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
 		HttpSession session = request.getSession(true);

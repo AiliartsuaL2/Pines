@@ -115,6 +115,8 @@
                           		  WHERE USER_ID = #userId#
                             		AND SIGN_STORE = 'Y'
                          		)
+        	   AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
+               AND SYSDATE >= PURCHASE_DATE
        		ORDER BY o.PURCHASE_DATE DESC
 		</select>
 		
@@ -154,7 +156,63 @@
   			WHERE USER_ID = #userId#
 		</update>
 		
-	
+		<select id="sellerDAO.selectSellerRevenueTotal" resultClass="java.lang.Integer">
+			SELECT COUNT(*) total 
+  			  FROM REVENUE r 
+ 			 WHERE STORE_ID = (
+                    			SELECT STORE_ID
+                      			  FROM STORE s 
+                     			 WHERE USER_ID = #userId#
+                                   AND SIGN_STORE = 'Y'
+                    		   )
+       		   AND TO_CHAR(add_months(sysdate,-1),'yyyy-mm-dd') <![CDATA[<=]]> SALES_DATE
+       		   AND SYSDATE >= SALES_DATE
+		</select>
+		
+		<select id="sellerDAO.selectSearchBySellerRevenueListTotal" resultClass="java.lang.Integer">
+			SELECT COUNT(*) total 
+  			  FROM REVENUE r 
+ 			 WHERE STORE_ID = (
+                    			SELECT STORE_ID
+                      			  FROM STORE s 
+                     			 WHERE USER_ID = #userId#
+                                   AND SIGN_STORE = 'Y'
+                    		   )
+         	  AND TO_DATE(#startOrderPeriod#,'YYYYMMDDHH24MISS') <![CDATA[<=]]>  SALES_DATE
+         	  AND  TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= SALES_DATE
+       		ORDER BY SALES_DATE DESC
+		</select>
+		
+		<select id="sellerDAO.selectSearchBySellerRevenueList" resultClass="egovMap">
+		
+      		SELECT b.*
+	    	   FROM ( 
+	          		 SELECT ROWNUM rn, a.*
+	            	   FROM (
+	            	   			SELECT TO_CHAR(SETTLE_DATE,'yyyy-mm-dd') AS SETTLE_DATE
+	            	    	     	  , SETTLE_AMOUNT
+	            	    	     	  , NUM_OF_SALES
+	            	    	     	  , TO_CHAR(SALES_DATE,'yyyy-mm-dd') AS SALES_DATE
+	            	    	     	  , ACCOUNT_NUMBER
+	            	    	     	  , ACCOUNT_HOLDER
+	            	    	     	  , BANK_NAME
+	            	    	     FROM REVENUE r
+	            	    	    WHERE STORE_ID = (
+	            	    	    
+                    								SELECT STORE_ID
+                    								  FROM STORE s
+                    								 WHERE USER_ID = #userId#
+													   AND SIGN_STORE = 'Y'
+												  )
+						          AND TO_DATE(#startOrderPeriod#,'YYYYMMDDHH24MISS') <![CDATA[<=]]>  SALES_DATE
+						          AND  TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= SALES_DATE
+						        ORDER BY SALES_DATE
+       				)a)  b
+              WHERE rn >= #startIndex#  
+          		AND rn <![CDATA[<=]]> #endIndex#
+		</select>
+		
+		
 	
 	
 </sqlMap>

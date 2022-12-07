@@ -13,56 +13,68 @@
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 </head>
 
 <script>
 	$(function(){
-		date = new Date();
-		year = date.getFullYear();
-		month = date.getMonth() + 1;
-		day = date.getDate();
-		var today = year+"-"+month+"-"+day;
-		var oneMonthAgo = year+"-"+(month-1)+"-"+day;
-		var threeMonthAgo = year+"-"+(month-3)+"-"+day;
-		var sixMonthAgo = year+"-"+(month-6)+"-"+day;
-
-	  	$('input[name="endOrderPeriod"]').attr('value', today);
-	  	$('input[name="startOrderPeriod"]').attr('value', oneMonthAgo);
+		var settingDate = new Date();
+		var todayDate = new Date().toLocaleDateString();
+		settingDate.setMonth(settingDate.getMonth()-1); //한달 전;
+		var aMonthAgoDate = settingDate.toLocaleDateString();
+		var today = todayDate.toString();
+		var aMonthAgo = aMonthAgoDate.toString(); 
 		
+		
+		aMonthAgo = aMonthAgo.replaceAll(".","");
+		aMonthAgo = aMonthAgo.replaceAll(" ","-");
+		
+		var aMonthArr = aMonthAgo.split("-");	
+		if(parseInt(aMonthArr[1])<10){
+			aMonthArr[1] = "0"+aMonthArr[1];
+		}
+		if(parseInt(aMonthArr[2])<10){
+			aMonthArr[2] = "0"+aMonthArr[2];
+		}
+		aMonthAgo = aMonthArr[0]+"-"+aMonthArr[1]+"-"+aMonthArr[2];
+		
+		today = today.replaceAll(".","");
+		today = today.replaceAll(" ","-");
+		
+		var todayArr = today.split("-");
+		if(parseInt(todayArr[1])<10){
+			todayArr[1] = "0"+todayArr[1];
+		}
+		if(parseInt(todayArr[2])<10){
+			todayArr[2] = "0"+todayArr[2];
+		}
+
+		today = todayArr[0]+"-"+todayArr[1]+"-"+todayArr[2];
+		
+		$("#startOrderPeriod").val(aMonthAgo);
+		$("#endOrderPeriod").val(today);
+		
+	    $( "#startOrderPeriod" ).datepicker({
+	      changeMonth: true,
+	      changeYear: true
+	    });
+	    $( "#endOrderPeriod" ).datepicker({
+	        changeMonth: true,
+	        changeYear: true
+	      });
+	    
 
 		$("#btn_submit").click(function(){ // 검색 ajax
 			$("#ajaxDiv").empty();// 요소 내용 제거	
 			ajaxLoad();
 		});
-
-		$("#btn_1month").click(function(){ // 1개월 버튼
-		  	$('input[name="startOrderPeriod"]').attr('value', oneMonthAgo);
-			$("#ajaxDiv").empty();// 요소 내용 제거	
-			ajaxLoad();
-		});
-
-		$("#btn_3month").click(function(){ // 3개월 버튼
-		  	$('input[name="startOrderPeriod"]').attr('value', threeMonthAgo);
-			$("#ajaxDiv").empty();// 요소 내용 제거	
-			ajaxLoad();
-			
-		});
-
-		$("#btn_6month").click(function(){ // 6개월 버튼
-		  	$('input[name="startOrderPeriod"]').attr('value', sixMonthAgo);
-			$("#ajaxDiv").empty();// 요소 내용 제거	
-			ajaxLoad();
-			
-		});
-
+		
 		$(document).on("click","#btn_viewPage",function(){
 			var btnValue = this.value;
 			$('#hidden_viewPage').val(btnValue);
 			$("#ajaxDiv").empty();// 요소 내용 제거	
 			ajaxLoad();
-			
 		});
 	  	
 		function ajaxLoad(){
@@ -108,13 +120,15 @@
 						html += "</div>";
 						}
 						var totalPage = parseInt(JSON.stringify(data['obj2'][0]['totalPage']));
+
+						html += "<div class='btn_page'>";
 						if(totalPage > 1 ){
-							html += "<div class='btn_page'>";
 							for(var i=1; i<=totalPage; i++){
 								html +="<input type='button' class='btn_viewPage' id='btn_viewPage' value='"+i+"'>";
 							}
-							html += "</div>";
 						}
+
+						html += "</div>";
 						$("#ajaxDiv").append(html);
 				},	
 				error: function(request,status,error){	// 시스템적인 에러..SQL이라던지 등,,
@@ -323,6 +337,7 @@ a { text-decoration:none }
     border : 1px solid #8F8F8F;
     float:left;
 }
+
 .periodBox{
     width: 20%;
     height:30px;
@@ -368,8 +383,8 @@ a { text-decoration:none }
 	border : 0;
 }
 .period_input{
-	width: 16%;
-	height: 50%;
+	width: 25%;
+	height: 60%;
     margin-right: 3%;
     margin-left: 3%;
     margin-top: 1.1%;
@@ -377,6 +392,7 @@ a { text-decoration:none }
     background-color : #FCDDDC;
     border : 1px solid #8F8F8F;
     text-align : center;
+    font-size : 15px;
 }
 .date_btn{
 	background-color : white;
@@ -484,7 +500,6 @@ a { text-decoration:none }
 					<option value="ORDER_ID" style="height:50px;">주문 번호</option>
 				</select>
 				<input type="text" id="searchText" name = "searchText" class="seachText" placeholder="검색어를 입력해주세요">
-				<input type = "button" id="btn_submit" name="btn_submit" class="btn_submit" value="검색">
 			</div>
 	      	<div class="periodBox">
 				<label class="period_title">기간 선택</label>
@@ -493,9 +508,7 @@ a { text-decoration:none }
 				<input id="startOrderPeriod" name="startOrderPeriod" class="period_input" value="">
 				<label>-</label>
 				<input id="endOrderPeriod" name="endOrderPeriod" class="period_input" value="">
-				<input type = "button" id="btn_1month" name="btn_1month" class="date_btn" value="1개월">
-				<input type = "button" id="btn_3month" name="btn_3month" class="date_btn" value="3개월">
-				<input type = "button" id="btn_6month" name="btn_6month" class="date_btn" value="6개월">
+				<input type = "button" id="btn_submit" name="btn_submit" class="btn_submit" value="검색">
 			</div>
 			<input type='hidden' id='hidden_viewPage' name='viewPage' value="1">
 		</form>

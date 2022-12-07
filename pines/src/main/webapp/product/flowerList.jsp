@@ -22,16 +22,16 @@ $(function(){
 
 	var parentCategoryId =$("#parentCategoryId").val();
 	if(parentCategoryId == ""){
-		if(categoryId == 'anniversary'){
+		if(categoryId == '생일 / 기념일'){
 			$(".btn_anniversary").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'opening'){
+		else if(categoryId == '개업 / 이전'){
 			$(".btn_opening").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'promotion'){
+		else if(categoryId == '승진 / 취임'){
 			$(".btn_promotion").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
-		else if(categoryId == 'remembrance'){
+		else if(categoryId == '추모 / 근조'){
 			$(".btn_remembrance").css({"color":"#FA6A6A","font-weight":"bold"});	
 		}
 	}
@@ -111,11 +111,11 @@ a { text-decoration:none }
 <div class = "div_Wrap">
 	<div class="div3">
 	<input type="hidden" id="parentCategoryId" value="${parentCategoryId.parentCategoryId}">
+	 <input type="hidden" id="categoryId" value="${categoryId}">
 	<c:set var="i" value="0" />
 	<c:set var="j" value="3" />
 	<table class = "table_product" width="850">
 	  <c:forEach items="${flowerList}" var="result">
-	  <input type="hidden" id="categoryId" value="${result.categoryId}">
 	    <c:if test="${i%j == 0 }">
 	    <tr>
 	    </c:if>

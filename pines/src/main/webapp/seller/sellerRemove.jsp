@@ -264,11 +264,7 @@ a { text-decoration:none }
     cursor: pointer;
     background-color: #FA6A6A;
     color : #FFFFFF;
-
 }
-
-
-
 .whole_wrap{
   justify-content: center;
   display: flex;
@@ -294,7 +290,6 @@ a { text-decoration:none }
 	font-size: 18px;
     float: left;
     margin-left: 6%;
-	
 }
 
 .input_info_box{

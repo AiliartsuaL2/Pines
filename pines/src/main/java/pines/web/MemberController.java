@@ -147,6 +147,7 @@ public class MemberController {
 					logger.info("로그인 성공");
 				}
 				else{
+					message = "false";
 					logger.info("로그인 실패");
 				}
 			}catch(Exception e){

@@ -25,6 +25,12 @@ public interface SellerService {
 	List<?> selectSellerInfo(MainVO mainVO) throws Exception;
 
 	int updateSellerModify(MainVO mainVO) throws Exception;
+
+	int selectSearchBySellerRevenueListTotal(MainVO mainVO) throws Exception;
+
+	List<?> selectSearchBySellerRevenueList(MainVO mainVO) throws Exception;
+
+	int selectSellerRevenueTotal(MainVO mainVO) throws Exception;
 	
 
 }
