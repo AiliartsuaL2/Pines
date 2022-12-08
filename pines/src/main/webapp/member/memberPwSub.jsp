@@ -15,8 +15,6 @@
 <script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
 <script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
 
-
-
 <script>
 $(function(){
 

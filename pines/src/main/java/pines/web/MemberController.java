@@ -451,6 +451,21 @@ public class MemberController {
 			return "main/alert";
 		}
 		else{
+			KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+			generator.initialize(1024);
+			KeyPair keyPair = generator.genKeyPair();
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+			PublicKey publicKey = keyPair.getPublic();
+			PrivateKey privateKey = keyPair.getPrivate();
+			
+			session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+			RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+			String publicKeyModulus = publicSpec.getModulus().toString(16);
+			String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+			
+			request.setAttribute("RSAModulus", publicKeyModulus);
+			request.setAttribute("RSAExponent", publicKeyExponent);
+			
 			model.addAttribute("mainVO", mainVO);
 			return "myPage/memberCheck";
 		}
@@ -467,13 +482,34 @@ public class MemberController {
 		}
 		else{
 			String message = "";
-			int count = memberService.selectMemberCount(memberVO);
-			if(count == 1){
-				message = "ok";
-				logger.info("비밀번호 확인 성공");
+			String pass = memberVO.getPass();
+			
+			PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_key_");//개인키를 다시 세션에서  받아옴
+			
+			if(privateKey == null){
+				logger.info("rsa 체크 실패");
+				message = "failCheck";
 			}
 			else{
-				logger.info("비밀번호 확인 실패");
+				try{
+					String _pass = decryptRsa(privateKey,pass); // 복호화 
+					memberVO.setPass(_pass);
+				
+					int count = memberService.selectMemberCount(memberVO);
+					
+					if(count == 1){
+						message = "ok";
+						logger.info("비밀번호 확인 성공");
+					}
+					else{
+						message = "false";
+						logger.info("비밀번호 틀림");
+					}
+					
+				}catch(Exception e){
+					message = "error";
+					logger.info("로그인 체크 에러"+e.getMessage());
+				}	
 			}
 			return message;
 		}
@@ -488,20 +524,80 @@ public class MemberController {
 			return "main/alert";
 		}
 		else{
+			KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+			generator.initialize(1024);
+			KeyPair keyPair = generator.genKeyPair();
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+			PublicKey publicKey = keyPair.getPublic();
+			PrivateKey privateKey = keyPair.getPrivate();
+			
+			session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+			RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+			String publicKeyModulus = publicSpec.getModulus().toString(16);
+			String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+			
+			request.setAttribute("RSAModulus", publicKeyModulus);
+			request.setAttribute("RSAExponent", publicKeyExponent);
+			
 			List<?> memberList = memberService.selectMemberInfo(mainVO);
 			model.addAttribute("memberList",memberList);
+			
 			return "myPage/memberManage";
 		}
 	}
 	
 	@RequestMapping("/memberModify.do")
 	@ResponseBody // ajax에 보내줄 수 있는 어노테이션
-	public String updateMemberModify(MemberVO memberVO, HttpSession session) throws Exception{
-		int result = 0;
-		memberVO.setUserId((String) session.getAttribute("SessionUserID"));
-		result = memberService.updateMemberModify(memberVO);
+	public String updateMemberModify(MemberVO memberVO, HttpServletRequest request) throws Exception{
+		String message = "false";
 		
-		return result+"";
+		HttpSession session = request.getSession(true);
+		memberVO.setUserId((String) session.getAttribute("SessionUserID"));
+		String pass = memberVO.getPass();
+		
+		String name = memberVO.getName();
+		String phone = memberVO.getPhone();
+		String address = memberVO.getAddress();
+		
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_key_");//개인키를 다시 세션에서  받아옴
+		
+		if(privateKey == null){
+			logger.info("rsa 체크 실패");
+			message = "failCheck";
+		}
+		else{
+			try{
+				String _pass = decryptRsa(privateKey,pass); // 복호화 
+				String _name = decryptRsa(privateKey,name); // 복호화 
+				String _phone = decryptRsa(privateKey,phone); // 복호화 
+				String _address = decryptRsa(privateKey,address); // 복호화 
+
+				memberVO.setPass(_pass);
+				memberVO.setName(_name);
+				memberVO.setPhone(_phone);
+				memberVO.setAddress(_address);
+				
+				int cnt = memberService.selectPreMemberPw(memberVO);
+				if(cnt == 1){
+					logger.info("이전 비밀번호 사용");
+					return "prePass";
+				}
+				
+				int result = memberService.updateMemberModify(memberVO);				
+				if(result == 1){
+					message = "ok";
+					logger.info("변경 성공");
+				}
+				else{
+					message = "false";
+					logger.info("변경 실패");
+				}
+			}catch(Exception e){
+				message = "error";
+				logger.info("로그인 체크 에러"+e.getMessage());
+			}	
+		}		
+		return message;
 	}
 	
 	@RequestMapping("/memberPointCharge.do")

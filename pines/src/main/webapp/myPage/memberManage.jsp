@@ -14,6 +14,10 @@
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/jsbn.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rsa.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
 <script>
 $(function(){
 	  document.getElementById("address_button").addEventListener("click", function(){ //주소입력칸을 클릭하면
@@ -27,9 +31,6 @@ $(function(){
 	            }
 	        }).open();
 	    });	
-	
-	
-	  
 
 	$("#btn_delete").click(function(){
 		 if (confirm("정말 탈퇴하시겠습니까??") == true){    //확인
@@ -48,9 +49,6 @@ $(function(){
 		var vphone = $("#vphone").val();
 		var vaddress = $("#vaddress").val();
 
-	  	  $('input[name="name"]').attr('value', vname);
-	  	  $('input[name="phone"]').attr('value', vphone);
-	  	  $('input[name="address"]').attr('value', vaddress);
 		
 	    
 	    if(newPass != "" && newPass2 != ""){ // 데이터가 있으면
@@ -59,9 +57,6 @@ $(function(){
 				  $("#newPass2").focus();
 				  return false;
 			  }
-		    else{
-		  	  $('input[name="pass"]').attr('value', newPass);
-		    }
 	    }
 	    else if(newPass != "" && newPass2 == ""){ // 비밀번호 설정에만 값이 있으면
 		    alert("비밀번호를 한번 더 입력해주세요.");
@@ -71,6 +66,20 @@ $(function(){
 		    alert("비밀번호 설정을 해주세요");
 	    	return false;
 	    }
+	    
+		var rsa = new RSAKey();
+		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
+		
+		newPass = rsa.encrypt(newPass);
+		vname = rsa.encrypt(vname);
+		vphone = rsa.encrypt(vphone);
+		vaddress = rsa.encrypt(vaddress); // 암호화
+	  	
+	    $('input[name="pass"]').attr('value', newPass); // 폼에 데이터 할당
+	  	$('input[name="name"]').attr('value', vname);
+	  	$('input[name="phone"]').attr('value', vphone);
+	  	$('input[name="address"]').attr('value', vaddress);
+		
 		
 	  	let frmData = $("#frmData").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
 	  	
@@ -83,11 +92,19 @@ $(function(){
     		
     		/* 전송 후 세팅  */
     		success: function(result) {
-    			if(result == "1") {
+    			if(result == "ok") {
     				alert("회원정보가 정상적으로 수정되었습니다.");
     				alert("로그아웃 되었습니다. 다시 로그인해주세요");
     				location="logout.do";
-    			} else {
+    			}
+    			else if(result=="prePass"){
+    				alert("기존에 사용중인 비밀번호입니다. 새로운 비밀번호를 입력 바랍니다.");
+    			    $('input[name="pass"]').attr('value', ""); // 폼에 데이터 할당
+    			  	$('input[name="name"]').attr('value', "");
+    			  	$('input[name="phone"]').attr('value', "");
+    			  	$('input[name="address"]').attr('value', "");
+    			}
+    			else {
     				alert("오류가 발생하였습니다. \n 관리자에게 연락 바랍니다.");
     			}
     		},
@@ -358,7 +375,10 @@ a { text-decoration:none }
 	    <input type="hidden" id="phone" name="phone" value="${memberVO.phone}">
 	    <input type="hidden" id="zipCode" name="zipCode" value="${memberVO.zipCode}">
 	    <input type="hidden" id="address" name="address" value="${memberVO.address}">
+		<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+		<input type="hidden" id="RSAExponent" value="${RSAExponent}">
 	 </form>
+	 
 	 <div class="id_input_box">
 				<div class = "category_box">
 	      				<label class="name_category_case">아이디</label>
