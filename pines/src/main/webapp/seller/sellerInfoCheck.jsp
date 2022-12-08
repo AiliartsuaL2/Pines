@@ -13,22 +13,34 @@
 <link href="images/pines.JPG" rel="shortcut icon" type="image/x-icon">
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/jsbn.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rsa.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
+
 <script>
 $(function(){
 	$("#btn_submit").click(function(){
 		
-		var userId = $("#userId").val();
 		var pass = $.trim($("#pass").val());
 		if( pass == "" ) {
 			alert("비밀번호를 입력해주세요.");
 			$("#pass").focus();
 			return false;
 		}
+
+		var rsa = new RSAKey();
+		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
+		pass = rsa.encrypt(pass);
+
+		$("#pass").val(pass);
 		
+	  	let frmData = $("#frm").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
+	  	
 		$.ajax({
 			/* 전송 전 세팅 */
     		type:"POST",
-    		data:"pass="+pass,   // json(전송)타입
+    		data:frmData,   // json(전송)타입
     		url:"memberCheckSub.do",
     		dataType:"text",     // 리턴 타입
     		
@@ -36,8 +48,13 @@ $(function(){
     		success: function(result) {
     			if(result == "ok") {
     				location="sellerInfo.do";
-    			} else {
+    			}
+    			else if(result == "false"){
     				alert("비밀번호를 다시 확인해주세요.");
+    				$("#pass").val("");
+    			}
+    			else{
+    				alert("오류 발생");	
     			}
     		},
     		error: function() {  // 장애발생
@@ -235,6 +252,9 @@ a { text-decoration:none }
 		<p class = "table_title"> 회원정보확인</p>
 		<br>
 		<p class = "table_sub_title">회원님의 개인정보를 안전하게 보호하기 위해 비밀번호를 다시 한 번 확인 합니다.</p>
+		<form id="frm">
+			<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+			<input type="hidden" id="RSAExponent" value="${RSAExponent}">
 			<div class="id_input_box">
 				<div class = "category_box">
 	      				<label class="name_category_case">아이디</label>
@@ -248,7 +268,8 @@ a { text-decoration:none }
 	      				<input type="password" id="pass" name="pass" class="category_value" placeholder="비밀번호를 입력해주세요.">
 	      			</div>
 				</div>
-	</div>
+			</div>
+		</form>
 	</div>
 			<div class="find-btn">
 				<input type="button" id="btn_submit" class="btn_submit" value="확인">

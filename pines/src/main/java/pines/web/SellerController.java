@@ -1,10 +1,17 @@
 package pines.web;
 
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.crypto.Cipher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -34,6 +41,39 @@ public class SellerController {
 	@Resource(name="memberService")
 	public MemberService memberService;
 	
+	
+	
+	public String decryptRsa(PrivateKey privateKey, String securedValue){
+		String decryptedValue ="";
+		try{
+			Cipher cipher = Cipher.getInstance("RSA");
+			/**
+			 * 암호화된 값은 byte 배열,
+			 * 이름 문자열 폼으로 전송하기위해 16진 문자열(hex)로 변경,
+			 * 서버측에서 값을 받을 때 hex 문자열을 받아서 이를 다시 byte배열로 바꾼뒤 복호화 과정 수행
+			 */
+			byte[] encryptedBytes = hexToByteArray(securedValue);
+			cipher.init(Cipher.DECRYPT_MODE,privateKey);
+			byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+			decryptedValue = new String(decryptedBytes,"utf-8"); // 문자열 인코딩
+		}catch(Exception e){
+			logger.info("암호화 에러 발생 : "+e.getMessage());
+		}
+		return decryptedValue;
+	}
+	
+	
+	public static byte[] hexToByteArray(String hex){
+		if(hex == null || hex.length() % 2 != 0){
+			return new byte[]{};
+		}
+		byte[] bytes = new byte[hex.length()/2];
+		for(int i=0; i<hex.length(); i+=2){
+			byte value = (byte)Integer.parseInt(hex.substring(i,i+2),16);//16진법으로
+			bytes[(int)Math.floor(i/2)] = value;	
+		}
+		return bytes;
+	}
 	
 	@RequestMapping("/sellerOrderInquiry.do")
 	public String selectSellerOrderInquiry(MainVO mainVO, HttpServletRequest request, ModelMap model) throws Exception{
@@ -514,7 +554,8 @@ public class SellerController {
 		return message;
 	}
 	@RequestMapping("/sellerInfoCheck.do")
-	public String selectSellerInfoCheck(ModelMap model, MainVO mainVO, HttpSession session) throws Exception{
+	public String selectSellerInfoCheck(ModelMap model, MainVO mainVO, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
 		if(mainVO.getUserId() == null){ // 로그인 안된경우
 			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
@@ -522,9 +563,23 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
-
 			int tmp = memberService.selectSellerCheck(mainVO);
 			if(tmp == 1){
+				KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+				generator.initialize(1024);
+				KeyPair keyPair = generator.genKeyPair();
+				KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+				PublicKey publicKey = keyPair.getPublic();
+				PrivateKey privateKey = keyPair.getPrivate();
+				
+				session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+				RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+				String publicKeyModulus = publicSpec.getModulus().toString(16);
+				String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+				
+				request.setAttribute("RSAModulus", publicKeyModulus);
+				request.setAttribute("RSAExponent", publicKeyExponent);
+				
 				model.addAttribute("mainVO", mainVO);
 				return "seller/sellerInfoCheck";
 			}
@@ -537,7 +592,8 @@ public class SellerController {
 		}
 	}
 	@RequestMapping("/sellerInfo.do")
-	public String selectSellerInfo(ModelMap model, MainVO mainVO, HttpSession session) throws Exception{
+	public String selectSellerInfo(ModelMap model, MainVO mainVO, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession(true);
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
 		if(mainVO.getUserId() == null){ // 로그인 안된경우
 			model.addAttribute("msg", "로그인이 필요한 서비스입니다.");
@@ -545,8 +601,23 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
+			KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+			generator.initialize(1024);
+			KeyPair keyPair = generator.genKeyPair();
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+			PublicKey publicKey = keyPair.getPublic();
+			PrivateKey privateKey = keyPair.getPrivate();
+			
+			session.setAttribute("_RSA_WEB_key_", privateKey); // 세션에 RSA 개인키를 세션에 저장
+			RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+			String publicKeyModulus = publicSpec.getModulus().toString(16);
+			String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+			
+			request.setAttribute("RSAModulus", publicKeyModulus);
+			request.setAttribute("RSAExponent", publicKeyExponent);
+			
 			List<?> list = sellerService.selectSellerInfo(mainVO);
-			model.addAttribute("sellerList", list);
+			model.addAttribute("sellerList", list);			
 			return "seller/sellerInfo";
 		}
 	}
@@ -555,13 +626,41 @@ public class SellerController {
 	public String updateSellerInfoModify(ModelMap model, MainVO mainVO, HttpSession session) throws Exception{
 		String message = "";
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		int count = sellerService.updateSellerModify(mainVO);
-		if(count == 1){ // 성공
-			message = "ok";
-			logger.info("판매처 정보 수정 성공");
+		
+		String bankName = mainVO.getBankName();
+		String accountNumber = mainVO.getAccountNumber();
+		String accountHolder = mainVO.getAccountHolder();
+		
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("_RSA_WEB_key_");//개인키를 다시 세션에서  받아옴
+		
+		if(privateKey == null){
+			logger.info("rsa 체크 실패");
+			message = "failCheck";
 		}
 		else{
-			logger.info("판매처 정보 수정 실패");
+			try{
+				String _bankName = decryptRsa(privateKey,bankName); // 복호화
+				String _accountNumber = decryptRsa(privateKey,accountNumber); // 복호화
+				String _accountHolder = decryptRsa(privateKey,accountHolder); // 복호화 
+				
+				mainVO.setBankName(_bankName);
+				mainVO.setAccountNumber(_accountNumber);
+				mainVO.setAccountHolder(_accountHolder);
+
+				int count = sellerService.updateSellerModify(mainVO);
+				if(count == 1){ // 성공
+					message = "ok";
+					logger.info("판매처 정보 수정 성공");
+				}
+				else{
+					message = "false";
+					logger.info("판매처 정보 수정 실패");
+				}
+				
+			}catch(Exception e){
+				message = "error";
+				logger.info("로그인 체크 에러"+e.getMessage());
+			}	
 		}
 		return message;
 	}

@@ -14,24 +14,18 @@
 <script src="/pines/script/jquery-1.12.4.js"></script>
 <script src="/pines/script/jquery-ui.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/jsbn.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rsa.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/prng4.js"></script>
+<script type="text/javascript" src="/pines/script/RSA/rng.js"></script>
 <script>
-$(function(){	  
-	
-	
+$(function(){	  	
 	$("#btn_submit").click(function(){
 
 		var vBankName = $("#vBankName").val();
 		var vAccountNumber = $("#vAccountNumber").val();
 		var vAccountHolder = $("#vAccountHolder").val();
-		
 
-	  	  $('input[name="bankName"]').attr('value', vBankName);
-	  	  $('input[name="accountNumber"]').attr('value', vAccountNumber);
-	  	  $('input[name="accountHolder"]').attr('value', vAccountHolder);
-		
-	  	  
-	  	  
-	        
 	    if(vBankName == ""){ // 비밀번호 설정에만 값이 있으면
 		    alert("은행명을 입력해주세요.");
 			  $("#vBankName").focus();
@@ -48,6 +42,16 @@ $(function(){
 	    	return false;
 	    }
 		
+	    var rsa = new RSAKey();
+		rsa.setPublic($("#RSAModulus").val(), $("#RSAExponent").val());
+		
+		vBankName = rsa.encrypt(vBankName);
+		vAccountNumber = rsa.encrypt(vAccountNumber);
+		vAccountHolder = rsa.encrypt(vAccountHolder); 
+		
+	  	$('input[name="bankName"]').attr('value', vBankName);
+	  	$('input[name="accountNumber"]').attr('value', vAccountNumber);
+	  	$('input[name="accountHolder"]').attr('value', vAccountHolder);
 		
 	  	let frmData = $("#frmData").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
 	  	
@@ -330,6 +334,8 @@ a { text-decoration:none }
 	 	<input type="hidden" id="bankName" name="bankName" value="${seller.bankName}">
 	    <input type="hidden" id="accountNumber" name="accountNumber" value="${seller.accountNumber}">
 	    <input type="hidden" id="accountHolder" name="accountHolder" value="${seller.accountHolder}">
+		<input type="hidden" id="RSAModulus" value="${RSAModulus}">
+		<input type="hidden" id="RSAExponent" value="${RSAExponent}">
 	 </form>
 	 <div class="id_input_box">
 				<div class = "category_box">
