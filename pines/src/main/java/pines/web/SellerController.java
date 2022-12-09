@@ -252,7 +252,7 @@ public class SellerController {
 			return "main/alert";
 		}
 		else{
-			List<?> revenueList = mainService.selectSellerOrderNumberList(mainVO);
+			List<?> revenueList = mainService.selectSellerOrderNumberList(mainVO); // 미정산 리스트 내역 불러옴, 어제까지의 데이터만 불러옴(금일 데이터는 변경 가능하기때문)
 			model.addAttribute("revenueList", revenueList);
 		    return "seller/sellerRevenue";
 		}
@@ -269,12 +269,6 @@ public class SellerController {
 		}
 		else{
 			String[] setDate = mainVO.getSalesDate().split("-"); // 연 월 일로 배열 생성
-			if(Integer.parseInt(setDate[1])<10){
-				setDate[1] = "0"+setDate[1];
-			}
-			if(Integer.parseInt(setDate[2])<10){
-				setDate[2] = "0"+setDate[2];
-			}
 			
 			String today =  setDate[0]+setDate[1]+setDate[2]+"00"+"00"+"00";
 			String nextDay = setDate[0]+setDate[1]+setDate[2]+"23"+"59"+"59";
@@ -302,20 +296,12 @@ public class SellerController {
 		else{
 	
 			String[] setDate = mainVO.getSalesDate().split("-"); // 연 월 일로 배열 생성
-			if(Integer.parseInt(setDate[1])<10){
-				setDate[1] = "0"+setDate[1];
-			}
-			if(Integer.parseInt(setDate[2])<10){
-				setDate[2] = "0"+setDate[2];
-			}
 			
 			String today =  setDate[0]+setDate[1]+setDate[2]+"00"+"00"+"00";
 			String nextDay = setDate[0]+setDate[1]+setDate[2]+"23"+"59"+"59";
 			
 			mainVO.setSalesDate(today);
 			mainVO.setSalesDateNext(nextDay);
-			
-			
 			
 			result = mainService.insertRevenue(mainVO);
 			if(result == null){ // 성공

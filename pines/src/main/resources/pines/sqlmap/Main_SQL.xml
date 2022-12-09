@@ -838,6 +838,7 @@
                                AND SIGN_STORE = 'Y'
                           )
            AND REVENUE_STATUS = 'N'
+           AND PURCHASE_DATE <![CDATA[<]]> to_char(sysdate,'yyyy-mm-dd') 
        GROUP BY to_char(PURCHASE_DATE,'yyyy-mm-dd') 
        HAVING 1=1 
        
@@ -847,6 +848,9 @@
       	SELECT to_char(PURCHASE_DATE,'yyyy-mm-dd') AS SALES_DATE 
       	       ,SUM(TOTAL_AMOUNT) AS DAY_AMOUNT
       	       ,count(TOTAL_AMOUNT) AS NUM_OF_SALES
+              ,(SELECT ACCOUNT_NUMBER FROM STORE WHERE USER_ID = #userId#) AS ACCOUNT_NUMBER 
+              ,(SELECT ACCOUNT_HOLDER FROM STORE WHERE USER_ID = #userId#) AS ACCOUNT_HOLDER 
+              ,(SELECT BANK_NAME FROM STORE WHERE USER_ID = #userId#) AS BANK_NAME 
        	  FROM "ORDER" o join PRODUCT p 
        		ON o.PRODUCT_ID = p.PRODUCT_ID 
        	 WHERE STORE_ID = (

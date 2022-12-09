@@ -19,9 +19,6 @@
 
 
 $(function(){
-	
-
-	
   document.getElementById("address_button").addEventListener("click", function(){ //주소입력칸을 클릭하면
         //카카오 주소 발생
         new daum.Postcode({
@@ -33,9 +30,6 @@ $(function(){
             }
         }).open();
     });	
-  	var totalAmount1 = $("#totalAmount").val();
-	
-  	
 
 $("#btn_submit").click(function(){
 		var point = $("#point").val();
@@ -53,55 +47,33 @@ $("#btn_submit").click(function(){
 	  	$('input[name="orderName"]').attr('value', vname);
 		$('input[name="orderZipCode"]').attr('value', vzipcode);
 	  	$('input[name="orderAddress"]').attr('value', vaddress);
-		
-		var totalAmount = 0;
-		
-		
-		if(orderOption == "none"){
-			if(productPrice * numOfProduct >= freeShippingPrice){
-				totalAmount = productPrice * numOfProduct;			
-			}
-			else{
-				totalAmount = productPrice * numOfProduct;	 
-				totalAmount += shippingCost;		
-			}
-		}
-		else{
-			if((productPrice-discountWon)* numOfProduct >= freeShippingPrice){
-				totalAmount = (productPrice-discountWon)* numOfProduct;
-			}
-			else{
-				totalAmount = (productPrice-discountWon)* numOfProduct;
-				totalAmount += shippingCost;
-			}
-		}
 
-		if (point < totalAmount) {
+	  	var totalAmount = $("#totalAmount").val();  	
+
+		if (Number(point) < Number(totalAmount)) {
 			alert("포인트가 부족합니다.");
 			return false;
 		}
-		
 		else{// ajax 실행
-				
-			  	let frmData = $("#frmData").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
+			let frmData = $("#frmData").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
 
-				$.ajax({
+			$.ajax({
 				url:"orderWriteSub.do", // 보낼 url
 			  	data : frmData,
 			  	type : 'POST',
 			  	dataType:"text",
-				    success : function(data){
-							if(data == "ok"){
-								alert("주문이 완료되었습니다.");
-								location="mainList.do"
-							} else{
-								alert("주문에 실패하였습니다. \n 관리자에게 연락해주세요");
-							}
-				    	},
-				    	error : function(data){
-				    		alert("주문에 실패하였습니다. \n 관리자에게 연락해주세요");
-				    	}
-					}); 
+				success : function(data){
+					if(data == "ok"){
+						alert("주문이 완료되었습니다.");
+						location="mainList.do"
+					} else{
+						alert("주문에 실패하였습니다. \n 관리자에게 연락해주세요");
+					}
+				},
+				error : function(data){
+				    alert("주문에 실패하였습니다. \n 관리자에게 연락해주세요");
+				}
+			}); 
 
 			return false;
 			}
@@ -392,16 +364,9 @@ a { text-decoration:none }
 			  
 			  <input type="hidden" id="numOfProduct" name="numOfProduct" value="${productList.numOfProduct}">
 			  <input type="hidden" id="orderOption" name="orderOption" value="${productList.orderOption}">
-			  
-			  <c:choose> 
-				<c:when test="${productList.totalAmount >= productList.freeShippingPrice }">
-	      			 <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.totalAmount}">
-				</c:when> 
-				<c:when test="${productList.totalAmount < productList.freeShippingPrice }">
-	      			<input type="hidden" id="totalAmount" name="totalAmount" value="${productList.totalAmount+productList.shippingCost}">	
-				</c:when> 
-			</c:choose> 
-			  
+			 
+	      	  <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.totalAmount}">
+	      	  <input type="hidden" id="point" name="point" value="${memberVO.point}">
 			  
 			<input type="hidden" id="orderZipCode" name="orderZipCode" value="${memberVO.zipCode}">
 			<input type="hidden" id="orderAddress" name="orderAddress" value="${memberVO.address}">
@@ -438,7 +403,7 @@ a { text-decoration:none }
 	      			<label class="name_case"> 잔여 포인트</label>
 	      			<div class = "empty_box">
 	      				<label class="point_value">${memberVO.point} P</label>
-						<input type="button" id="pointButton" class="point_button" value="포인트 충전">
+						<input type="button" id="pointButton" class="point_button" value="포인트 충전" onclick= "location='paymentManage.do'">
 	      			</div>
 			</div>
 			</c:forEach>
@@ -500,20 +465,7 @@ a { text-decoration:none }
 				<div class = "name_box">
 	      				<label class="name_case"> 총 금액</label>
 	      			<div class = "empty_box">
-	      				<c:choose> 
-							<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct >= productList.freeShippingPrice }">
-	      						<label class="category_value">${productList.numOfProduct * productList.productPrice}원</label>	
-							</c:when> 
-							<c:when test="${productList.orderOption eq 'none' && productList.productPrice*productList.numOfProduct < productList.freeShippingPrice }">
-	      						<label class="category_value">${productList.numOfProduct * productList.productPrice + productList.shippingCost}원</label>	
-							</c:when> 
-							<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct >= productList.freeShippingPrice }">
-	      						<label class="category_value">${productList.numOfProduct * (productList.productPrice-productList.discountWon)}원</label>	
-							</c:when> 
-							<c:when test="${productList.orderOption ne 'none' && (productList.productPrice-productList.discountWon)*productList.numOfProduct < productList.freeShippingPrice }">
-	      						<label class="category_value">${(productList.numOfProduct * (productList.productPrice-productList.discountWon)) + productList.shippingCost}원</label>	
-							</c:when> 
-						</c:choose> 
+	      				<label class="category_value">${productList.totalAmount}원</label>
 	      			</div>
 				</div>
 				

@@ -284,7 +284,19 @@ a { text-decoration:none }
 	      				<input disabled class="category_value" value="${mainVO.numOfProduct}개">
 	      			</div>
 				</div>
-				
+				<div class = "category_box">
+	      				<label class="name_category_case">옵션</label>
+	      			<div class = "empty_box">
+	      				<c:choose> 
+							<c:when test="${mainVO.orderOption eq 'none'}">
+	      							<input disabled class="category_value" value="선택안함">
+							</c:when> 
+							<c:otherwise>
+	      						<input disabled class="category_value" value="${mainVO.totalNum}개 이상 구매시 1개당 ${mainVO.discountWon}원 할인">
+							</c:otherwise> 
+						</c:choose> 
+	      			</div>
+				</div>
 				<div class = "category_box">
 	      				<label class="name_category_case">배송비</label>
 	      			<div class = "empty_box">
@@ -305,23 +317,9 @@ a { text-decoration:none }
 	      			</div>
 				</div>
 				<div class = "category_box">
-	      				<label class="name_category_case">배송 상태</label>
+	      				<label class="name_category_case">배송상태</label>
 	      			<div class = "empty_box">
 	      				<input disabled class="category_value" value="${mainVO.deliveryStatus}">
-	      			</div>
-				</div>
-				<div class = "category_box">
-	      				<label class="name_category_case">옵션</label>
-	      			<div class = "empty_box">
-	      				
-						<c:choose> 
-							<c:when test="${mainVO.orderOption eq 'none'}">
-	      							<input disabled class="category_value" value="선택안함">
-							</c:when> 
-							<c:otherwise>
-	      						<input disabled class="category_value" value="${mainVO.totalNum}개 이상 구매시 1개당 ${mainVO.discountWon}원 할인">
-							</c:otherwise> 
-						</c:choose> 
 	      			</div>
 				</div>
 				<div class = "category_box">

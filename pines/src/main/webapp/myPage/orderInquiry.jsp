@@ -536,10 +536,10 @@ a { text-decoration:none }
 	      					<div class = "price_box">
 	      					<c:choose> 
 								<c:when test="${mainVO.orderOption eq 'none'}">
-	      							<label class="product_price" >옵션 : ${mainVO.totalNum}개 이상 구매시 1개당 ${mainVO.discountWon}원 할인</label>
+	      							<label class="product_price" >옵션 : 선택안함</label>
 								</c:when> 
 								<c:otherwise>
-	      							<label class="product_price" >옵션 : 선택안함</label>
+	      							<label class="product_price" >옵션 : ${mainVO.totalNum}개 이상 구매시 1개당 ${mainVO.discountWon}원 할인</label>
 								</c:otherwise> 
 							</c:choose> 
 	      					</div>

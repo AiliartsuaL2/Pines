@@ -19,26 +19,26 @@
 
 
 $(function(){
-$("#btn_submit").click(function(){
-			  	let frmData = $("#frmData").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
+	$("#btn_submit").click(function(){
+		let frmData = $("#frmData").serialize(); // serialize 함수로 frm아이디값의 구성요소를 전부 가져옴 
 
-				$.ajax({
-				url:"revenueSub.do", // 보낼 url
-			  	data : frmData,
-			  	type : 'POST',
-			  	dataType:"text",
-				    success : function(data){
-							if(data == "ok"){
-								alert("정산이 완료되었습니다.");
-								location="sellerRevenue.do"
-							} else{
-								alert("정산에 실패하였습니다. \n 관리자에게 연락해주세요");
-							}
-				    	},
-				    	error : function(data){
-				    		alert("정산에 실패하였습니다. \n 관리자에게 연락해주세요");
-				    	}
-					}); 
+		$.ajax({
+			url:"revenueSub.do", // 보낼 url
+			data : frmData,
+			type : 'POST',
+			dataType:"text",
+			success : function(data){
+				if(data == "ok"){
+					alert("정산이 완료되었습니다.");
+					location="sellerRevenue.do"
+				} else{
+					alert("정산에 실패하였습니다. \n 관리자에게 연락해주세요");
+				}
+		 	},
+			error : function(data){
+				alert("정산에 실패하였습니다. \n 관리자에게 연락해주세요");
+	    	}
+		}); 
 	});
 });
 
@@ -86,9 +86,8 @@ a { text-decoration:none }
 }
 .name_case{
 	text-align : center;
-	height:58%;
+	height:79.5%;
 	width:20%;
-	padding-top : 13px;
 	background-color : #FCDDDC;
 	color : black;
 	border : 1px solid #BABABA;
@@ -98,7 +97,7 @@ a { text-decoration:none }
 }
 
 .empty_box{
-float: left;
+	float: left;
     display: inline-block;
     text-align: center;
     border: 1px solid #BABABA;
@@ -106,6 +105,13 @@ float: left;
     width: 70%;
     font-size: 18px;
     padding-top: 1.8%;
+}
+.category_value{
+	float:left;
+	margin-left:5%;
+	background-color:white;
+	font-size:20px;
+	border:0;
 }
 
 .btn_submit{
@@ -197,7 +203,6 @@ float: left;
 <%@ include file="../include/searchBar.jsp" %>
 <%@ include file="../include/sellerOrderTopMenu.jsp" %>
 
-		
 		<c:forEach items="${revenueList}" var="revenueVO">
 		<p class = "table_title">${revenueVO.salesDate}일자 매출</p>
 		<form id="frmData">
@@ -207,15 +212,33 @@ float: left;
 		</form>
 		<div class="id_input_box2">
 				<div class = "name_box">
-	      				<label class="name_case"> 매출 건수</label>
+						<input type="text" disabled class="name_case" value="매출 건수">
 	      			<div class = "empty_box">
-	      				<label class="category_value" >${revenueVO.numOfSales}건</label>
+						<input type="text" disabled class="category_value" value="${revenueVO.numOfSales}건">
 	      			</div>
 				</div>
 				<div class = "name_box">
-	      				<label class="name_case"> 매출 총액</label>
+						<input type="text" disabled class="name_case" value="매출 총액">
 	      			<div class = "empty_box">
-	      				<label class="category_value">${revenueVO.dayAmount}원</label>
+						<input type="text" disabled class="category_value" value="${revenueVO.dayAmount}원">
+	      			</div>
+				</div>
+				<div class = "name_box">
+						<input type="text" disabled class="name_case" value="은행">
+	      			<div class = "empty_box">
+						<input type="text" disabled class="category_value" value="${revenueVO.bankName}">
+	      			</div>
+				</div>
+				<div class = "name_box">
+						<input type="text" disabled class="name_case" value="계좌번호">
+	      			<div class = "empty_box">
+						<input type="text" disabled class="category_value" value="${revenueVO.accountNumber}">
+	      			</div>
+				</div>
+				<div class = "name_box">
+						<input type="text" disabled class="name_case" value="예금주">
+	      			<div class = "empty_box">
+						<input type="text" disabled class="category_value" value="${revenueVO.accountHolder}">
 	      			</div>
 				</div>
 	

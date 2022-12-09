@@ -20,16 +20,15 @@
 
 $(function(){
 	 $("#btn_submit").click(function(){//데이터 유효성 검사
-
 			var orderOption = $("#orderOption").val();
 			var productPrice = $("#productPrice").val();
 			var freeShippingPrice = $("#freeShippingPrice").val();
 			var shippingCost = $("#shippingCost").val();
 			var numOfProduct = $("#numOfProduct").val();
 			var discountWon = $("#discountWon").val();
-		 		
+		 	var totalNum = $("#totalNum").val();
 			var totalAmount = 0;
-			
+
 			if(orderOption == "none"){
 				if(productPrice * numOfProduct >= freeShippingPrice){
 					totalAmount = productPrice * numOfProduct;			
@@ -39,7 +38,11 @@ $(function(){
 					totalAmount = totalAmount + Number(shippingCost);		
 				}
 			}
-			else{
+			else{	
+				if(Number(numOfProduct) < Number(totalNum)){
+					alert("선택하신 옵션의 개수보다 구매하시는 개수가 적습니다.");
+					return false;
+				}			
 				if((productPrice-discountWon)* numOfProduct >= freeShippingPrice){
 					totalAmount = (productPrice-discountWon)* numOfProduct;
 				}
