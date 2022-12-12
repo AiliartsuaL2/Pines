@@ -2,7 +2,6 @@
 <!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
 
 <sqlMapConfig>
-	<sqlMap resource="egovframework/sqlmap/example/sample/EgovSample_Sample_SQL.xml"/>
 	<sqlMap resource="pines/sqlmap/Main_SQL.xml"/>
 	<sqlMap resource="pines/sqlmap/Member_SQL.xml"/>
 	<sqlMap resource="pines/sqlmap/Seller_SQL.xml"/>

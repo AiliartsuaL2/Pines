@@ -142,7 +142,6 @@
           		  FROM CATEGORY c 
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'plant'
-	
 	</select>
 	
 	<select id="mainDAO.selectFlowerList" resultClass = "egovMap" >
@@ -576,7 +575,7 @@
 		</select>
 
 		<insert id="mainDAO.insertOrder">
-			INSERT INTO "ORDER" (
+			INSERT INTO ORDERS (
 								ORDER_ID
 							  , USER_ID
 							  , PRODUCT_ID
@@ -608,15 +607,13 @@
 		
 	<select id="mainDAO.selectMyOrderListTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
-      	FROM "ORDER" o join PRODUCT p 
+      	FROM ORDERS o join PRODUCT p 
        	  ON o.PRODUCT_ID = p.PRODUCT_ID 
-       WHERE USER_ID = #userId#
-         AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
-         AND SYSDATE >= PURCHASE_DATE
-       ORDER BY o.PURCHASE_DATE DESC
+       WHERE o.USER_ID = #userId#
+         AND TO_DATE(TO_CHAR(add_months(SYSDATE,-1),'yyyymmdd'),'YYYYMMDD') <![CDATA[<=]]>  o.PURCHASE_DATE
+         AND SYSDATE >= o.PURCHASE_DATE
 	</select>
-		
-		
+
 		<select id="mainDAO.selectMyOrderList" resultClass="egovMap">
 				SELECT b.*
 	    	      FROM ( 
@@ -642,10 +639,10 @@
               							, o.DELIVERY_STATUS
               							, o.TOTAL_AMOUNT
               							, o.ORDER_OPTION
-      								FROM "ORDER" o join PRODUCT p 
+      								FROM ORDERS o join PRODUCT p 
        	  						  	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        							   WHERE USER_ID = #userId#
-       							     AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
+       							     AND TO_DATE(TO_CHAR(add_months(SYSDATE,-1),'yyyymmdd'),'YYYYMMDD')<![CDATA[<=]]>  PURCHASE_DATE
        							     AND SYSDATE >= PURCHASE_DATE
        							   ORDER BY o.PURCHASE_DATE DESC
        							   )a)  b
@@ -682,7 +679,7 @@
                    FROM STORE s
                   WHERE p.STORE_ID = s.STORE_ID
                 ) STORE_NAME
-      	FROM "ORDER" o join PRODUCT p 
+      	FROM ORDERS o join PRODUCT p 
        	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        WHERE USER_ID = #userId#
          AND ORDER_ID = #orderId#
@@ -691,14 +688,12 @@
 	
 	<select id="mainDAO.selectOrderListSearchTotal" resultClass="java.lang.Integer">
 		SELECT COUNT(*) total 
-      	FROM "ORDER" o join PRODUCT p 
+      	FROM ORDERS o join PRODUCT p 
        	  ON o.PRODUCT_ID = p.PRODUCT_ID 
        WHERE USER_ID = #userId#
          AND $searchGubun$ like '%$searchText$%'
          AND TO_DATE(#startOrderPeriod#,'YYYYMMDDHH24MISS') <![CDATA[<=]]>  o.PURCHASE_DATE
          AND TO_DATE(#endOrderPeriod#,'YYYYMMDDHH24MISS') >= o.PURCHASE_DATE
-       ORDER BY o.PURCHASE_DATE DESC
-		
 	</select>
 	
 	<select id="mainDAO.selectSearchByMyOrderList" resultClass="egovMap">
@@ -727,7 +722,7 @@
               					 		, o.DELIVERY_STATUS
               					 		, o.TOTAL_AMOUNT
               					 		, o.ORDER_OPTION
-      						 			FROM "ORDER" o join PRODUCT p 
+      						 			FROM ORDERS o join PRODUCT p 
        	  					 			ON o.PRODUCT_ID = p.PRODUCT_ID 
        					 			   WHERE USER_ID = #userId#
          					 			 AND $searchGubun$ like '%$searchText$%'
@@ -765,7 +760,7 @@
                 		               , o.DELIVERY_STATUS
                 		               , o.TOTAL_AMOUNT
                 		               , o.ORDER_OPTION
-      	  		               FROM "ORDER" o join PRODUCT p 
+      	  		               FROM ORDERS o join PRODUCT p 
        	    		               ON o.PRODUCT_ID = p.PRODUCT_ID 
          		               WHERE STORE_ID = (
        					   		                  SELECT STORE_ID 
@@ -773,7 +768,7 @@
                             		               WHERE USER_ID = #userId#
                               		                 AND SIGN_STORE = 'Y'
                            		                )
-                           		 AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
+                           		 AND TO_DATE(TO_CHAR(add_months(SYSDATE,-1),'yyyymmdd'),'YYYYMMDD') <![CDATA[<=]]>  PURCHASE_DATE
                             	 AND SYSDATE >= PURCHASE_DATE
         		               ORDER BY o.PURCHASE_DATE DESC
        						   )a)  b
@@ -808,7 +803,7 @@
               			      		 	, o.DELIVERY_STATUS
               			      		 	, o.TOTAL_AMOUNT
               			      		 	, o.ORDER_OPTION
-              			      		FROM "ORDER" o join PRODUCT p
+              			      		FROM ORDERS o join PRODUCT p
               			      		  ON o.PRODUCT_ID = p.PRODUCT_ID
               			      	   WHERE STORE_ID = (
               			      	   					 SELECT STORE_ID 
@@ -829,7 +824,7 @@
       	SELECT to_char(PURCHASE_DATE,'yyyy-mm-dd') AS SALES_DATE 
       	       ,SUM(TOTAL_AMOUNT) AS DAY_AMOUNT
       	       ,count(TOTAL_AMOUNT) AS NUM_Of_SALES
-       	  FROM "ORDER" o join PRODUCT p 
+       	  FROM ORDERS o join PRODUCT p 
        		ON o.PRODUCT_ID = p.PRODUCT_ID 
        	 WHERE STORE_ID = (
              				SELECT STORE_ID 
@@ -838,7 +833,7 @@
                                AND SIGN_STORE = 'Y'
                           )
            AND REVENUE_STATUS = 'N'
-           AND PURCHASE_DATE <![CDATA[<]]> to_char(sysdate,'yyyy-mm-dd') 
+       	   AND PURCHASE_DATE <![CDATA[<]]> TO_DATE(TO_CHAR(SYSDATE,'yyyymmdd'),'YYYYMMDD') 
        GROUP BY to_char(PURCHASE_DATE,'yyyy-mm-dd') 
        HAVING 1=1 
        
@@ -851,7 +846,7 @@
               ,(SELECT ACCOUNT_NUMBER FROM STORE WHERE USER_ID = #userId#) AS ACCOUNT_NUMBER 
               ,(SELECT ACCOUNT_HOLDER FROM STORE WHERE USER_ID = #userId#) AS ACCOUNT_HOLDER 
               ,(SELECT BANK_NAME FROM STORE WHERE USER_ID = #userId#) AS BANK_NAME 
-       	  FROM "ORDER" o join PRODUCT p 
+       	  FROM ORDERS o join PRODUCT p 
        		ON o.PRODUCT_ID = p.PRODUCT_ID 
        	 WHERE STORE_ID = (
              				SELECT STORE_ID 
@@ -901,7 +896,7 @@
         				  SELECT  STORE_ID
                					, REVENUE_STATUS
                					, PURCHASE_DATE
-               			   FROM  "ORDER" O
+               			   FROM  ORDERS O
                 				, PRODUCT P
           				  WHERE
                  			P.PRODUCT_ID = O.PRODUCT_ID 
@@ -942,7 +937,7 @@
                                    		    AND SIGN_STORE = 'Y'
                     		   		    )
                     		   
-       		   		     AND to_char(add_months(sysdate,-1),'yyyy-mm-dd') <![CDATA[<=]]> SALES_DATE
+       		   		     AND TO_DATE(TO_CHAR(add_months(SYSDATE,-1),'yyyymmdd'),'YYYYMMDD') <![CDATA[<=]]> SALES_DATE
        		   		     AND SYSDATE >= SALES_DATE
        	  		    ORDER BY SALES_DATE 
        				)a)  b

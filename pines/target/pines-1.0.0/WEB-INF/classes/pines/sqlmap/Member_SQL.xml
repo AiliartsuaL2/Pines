@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="MemberSpace">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/> <!-- 출력시(select) 필요한  list를 담는 변수 -->
+	 <typeAlias  alias="memberVO" type="pines.service.MemberVO"/> <!--출력시(select) 필요한 변수 -->
+	 <typeAlias  alias="orderVO" type="pines.service.OrderVO"/> <!--출력시(select) 필요한 변수 -->
+	
+	<resultMap id="memRe" class="memberVO" >
+		<result property = "userId" column="user_Id" nullValue="empty"/>
+	</resultMap>
+	
+	<insert id="memberDAO.insertMember">
+		INSERT INTO MEMBER( user_Id
+							,pass
+							,name
+							,birth
+							,phone
+							,zip_Code
+							,address
+							,dormant_state
+							,point
+							,admin_rights
+							,DELETE_STATUS
+							)
+					VALUES(
+							#userId#
+							,#pass#
+							,#name#
+							,#birth#
+							,#phone#
+							,#zipCode#
+							,#address#
+							,'N'
+							, 0
+							,'N'
+							,'N'
+							)
+	</insert>
+    <select id="memberDAO.selectMemberCount" resultClass = "java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE user_Id = #userId#
+		   AND pass = #pass#
+		   AND DELETE_STATUS = 'N'
+	</select>
+	<select id="memberDAO.selectIdFindCount" resultClass = "java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE name = #name#
+		   AND phone = #phone#
+		   AND birth = #birth#
+		   AND DELETE_STATUS = 'N'
+	</select>
+	
+	<select id="memberDAO.selectIdFind"  resultClass="java.lang.String" >
+		SELECT user_Id
+		  FROM MEMBER
+		 WHERE name = #name#
+		   AND phone = #phone#
+		   AND birth = #birth#
+		   AND DELETE_STATUS = 'N'	
+	</select>
+	
+	<select id="memberDAO.selectMemberIdCheck" resultClass = "java.lang.Integer">
+		SELECT COUNT(*) 
+		  FROM MEMBER 
+	     WHERE user_Id = #userId#
+		   AND DELETE_STATUS = 'N'
+	</select>
+	
+	<select id="memberDAO.selectPwFindCount" resultClass = "java.lang.Integer">
+		SELECT COUNT(*) 
+		  FROM MEMBER 
+	     WHERE user_Id = #userId#
+	       AND name = #name#
+	       AND phone = #phone#
+	       AND birth = #birth#
+		   AND DELETE_STATUS = 'N'
+	</select>
+	
+	<update id="memberDAO.updateMemberPw">
+		UPDATE MEMBER 
+		   SET pass = #pass# 
+		 WHERE USER_ID = #userId#
+		   AND DELETE_STATUS = 'N'
+	</update>
+	
+	<select id="memberDAO.selectMemberOrder" resultClass = "orderVO">
+		SELECT ORDER_ID
+		     , STORE_ID
+		     , PRODUCT_ID
+		     , NUM_OF_PRODUCT
+		  FROM ORDER 
+	     WHERE user_Id = #userId#
+	</select>
+	
+    <select id="memberDAO.selectSellerCheck" resultClass = "java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM STORE
+		 WHERE (SELLER_TYPE = 'farm' OR SELLER_TYPE = 'flower')
+		   AND USER_ID = #userId#
+		   AND SIGN_STORE = 'Y'
+	</select>
+	
+    <select id="memberDAO.selectMemberInfo" resultClass = "egovMap">
+		SELECT *
+		  FROM MEMBER
+		 WHERE USER_ID = #userId#
+	</select>
+	
+	<update id="memberDAO.updateMemberPoint">
+		UPDATE MEMBER 
+		   SET POINT = (
+		   				SELECT POINT
+		   				  FROM MEMBER 
+		   				 WHERE USER_ID = #userId#
+		   				)-#totalAmount#
+		 WHERE USER_ID = #userId#
+	</update>
+	
+	<update id="memberDAO.updateMemberModify">
+		UPDATE MEMBER 
+		   SET NAME = #name#
+		 	<isNotEmpty prepend="," property="pass">
+		       PASS = #pass#
+		  	</isNotEmpty>
+		     , PHONE = #phone#
+		     , ZIP_CODE = #zipCode#
+		     , ADDRESS = #address#
+		 WHERE USER_ID = #userId#
+		   
+	</update>
+	
+	<update id="memberDAO.updateMemberPointModify">
+		UPDATE MEMBER 
+		   SET POINT = (
+		   				SELECT POINT
+		   				  FROM MEMBER
+		   				 WHERE USER_ID = #userId#
+		   				) + #chargePoint#
+		 WHERE USER_ID = #userId#
+	</update>
+	
+	
+	<update id="memberDAO.deleteMember">
+		UPDATE MEMBER 
+		   SET DELETE_STATUS = 'Y'
+		 WHERE USER_ID = #userId#
+	</update>
+	
+	<select id="memberDAO.selectPreMemberPw" resultClass = "java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE USER_ID = #userId#
+		   AND PASS = #pass#
+	</select>
+	
+	
+	
+	
+</sqlMap>
