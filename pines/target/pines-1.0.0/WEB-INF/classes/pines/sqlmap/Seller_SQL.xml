@@ -115,7 +115,7 @@
                           		  WHERE USER_ID = #userId#
                             		AND SIGN_STORE = 'Y'
                          		)
-        	   AND to_char(add_months(SYSDATE,-1),'yyyy-mm-dd') <![CDATA[<=]]>  PURCHASE_DATE
+        	   AND TO_DATE(TO_CHAR(add_months(SYSDATE,-1),'yyyymmdd'),'YYYYMMDD') <![CDATA[<=]]>  PURCHASE_DATE
                AND SYSDATE >= PURCHASE_DATE
 		</select>
 		
@@ -163,7 +163,7 @@
                      			 WHERE USER_ID = #userId#
                                    AND SIGN_STORE = 'Y'
                     		   )
-       		   AND TO_CHAR(add_months(sysdate,-1),'yyyy-mm-dd') <![CDATA[<=]]> SALES_DATE
+       		   AND TO_DATE(TO_CHAR(add_months(SYSDATE,-1),'yyyymmdd'),'YYYYMMDD') <![CDATA[<=]]> SALES_DATE
        		   AND SYSDATE >= SALES_DATE
 		</select>
 		

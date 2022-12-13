@@ -22,7 +22,8 @@
       	  					FROM PRODUCT p JOIN STORE s
       						 ON p.STORE_ID  = s.STORE_ID 
        	   				WHERE s.SIGN_STORE != 'N'
-   			             AND REG_STATE != '품절' 
+   			             AND REG_STATE != '품절'
+   			             AND REG_Y_N = 'Y' 
          		<isNotNull property="searchGubun">
            			<isNotNull property="searchText">
               			 AND $searchGubun$ like '%$searchText$%'
@@ -54,11 +55,13 @@
            						 p JOIN STORE s
       					      ON p.STORE_ID  = s.STORE_ID 
    			               WHERE s.SIGN_STORE != 'N'
+   			                 AND REG_Y_N = 'Y'
    			                 AND REG_STATE != '품절' 
               			 	 AND $searchGubun$ like '%$searchText$%' 
 						</isEqual>
            				<isEqual property="searchGubun" compareValue="store_name">
            				    WHERE REG_STATE != '품절' 
+   			                AND REG_Y_N = 'Y'
               			 	AND STORE_ID = (
               			 					SELECT STORE_ID
               			 					  FROM STORE
@@ -82,10 +85,12 @@
       						 ON p.STORE_ID  = s.STORE_ID 
        	 				   WHERE s.SIGN_STORE != 'N'
 		    				AND REG_STATE != '품절' 
+   			                AND REG_Y_N = 'Y'
               			 	AND $searchGubun$ like '%$searchText$%' 
 						</isEqual>
            				<isEqual property="searchGubun" compareValue="store_name">
 		    			  WHERE REG_STATE != '품절' 
+   			                AND REG_Y_N = 'Y'
               			 	AND STORE_ID = (
               			 					SELECT STORE_ID
               			 					  FROM STORE
@@ -122,7 +127,8 @@
           		 				  WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           						 ) = 'plant'
        	  				 	AND s.SIGN_STORE != 'N'
-   		  				 	AND REG_STATE != '품절'  
+   		  				 	AND REG_STATE != '품절'
+   			                AND REG_Y_N = 'Y'  
 					 <isNotNull property="categoryId">
           				    AND CATEGORY_ID = #categoryId#
        				 </isNotNull>
@@ -136,7 +142,8 @@
       	  FROM PRODUCT p JOIN STORE s
       		ON p.STORE_ID  = s.STORE_ID 
        	 WHERE s.SIGN_STORE != 'N'
-		    AND REG_STATE != '품절' 
+		    AND REG_STATE != '품절'
+	        AND REG_Y_N = 'Y' 
   			AND (
          		SELECT PARENT_CATEGORY_ID
           		  FROM CATEGORY c 
@@ -169,7 +176,8 @@
           		 				  WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           						 ) = 'flower'
        	  				 	AND s.SIGN_STORE != 'N'
-   		  				 	AND REG_STATE != '품절'  
+   		  				 	AND REG_STATE != '품절'
+   			                AND REG_Y_N = 'Y'  
 					 <isNotNull property="categoryId">
           				    AND CATEGORY_ID = #categoryId#
        				 </isNotNull>
@@ -189,6 +197,7 @@
           		 WHERE p.CATEGORY_ID = c.CATEGORY_ID 
           		) = 'flower'
    		  AND REG_STATE != '품절'
+   		  AND REG_Y_N = 'Y'
 	
 	</select>
 	
@@ -208,7 +217,8 @@
                   WHERE s.SIGN_STORE != 'N'
                     AND discount_rate BETWEEN 1 AND 100
                        AND DISCOUNT_PERIOD >= SYSDATE
-                       AND REG_STATE != '품절' 
+                       AND REG_STATE != '품절'
+                       AND REG_Y_N = 'Y' 
                     )a)  b
         WHERE rn >= #startIndex#  
           AND rn <![CDATA[<=]]> #endIndex#
@@ -222,10 +232,10 @@
    		   AND discount_rate BETWEEN 1 AND 100
    		   AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE 
    		   AND REG_STATE != '품절'
+   		   AND REG_Y_N = 'Y'
 	</select>
 	
 	<select id="mainDAO.selectSellerProductList" resultClass="egovMap">
-	  
 	      SELECT b.*
          	FROM ( 
           			SELECT ROWNUM rn, a.*
@@ -243,6 +253,7 @@
        						  WHERE s.USER_ID = #userId#
          						AND SIGN_STORE = 'Y'
        	 						AND p.REG_STATE = '판매중'
+       	 						AND REG_Y_N = 'Y'
          						AND s.STORE_ID = p.STORE_ID
                					ORDER BY REG_DATE DESC )a)  b
         			  WHERE rn >= #startIndex#  
@@ -256,6 +267,7 @@
        WHERE s.USER_ID = #userId#
          AND SIGN_STORE = 'Y'
        	 AND p.REG_STATE = '판매중'
+         AND REG_Y_N = 'Y'
          AND s.STORE_ID = p.STORE_ID
 	</select>
 	
@@ -278,6 +290,7 @@
 	        					   FROM PRODUCT p , STORE s
 	       						  WHERE s.USER_ID = #userId#
 	         						AND SIGN_STORE = 'Y'
+   			                		AND REG_Y_N = 'Y'
 	         						AND $searchGubun$ like '%$searchText$%'
 	         						AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regStateList">#regStateList[]#</iterate>
 	         						AND s.STORE_ID = p.STORE_ID
@@ -292,6 +305,7 @@
            , STORE s
        WHERE s.USER_ID = #userId#
          AND SIGN_STORE = 'Y'
+         AND REG_Y_N = 'Y'
          AND $searchGubun$ like '%$searchText$%'
          AND p.REG_STATE IN<iterate open="(" close=")" conjunction="," property="regStateList">#regStateList[]#</iterate>
          AND s.STORE_ID = p.STORE_ID
@@ -443,13 +457,13 @@
 
 	<update id="mainDAO.deleteProduct">
   		UPDATE PRODUCT 
-  		SET STORE_ID = '0'
+  		SET REG_Y_N = 'N'
   		WHERE PRODUCT_ID = #productId#
-    		AND STORE_ID  = (
-          						SELECT STORE_ID
-            					  FROM STORE s 
-           						 WHERE s.USER_ID = #userId#
-        					)
+    	  AND STORE_ID  = (
+          					SELECT STORE_ID
+            				  FROM STORE s 
+           					 WHERE s.USER_ID = #userId#
+        				   )
 	</update>
 
 	
@@ -481,7 +495,7 @@
 			 , SHIPPING_COST = #shippingCost#
 			 , FREE_SHIPPING_PRICE = #freeShippingPrice#
 			 , REG_DATE = SYSDATE
-			 , DISCOUNT_PERIOD = #discountPeriod# 
+			 , DISCOUNT_PERIOD = TO_DATE(#discountPeriod#,'YYYYMMDDHH24MISS')
 	   WHERE PRODUCT_ID = #productId#;
 	   
       UPDATE PRODUCT_OPTION SET 
@@ -513,6 +527,7 @@
       		   END) AS DISCOUNT_PRICE 
 			 , PRODUCT_DESCRIPTION
 			 , REG_STATE
+			 , REG_Y_N
 			 , CATEGORY_ID
 			 , (
 			    SELECT CATEGORY_NAME

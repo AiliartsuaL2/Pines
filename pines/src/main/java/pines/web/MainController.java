@@ -334,14 +334,14 @@ public class MainController {
 			
 		}// for
 		//String uploadFolder = "C:\\Users\\장호성\\AppData\\Roaming\\SPB_Data\\git\\Pines\\pines\\src\\main\\webapp\\product_image"; // 서버 원래 경로
-		String uploadFolder = "C:\\Users\\장호성\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\pines\\product_image"; // 톰캣 실행시 서버에 올라가는 경로
-		//String linuxUploadFolder = "/var/webapps/upload";
+		//String uploadFolder = "C:\\Users\\장호성\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\pines\\product_image"; // 톰캣 실행시 서버에 올라가는 경로
+		String linuxUploadFolder = "/var/webapps/upload";
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String str = sdf.format(date);
 		String datePath = str.replace("-", File.separator);
-		File uploadPath = new File(uploadFolder, datePath);
+		File uploadPath = new File(linuxUploadFolder, datePath);
 		//File uploadPath = new File(linuxUploadFolder, datePath);
 		
 		if(uploadPath.exists() == false) {
@@ -479,7 +479,9 @@ public class MainController {
 	public String updateProductModifySub(MainVO mainVO, HttpSession session) throws Exception{
 		int result = 0;
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
-		mainVO.getProductName();
+		String[] dp = mainVO.getDiscountPeriod().split("-");
+		String discountPeriod = dp[0]+dp[1]+dp[2]+"23"+"59"+"59";
+		mainVO.setDiscountPeriod(discountPeriod);
 		result = mainService.updateProduct(mainVO);
 		
 		return result+"";
@@ -490,14 +492,13 @@ public class MainController {
 		List<?> list = mainService.selectProductDetail(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
 		EgovMap value = (EgovMap) list.get(0);
 		
-		System.out.println(value.get("storeId").equals("0"));
 		
 		if(value.get("signStore").equals("N")){ // signStore가 N인 상품은 탈퇴한 상점의 상품
 			model.addAttribute("msg", "판매 중지된 상품입니다.");
 			model.addAttribute("url", "mainList.do");
 			return "main/alert";
 		}
-		if(value.get("storeId").equals("0")){ //storeId가 0인 상품은 삭제된 상품
+		if(value.get("regYN").equals("N")){ //storeId가 0인 상품은 삭제된 상품
 			model.addAttribute("msg", "삭제된 상품입니다.");
 			model.addAttribute("url", "mainList.do");
 			return "main/alert";

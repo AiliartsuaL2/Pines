@@ -19,8 +19,6 @@
 
 
 $(function(){
-	
-	
 	$( "#discountPeriod" ).datepicker({
 	      changeMonth: true,
 	      changeYear: true
@@ -99,7 +97,8 @@ $(function(){
 			});
 	});
 	
-	
+
+
 $("#rawImage1").click(function(){
 	return false;
 });
@@ -195,7 +194,7 @@ $("#btn_submit").click(function(){
 		if(!fileCheck(fileObj.name, fileObj.size)){
 			return false;
 		}
-		formData.append("uploadFile", fileObj);
+		
 		$.ajax({
 			url:"uploadAjaxAction.do", // 보낼 url
 			processData : false,
@@ -218,7 +217,6 @@ $("#btn_submit").click(function(){
                   if(fileCheck4){
                 	  frmData += '&image4=product_image\\'+'\\'+JSON.stringify(result['obj1'][3]['uploadPath']).replace(/\"/gi, "")+"/s_"+JSON.stringify(result['obj1'][3]['uuid']).replace(/\"/gi, "")+"_"+JSON.stringify(result['obj1'][3]['fileName']).replace(/\"/gi, "");
                   }
-				  console.log("frmData : "+frmData);
 				  $.ajax({
 					url:"productWriteSub.do", // 보낼 url
 				  	data : frmData,
