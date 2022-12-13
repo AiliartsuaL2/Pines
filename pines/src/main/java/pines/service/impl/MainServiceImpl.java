@@ -239,5 +239,11 @@ public class MainServiceImpl implements MainService {
 		return mainDAO.selectOrderListSearchTotal(mainVO);
 	}
 
+	@Override
+	public int selectDeleteProductCheck(MainVO mainVO) throws Exception {
+		// TODO Auto-generated method stub
+		return mainDAO.selectDeleteProductCheck(mainVO);
+	}
+
 
 }

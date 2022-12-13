@@ -60,7 +60,10 @@ $("#btn_remove").click(function(){
 			  	type : 'POST',
 			  	dataType:"text",
 				    success : function(data){
-				    		if(data=="1"){
+				    		if(data=="noneDelivery"){
+								alert("배송 전 상태의 주문이 있습니다. 배송 상태를 확인 바랍니다.");
+				    		}
+				    		else if(data=="ok"){
 								alert("상품 삭제가 완료되었습니다.");
 								location="sellerCheck.do"
 				    		}

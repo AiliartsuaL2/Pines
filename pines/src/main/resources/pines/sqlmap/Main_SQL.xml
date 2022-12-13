@@ -454,7 +454,14 @@
 		FROM PRODUCT p
 		WHERE p.PRODUCT_ID = #productId#
 	</select>
-
+	
+	<select id="mainDAO.selectDeleteProductCheck" resultClass="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM ORDERS
+		 WHERE PRODUCT_ID = #productId#
+		   AND DELIVERY_STATUS = '배송 전'
+	</select>
+	
 	<update id="mainDAO.deleteProduct">
   		UPDATE PRODUCT 
   		SET REG_Y_N = 'N'

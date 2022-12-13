@@ -463,14 +463,23 @@ public class MainController {
 			return "main/alert";
 		}
 		else{
-			int result = mainService.deleteProduct(mainVO);
-			if(result == 1){
-				logger.info("상품 삭제 성공"); // update시켜서 스토어 아이디만 0으로 바꿔버림
+			String message = "";
+			int cnt = mainService.selectDeleteProductCheck(mainVO);
+			if(cnt > 0){ // 배송 전 상품이 있는경우
+				message = "noneDelivery";
 			}
 			else{
-				logger.info("상품 삭제 성공");
+				int result = mainService.deleteProduct(mainVO);
+				if(result == 1){
+					message = "ok";
+					logger.info("상품 삭제 성공"); // update시켜서 스토어 아이디만 0으로 바꿔버림
+				}
+				else{
+					message = "insertErr";
+					logger.info("상품 삭제 실패");
+				}
 			}
-			return result+"";
+			return message;
 		}
 	}
 	

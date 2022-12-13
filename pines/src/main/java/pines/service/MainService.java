@@ -41,4 +41,5 @@ public interface MainService {
 	public int selectProductSearchTotal(MainVO mainVO) throws Exception;
 	public int selectMyOrderListTotal(MainVO mainVO) throws Exception;
 	public int selectOrderListSearchTotal(MainVO mainVO) throws Exception;
+	public int selectDeleteProductCheck(MainVO mainVO) throws Exception;
 	}
