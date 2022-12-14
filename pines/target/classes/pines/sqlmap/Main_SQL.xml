@@ -24,6 +24,7 @@
        	   				WHERE s.SIGN_STORE != 'N'
    			             AND REG_STATE != '품절'
    			             AND REG_Y_N = 'Y' 
+   			             AND PRODUCT_STOCK > 0
          		<isNotNull property="searchGubun">
            			<isNotNull property="searchText">
               			 AND $searchGubun$ like '%$searchText$%'
@@ -57,11 +58,13 @@
    			               WHERE s.SIGN_STORE != 'N'
    			                 AND REG_Y_N = 'Y'
    			                 AND REG_STATE != '품절' 
-              			 	 AND $searchGubun$ like '%$searchText$%' 
+              			 	 AND $searchGubun$ like '%$searchText$%'
+   			                 AND PRODUCT_STOCK > 0 
 						</isEqual>
            				<isEqual property="searchGubun" compareValue="store_name">
            				    WHERE REG_STATE != '품절' 
    			                AND REG_Y_N = 'Y'
+   			                AND PRODUCT_STOCK > 0
               			 	AND STORE_ID = (
               			 					SELECT STORE_ID
               			 					  FROM STORE
@@ -86,11 +89,13 @@
        	 				   WHERE s.SIGN_STORE != 'N'
 		    				AND REG_STATE != '품절' 
    			                AND REG_Y_N = 'Y'
-              			 	AND $searchGubun$ like '%$searchText$%' 
+              			 	AND $searchGubun$ like '%$searchText$%'
+   			                AND PRODUCT_STOCK > 0 
 						</isEqual>
            				<isEqual property="searchGubun" compareValue="store_name">
 		    			  WHERE REG_STATE != '품절' 
    			                AND REG_Y_N = 'Y'
+   			                AND PRODUCT_STOCK > 0
               			 	AND STORE_ID = (
               			 					SELECT STORE_ID
               			 					  FROM STORE
@@ -129,6 +134,7 @@
        	  				 	AND s.SIGN_STORE != 'N'
    		  				 	AND REG_STATE != '품절'
    			                AND REG_Y_N = 'Y'  
+   			                AND PRODUCT_STOCK > 0
 					 <isNotNull property="categoryId">
           				    AND CATEGORY_ID = #categoryId#
        				 </isNotNull>
@@ -144,6 +150,7 @@
        	 WHERE s.SIGN_STORE != 'N'
 		    AND REG_STATE != '품절'
 	        AND REG_Y_N = 'Y' 
+   		    AND PRODUCT_STOCK > 0
   			AND (
          		SELECT PARENT_CATEGORY_ID
           		  FROM CATEGORY c 
@@ -178,6 +185,7 @@
        	  				 	AND s.SIGN_STORE != 'N'
    		  				 	AND REG_STATE != '품절'
    			                AND REG_Y_N = 'Y'  
+   			                AND PRODUCT_STOCK > 0
 					 <isNotNull property="categoryId">
           				    AND CATEGORY_ID = #categoryId#
        				 </isNotNull>
@@ -198,6 +206,7 @@
           		) = 'flower'
    		  AND REG_STATE != '품절'
    		  AND REG_Y_N = 'Y'
+   		  AND PRODUCT_STOCK > 0
 	
 	</select>
 	
@@ -216,9 +225,10 @@
              ON p.STORE_ID  = s.STORE_ID 
                   WHERE s.SIGN_STORE != 'N'
                     AND discount_rate BETWEEN 1 AND 100
-                       AND DISCOUNT_PERIOD >= SYSDATE
-                       AND REG_STATE != '품절'
-                       AND REG_Y_N = 'Y' 
+                    AND DISCOUNT_PERIOD >= SYSDATE
+                    AND REG_STATE != '품절'
+                    AND REG_Y_N = 'Y'
+   			        AND PRODUCT_STOCK > 0 
                     )a)  b
         WHERE rn >= #startIndex#  
           AND rn <![CDATA[<=]]> #endIndex#
@@ -233,6 +243,7 @@
    		   AND DISCOUNT_PERIOD <![CDATA[>=]]> SYSDATE 
    		   AND REG_STATE != '품절'
    		   AND REG_Y_N = 'Y'
+   		   AND PRODUCT_STOCK > 0
 	</select>
 	
 	<select id="mainDAO.selectSellerProductList" resultClass="egovMap">
@@ -343,12 +354,12 @@
 							  OPTION_ID
 							, TOTAL_NUM 
 							, DISCOUNT_WON
-				    )
+				    		)
 					VALUES(
 							  OPTION_SEQ.NEXTVAL
 							, #totalNum#
 							, #discountWon#
-					)
+						   )
 		INTO PRODUCT( 
 							PRODUCT_ID
 						  , STORE_ID
@@ -372,8 +383,6 @@
 						  <isNotNull property="image4">
 						  , IMAGE4
 		  	              </isNotNull>
-						  , MIN_PURCHASE
-						  , MAX_PURCHASE
 						  , SHIPPING_COST
 						  , FREE_SHIPPING_PRICE
 						  , REG_DATE
@@ -406,8 +415,6 @@
 						  <isNotNull property="image4">
 						  , #image4#
 		  	              </isNotNull>
-						  , #minPurchase#
-						  , #maxPurchase#
 						  , #shippingCost#
 						  , #freeShippingPrice#
 						  , SYSDATE
@@ -436,8 +443,6 @@
 			 , IMAGE2
 			 , IMAGE3
 			 , IMAGE4
-			 , MIN_PURCHASE
-			 , MAX_PURCHASE
 			 , SHIPPING_COST
 			 , FREE_SHIPPING_PRICE
 			 , to_char(DISCOUNT_PERIOD,'yyyy-mm-dd') DISCOUNT_PERIOD
@@ -497,8 +502,6 @@
 			 <isNotNull property="image4">
 			 , IMAGE4 = #image4# 
 		  	 </isNotNull>
-			 , MIN_PURCHASE = #minPurchase#
-			 , MAX_PURCHASE = #maxPurchase#
 			 , SHIPPING_COST = #shippingCost#
 			 , FREE_SHIPPING_PRICE = #freeShippingPrice#
 			 , REG_DATE = SYSDATE
@@ -532,6 +535,10 @@
       		   THEN PRODUCT_PRICE
       		   ELSE PRODUCT_PRICE * (1-(DISCOUNT_RATE / 100))
       		   END) AS DISCOUNT_PRICE 
+    		, (CASE WHEN SYSDATE > DISCOUNT_PERIOD 
+      		   THEN 'N'
+      		   ELSE 'Y'
+      		   END) AS DISCOUNT_STATE
 			 , PRODUCT_DESCRIPTION
 			 , REG_STATE
 			 , REG_Y_N
@@ -552,8 +559,6 @@
 			 , IMAGE2
 			 , IMAGE3
 			 , IMAGE4
-			 , MIN_PURCHASE
-			 , MAX_PURCHASE
 			 , SHIPPING_COST
 			 , FREE_SHIPPING_PRICE
 			 , to_char(DISCOUNT_PERIOD,'yyyy-mm-dd') DISCOUNT_PERIOD
@@ -610,6 +615,7 @@
 							  , DELIVERY_STATUS
 							  , TOTAL_AMOUNT
 							  , REVENUE_STATUS
+							  , ORDER_PRODUCT_PRICE
 							 )
 					  VALUES(
 					  		    ORDER_SEQ.NEXTVAL
@@ -624,6 +630,7 @@
 					  		  , '배송 전'
 					  		  , #totalAmount#
 					  		  , 'N'
+					  		  , #orderProductPrice#
 						)
 		</insert>
 		
@@ -653,7 +660,7 @@
               							 ) AS TOTAL_NUM  
               							, p.PRODUCT_ID 
               							, p.PRODUCT_NAME 
-              							, p.PRODUCT_PRICE 
+              							, o.ORDER_PRODUCT_PRICE
               							, p.IMAGE1 
               							, o.ORDER_ID 
               							, o.NUM_OF_PRODUCT 
@@ -686,7 +693,7 @@
               ) AS TOTAL_NUM  
               , p.PRODUCT_ID 
               , p.PRODUCT_NAME 
-              , p.PRODUCT_PRICE 
+              , o.ORDER_PRODUCT_PRICE
               , p.IMAGE1 
               , p.SHIPPING_COST
               , p.FREE_SHIPPING_PRICE
@@ -736,7 +743,7 @@
        	      					 		) AS TOTAL_NUM  
               					 		, p.PRODUCT_ID 
               					 		, p.PRODUCT_NAME 
-              					 		, p.PRODUCT_PRICE 
+              					 		, o.ORDER_PRODUCT_PRICE
               					 		, p.IMAGE1 
               					 		, o.ORDER_ID 
               					 		, o.NUM_OF_PRODUCT 

@@ -275,7 +275,7 @@ a { text-decoration:none }
 				<div class = "category_box">
 	      				<label class="name_category_case">상품 가격</label>
 	      			<div class = "empty_box">
-	      				<input disabled class="category_value" value="${mainVO.productPrice}원">
+	      				<input disabled class="category_value" value="${mainVO.orderProductPrice}원">
 	      			</div>
 				</div>
 				<div class = "category_box">

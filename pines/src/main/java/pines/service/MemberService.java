@@ -23,7 +23,7 @@ public interface MemberService {
 
 	public List<?> selectMemberInfo(MainVO mainVO) throws Exception;
 
-	public int updateMemberPoint(MainVO mainVO) throws Exception;
+	public int updatePointStock(MainVO mainVO) throws Exception;
 
 	public int updateMemberModify(MemberVO memberVO) throws Exception;
 

@@ -334,14 +334,14 @@ public class MainController {
 			
 		}// for
 		//String uploadFolder = "C:\\Users\\장호성\\AppData\\Roaming\\SPB_Data\\git\\Pines\\pines\\src\\main\\webapp\\product_image"; // 서버 원래 경로
-		//String uploadFolder = "C:\\Users\\장호성\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\pines\\product_image"; // 톰캣 실행시 서버에 올라가는 경로
-		String linuxUploadFolder = "/var/webapps/upload";
+		String uploadFolder = "C:\\Users\\장호성\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\pines\\product_image"; // 톰캣 실행시 서버에 올라가는 경로
+		//String linuxUploadFolder = "/var/webapps/upload";
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String str = sdf.format(date);
 		String datePath = str.replace("-", File.separator);
-		File uploadPath = new File(linuxUploadFolder, datePath);
+		File uploadPath = new File(uploadFolder, datePath);
 		//File uploadPath = new File(linuxUploadFolder, datePath);
 		
 		if(uploadPath.exists() == false) {
@@ -452,7 +452,7 @@ public class MainController {
 			return "seller/productModify";
 		}
 	}
-	@RequestMapping("/productDelete")
+	@RequestMapping("/productDelete.do")
 	@ResponseBody
 	public String deleteProduct(MainVO mainVO, ModelMap model, HttpSession session) throws Exception{
 		mainVO.setUserId((String) session.getAttribute("SessionUserID"));
@@ -501,7 +501,6 @@ public class MainController {
 		List<?> list = mainService.selectProductDetail(vo.getProductId()); //unq를 받아와서 sql까지 전달시켜야함
 		EgovMap value = (EgovMap) list.get(0);
 		
-		
 		if(value.get("signStore").equals("N")){ // signStore가 N인 상품은 탈퇴한 상점의 상품
 			model.addAttribute("msg", "판매 중지된 상품입니다.");
 			model.addAttribute("url", "mainList.do");
@@ -512,7 +511,7 @@ public class MainController {
 			model.addAttribute("url", "mainList.do");
 			return "main/alert";
 		}
-		if(value.get("regState").equals("품절")){ // 품절된 상품,,
+		if(value.get("regState").equals("품절") || Integer.parseInt(value.get("productStock").toString()) == 0){
 			model.addAttribute("msg", "품절된 상품입니다.");
 			model.addAttribute("url", "mainList.do");
 			return "main/alert";
@@ -559,7 +558,7 @@ public class MainController {
 		result = mainService.insertOrder(mainVO);
 		
 		if(result == null){ // 성공
-			int tmp = memberService.updateMemberPoint(mainVO);
+			int tmp = memberService.updatePointStock(mainVO); // 포인트 , 재고 차감
 			message = "ok";
 			logger.info("주문 성공");
 		}

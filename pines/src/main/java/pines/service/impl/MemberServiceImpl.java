@@ -78,9 +78,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int updateMemberPoint(MainVO mainVO) throws Exception {
+	public int updatePointStock(MainVO mainVO) throws Exception {
 		// TODO Auto-generated method stub
-		return (int) memberDAO.updateMemberPoint(mainVO);
+		return (int) memberDAO.updatePointStock(mainVO);
 	}
 
 	@Override

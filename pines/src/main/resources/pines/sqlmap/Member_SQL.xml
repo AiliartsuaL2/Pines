@@ -109,14 +109,33 @@
 		 WHERE USER_ID = #userId#
 	</select>
 	
+	<update id = "memberDAO.updatePointStock">
+	{
+	 call
+		declare
+    	begin
+     			UPDATE MEMBER 
+		   		   SET POINT = (
+		   						SELECT POINT
+		   				  		  FROM MEMBER 
+		   				 		 WHERE USER_ID = #userId#
+		   						)-#totalAmount#
+		 		WHERE USER_ID = #userId#;
+	   
+      			UPDATE PRODUCT 
+      			SET PRODUCT_STOCK = (
+		   							  SELECT PRODUCT_STOCK
+		   				  		  	 	FROM PRODUCT
+         	    					   WHERE  PRODUCT_ID = #productId#
+		   							 )-#numOfProduct#
+         	    WHERE  PRODUCT_ID = #productId#;
+      END
+    }
+				
+	</update>
+	
 	<update id="memberDAO.updateMemberPoint">
-		UPDATE MEMBER 
-		   SET POINT = (
-		   				SELECT POINT
-		   				  FROM MEMBER 
-		   				 WHERE USER_ID = #userId#
-		   				)-#totalAmount#
-		 WHERE USER_ID = #userId#
+
 	</update>
 	
 	<update id="memberDAO.updateMemberModify">

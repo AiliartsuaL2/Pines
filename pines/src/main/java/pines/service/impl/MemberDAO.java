@@ -61,9 +61,9 @@ public class MemberDAO extends EgovAbstractDAO{
 		return list("memberDAO.selectMemberInfo", mainVO);
 	}
 
-	public int updateMemberPoint(MainVO mainVO) {
+	public int updatePointStock(MainVO mainVO) {
 		// TODO Auto-generated method stub
-		return (int) update("memberDAO.updateMemberPoint",mainVO);
+		return (int) update("memberDAO.updatePointStock",mainVO);
 	}
 
 	public int updateMemberModify(MemberVO memberVO) {

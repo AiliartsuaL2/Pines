@@ -101,7 +101,7 @@
 						html += "<label class='product_name' >"+JSON.stringify(data['obj1'][i]['productName']).replace(/\"/gi, "")+"</label>";
 						html += "</div>";
 						html += "<div class = 'price_box'>";
-      					html += "<label class='product_price' >"+JSON.stringify(data['obj1'][i]['productPrice']).replace(/\"/gi, "")+"원</label>";
+      					html += "<label class='product_price' >"+JSON.stringify(data['obj1'][i]['orderProductPrice']).replace(/\"/gi, "")+"원</label>";
       					html += "<label class='num_Of_Product' >/"+JSON.stringify(data['obj1'][i]['numOfProduct']).replace(/\"/gi, "")+"개</label>";
 						html += "</div>";
 						html += "<div class = 'price_box'>";
@@ -530,7 +530,7 @@ a { text-decoration:none }
 	      						<label class="product_name" >${mainVO.productName}</label>
 	      					</div>
 	      					<div class = "price_box">
-	      						<label class="product_price" >${mainVO.productPrice}원</label>
+	      						<label class="product_price" >${mainVO.orderProductPrice}원</label>
 	      						<label class="num_Of_Product" >/${mainVO.numOfProduct}개</label>
 	      					</div>
 	      					<div class = "price_box">

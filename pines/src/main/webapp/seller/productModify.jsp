@@ -85,8 +85,6 @@ $("#btn_submit").click(function(){
 		var discountRate = $.trim($("#discountRate").val());
 		var discountStock = $.trim($("#discountStock").val());
 		var productDescription = $.trim($("#productDescription").val());
-		var minPurchase = $.trim($("#minPurchase").val());
-		var maxPurchase = $.trim($("#maxPurchase").val());
 		var shippingCost = $.trim($("#shippingCost").val());
 		var freeShippingPrice = $.trim($("#freeShippingPrice").val());
 		
@@ -120,16 +118,6 @@ $("#btn_submit").click(function(){
 		if( productDescription == "" ) {
 			alert("상품 설명을 입력해주세요.");
 			$("#productDescription").focus();
-			return false;
-		}
-		if( minPurchase == "" ) {
-			alert("최소 구매 개수를 입력해주세요.");
-			$("#minPurchase").focus();
-			return false;
-		}
-		if( maxPurchase == "" ) {
-			alert("최대 구매 개수를 입력해주세요.");
-			$("#maxPurchase").focus();
 			return false;
 		}
 		if( shippingCost == "" ) {
@@ -398,7 +386,7 @@ a { text-decoration:none }
 .id_input_box{
 	border: 1px solid #A5A5A5;
 	display: block;
-	height:1050px;
+	height:950px;
 	width : 45%;
 	margin-left : 610px;	
 }
@@ -827,20 +815,6 @@ a { text-decoration:none }
 	      			<label class="des_name_case">상품 설명</label>
 	      			<div class = "description_box">
 						<input type="text" name="productDescription"id="productDescription"class="input_description" value = "${mainVO.productDescription}" >
-	      			</div>
-			</div>
-			<div class = "name_box">
-	      			<label class="name_case">최소 구매</label>
-	      			<div class = "empty_box">
-						<input type="text" name="minPurchase"id="minPurchase"class="input_value" value = "${mainVO.minPurchase}" >
-						<p class = "price">개</p>
-	      			</div>
-			</div>
-			<div class = "name_box">
-	      			<label class="name_case">최대 구매</label>
-	      			<div class = "empty_box">
-						<input type="text" name="maxPurchase"id="maxPurchase"class="input_value" value = "${mainVO.maxPurchase}" >
-						<p class = "price">개</p>
 	      			</div>
 			</div>
 			<div class = "name_box">

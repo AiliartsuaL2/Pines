@@ -364,7 +364,8 @@ a { text-decoration:none }
 			  
 			  <input type="hidden" id="numOfProduct" name="numOfProduct" value="${productList.numOfProduct}">
 			  <input type="hidden" id="orderOption" name="orderOption" value="${productList.orderOption}">
-			 
+			  
+			  <input type="hidden" id="orderProductPrice" name="orderProductPrice" value="${productList.productPrice}">
 	      	  <input type="hidden" id="totalAmount" name="totalAmount" value="${productList.totalAmount}">
 	      	  <input type="hidden" id="point" name="point" value="${memberVO.point}">
 			  

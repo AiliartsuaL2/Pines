@@ -22,8 +22,6 @@ public class MainVO {
 	private String image2;
 	private String image3;
 	private String image4;
-	private int minPurchase;
-	private int maxPurchase;
 	private int shippingCost;
 	private int freeShippingPrice;
 	private String regDate;
@@ -57,9 +55,15 @@ public class MainVO {
 	private String accountNumber;
 	private String accountHolder;
 	private String bankName;
-	
+	private int orderProductPrice;
 
 	
+	public int getOrderProductPrice() {
+		return orderProductPrice;
+	}
+	public void setOrderProductPrice(int orderProductPrice) {
+		this.orderProductPrice = orderProductPrice;
+	}
 	public String getBankName() {
 		return bankName;
 	}
@@ -311,18 +315,6 @@ public class MainVO {
 	}
 	public void setImage4(String image4) {
 		this.image4 = image4;
-	}
-	public int getMinPurchase() {
-		return minPurchase;
-	}
-	public void setMinPurchase(int minPurchase) {
-		this.minPurchase = minPurchase;
-	}
-	public int getMaxPurchase() {
-		return maxPurchase;
-	}
-	public void setMaxPurchase(int maxPurchase) {
-		this.maxPurchase = maxPurchase;
 	}
 	public int getShippingCost() {
 		return shippingCost;

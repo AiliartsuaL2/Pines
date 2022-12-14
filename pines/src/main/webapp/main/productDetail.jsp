@@ -27,8 +27,13 @@ $(function(){
 			var numOfProduct = $("#numOfProduct").val();
 			var discountWon = $("#discountWon").val();
 		 	var totalNum = $("#totalNum").val();
+		 	var productStock = $("#productStock").val();
 			var totalAmount = 0;
-
+				
+			if(Number(numOfProduct) > Number(productStock)){
+				alert("주문량이 등록된 재고보다 많습니다.");
+				return false;
+			}
 			if(orderOption == "none"){
 				if(productPrice * numOfProduct >= freeShippingPrice){
 					totalAmount = productPrice * numOfProduct;			
@@ -38,7 +43,11 @@ $(function(){
 					totalAmount = totalAmount + Number(shippingCost);		
 				}
 			}
-			else{	
+			else{
+				if(discountState == "Y"){
+					alert("중복 할인은 불가능합니다.");
+					return false;
+				}
 				if(Number(numOfProduct) < Number(totalNum)){
 					alert("선택하신 옵션의 개수보다 구매하시는 개수가 적습니다.");
 					return false;
@@ -81,6 +90,12 @@ $(function(){
     var select = $("#vorderOption");
 
     select.change(function(){
+	 	var discountState = $("#discountState").val();
+		if(select != "none" && discountState == "Y"){
+			alert("중복 할인은 불가능합니다.");
+			select.val("none");
+			return false;
+		}
   	  	const orderOption = document.getElementById('vorderOption');
     	$("label[for = 'valueLabel']").text($("#vorderOption option:selected").text());
   	  	$('input[name="orderOption"]').attr('value', orderOption.value);
@@ -305,7 +320,7 @@ a { text-decoration:none }
 .price_wrap{
 	margin-top : 3%;
 	width : 80%;
-	height: 15%;
+	height: 13%;
 	margin-left : 10%;
 }
 .productPrice{
@@ -326,7 +341,7 @@ a { text-decoration:none }
 .discount_price_wrap{
 	margin-bottom : 2%;
 	width : 80%;
-	height: 15%;
+	height: 13%;
 	margin-left : 10%;
 	}
 
@@ -477,7 +492,9 @@ a { text-decoration:none }
 			  <input type="hidden" id="productName" name="productName" value="${mainVO.productName}">
 			  <input type="hidden" id="totalNum" name="totalNum" value="${mainVO.totalNum}" >
 			  <input type="hidden" id="discountWon" name="discountWon" value="${mainVO.discountWon}">
+			  <input type="hidden" id="productStock" name="productStock" value="${mainVO.productStock}">
 			  <input type="hidden" id="totalAmount" name="totalAmount" >
+			  <input type="hidden" id="discountState" name="discountState" value="${mainVO.discountState}">
 	    </form> 
 	    
 		<div class="id_input_box">
@@ -529,6 +546,9 @@ a { text-decoration:none }
 							</div>
 							<div class = "shipping_wrap">
 								<label class="shippingCost" >주문 금액 ${mainVO.freeShippingPrice}원 이상 시 배송비 무료</label>
+	      					</div>
+	      					<div class = "shipping_wrap">
+								<label class="shippingCost" >남은 수량 : ${mainVO.productStock}개</label>
 	      					</div>
 	      				</div>
 	      				
