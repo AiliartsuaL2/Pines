@@ -307,10 +307,113 @@ public class MainController {
 	    return mv;
 	}
 	
+	/*
 	@RequestMapping("uploadAjaxAction.do")
 	public ModelAndView uploadAjaxActionPost(@RequestParam List<MultipartFile> uploadFile){
 		logger.info("uploadAjaxActionPOST..........");		
-		/* 이미지 파일 체크 */
+		// 이미지 파일 체크 
+		for(MultipartFile multipartFile: uploadFile) {
+			File checkfile = new File(multipartFile.getOriginalFilename()); // 파일객체에 담음
+			String type = null;
+			MimetypesFileTypeMap mtft = new MimetypesFileTypeMap();
+			String mimeType = mtft.getContentType(checkfile);
+			//type = Files.probeContentType(checkfile.toPath()); //확장자 확인
+			logger.info("MIME TYPE : " + mimeType );
+			
+			if(mimeType.startsWith("application")){
+				continue;
+			}
+			if(!mimeType.startsWith("image")) {
+				ModelAndView mv = new ModelAndView();
+				mv.addObject("obj1", HttpStatus.BAD_REQUEST); 
+			    mv.setViewName("jsonView");
+			    return mv;
+			}
+		}// for
+		
+		String linuxUploadFolder = "/var/webapps/upload";
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String str = sdf.format(date);
+		String datePath = str.replace("-", File.separator);
+		
+		File uploadPath = new File(linuxUploadFolder, datePath);
+		
+		if(uploadPath.exists() == false) {
+			uploadPath.mkdirs();
+		}
+		List<ImageVO> list = new ArrayList();
+
+		int i=0;
+		for(MultipartFile multipartFile : uploadFile) {
+			// 널값 들어오면 (4개중 1~3개 이미지만 등록시)
+			File checkfile = new File(multipartFile.getOriginalFilename());
+			MimetypesFileTypeMap mtft = new MimetypesFileTypeMap();
+			String mimeType = mtft.getContentType(checkfile); // 확장자 확인
+			
+			if(!mimeType.startsWith("image")){ // 1~3번이 이미지가 아닐 수 있으므로  continue처리
+				continue;
+			}
+			
+			logger.info("파일 추가1");
+			
+			// 이미지 정보 객체
+			ImageVO vo = new ImageVO();
+			
+			// 파일 이름 
+			String uploadFileName = multipartFile.getOriginalFilename();	
+			
+			i++;
+			vo.setFileName(uploadFileName);
+			vo.setUploadPath(datePath);
+			
+			String uuid = UUID.randomUUID().toString();
+			vo.setUuid(uuid);
+			
+			uploadFileName = uuid + "_" + uploadFileName;	
+			
+			// 파일 위치, 파일 이름을 합친 File 객체 
+			File saveFile = new File(uploadPath, uploadFileName);
+			
+			// 파일 저장 
+			try {
+				multipartFile.transferTo(saveFile); // 파일 저장
+				
+				File thumbnailFile = new File(uploadPath, "s_" + uploadFileName);
+								
+				BufferedImage bo_image = ImageIO.read(saveFile);
+				// 비율 
+				double ratio = 3;
+				//넓이 높이
+				int width = (int) (bo_image.getWidth() / ratio);
+				int height = (int) (bo_image.getHeight() / ratio);
+				
+				//permit 설정 해야함
+				
+				
+				Thumbnails.of(saveFile) // 사이즈 작은 파일로 만들고서 
+		        .size(width, height)
+		        .toFile(thumbnailFile); 
+				
+				saveFile.delete(); // 원본파일은 다시 삭제함
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			list.add(vo);
+		} // for
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("obj1", list); 
+	    mv.setViewName("jsonView");
+	    return mv;
+	}
+	배포용 */ 
+	
+	@RequestMapping("uploadAjaxAction.do")
+	public ModelAndView uploadAjaxActionPost(@RequestParam List<MultipartFile> uploadFile){
+		logger.info("uploadAjaxActionPOST..........");		
+		// 이미지 파일 체크 
 		for(MultipartFile multipartFile: uploadFile) {
 			
 			File checkfile = new File(multipartFile.getOriginalFilename());
@@ -367,10 +470,10 @@ public class MainController {
 			
 			logger.info("파일 추가1");
 			
-			/* 이미지 정보 객체*/
+			// 이미지 정보 객체
 			ImageVO vo = new ImageVO();
 			
-			/* 파일 이름 */
+			// 파일 이름 
 			String uploadFileName = multipartFile.getOriginalFilename();	
 			System.out.println("uploadFile "+i+" = "+uploadFileName + " list size = "+uploadFile.size());
 			i++;
@@ -382,17 +485,17 @@ public class MainController {
 			
 			uploadFileName = uuid + "_" + uploadFileName;	
 			
-			/* 파일 위치, 파일 이름을 합친 File 객체 */
+			// 파일 위치, 파일 이름을 합친 File 객체 
 			File saveFile = new File(uploadPath, uploadFileName);
 			
-			/* 파일 저장 */
+			// 파일 저장 
 			try {
 				multipartFile.transferTo(saveFile); // 파일 저장
 				File thumbnailFile = new File(uploadPath, "s_" + uploadFileName);
 				BufferedImage bo_image = ImageIO.read(saveFile);
-				/* 비율 */
+				// 비율 
 				double ratio = 3;
-				/*넓이 높이*/
+				//넓이 높이
 				int width = (int) (bo_image.getWidth() / ratio);
 				int height = (int) (bo_image.getHeight() / ratio);
 				
