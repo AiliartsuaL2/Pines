@@ -32,24 +32,24 @@
 
 <table class="table1">
 	<tr>
-		<th width="80" align="left" ><a class="a1" href="/pines/sellerCheck.do" style="text-decoration:none; margin-left:40%; 
+		<th width="80" align="left" ><a class="a1" href="sellerCheck.do" style="text-decoration:none; margin-left:40%; 
     text-align-last: center;">상품</a></th>
-		<th width="80" align="left"><a class="a1" href="/pines/sellerOrderInquiry.do" style="text-decoration:none; margin-left:15%; 
+		<th width="80" align="left"><a class="a1" href="sellerOrderInquiry.do" style="text-decoration:none; margin-left:15%; 
     text-align-last: center;">주문 / 정산</a></th>
-		<th width="80" align="left"><a class="a1" href="/pines/sellerInfoCheck.do" style="text-decoration:none; 
+		<th width="80" align="left"><a class="a1" href="sellerInfoCheck.do" style="text-decoration:none; 
     text-align-last: center;">판매자 설정</a></th>
 		
 	<%	
 		if(USERID == null){ // 로그인 안했을경우
 			
 	%>
-		<th width="80" align="right"><a class="a1" href="/pines/loginWrite.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그인</a></th>
-		<th width="80" align="right"><a class="a1" href="/pines/memberWrite.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">회원가입</a></th>
+		<th width="80" align="right"><a class="a1" href="loginWrite.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그인</a></th>
+		<th width="80" align="right"><a class="a1" href="memberWrite.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">회원가입</a></th>
 	<%
 		} else { // 로그인 성공시
 	%>
-		<th width="80 align="right"><a class="a1" href="/pines/logout.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그아웃</a></th>
-		<th width="80 align="right"><a class="a1" href="/pines/memberCheck.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">마이 페이지</a></th>
+		<th width="80 align="right"><a class="a1" href="logout.do" style="text-decoration:none; font-size:11pt; margin-left:100px;">로그아웃</a></th>
+		<th width="80 align="right"><a class="a1" href="memberCheck.do" style="text-decoration:none; font-size:11pt; margin-right:50px;">마이 페이지</a></th>
 	<%
 		}
 	%>
