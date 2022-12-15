@@ -193,11 +193,15 @@
         <img src="https://user-images.githubusercontent.com/89395238/207810860-71d42995-e74c-462a-b614-18294c91d29c.JPG">
       </p>
   
-  - A 사용자 상품 삭제 시도
+  - A 사용자 상품 삭제 시도시
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207817031-1adedba5-03fb-4a72-a431-f05d11044cea.JPG">
       </p>
   
+  - A 사용자 상품 삭제 시도 이후 url 자동 변경
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207817728-2d04fb9a-a967-446a-8865-ffc6c5ac058c.JPG">
+      </p>
   
 </details>
 
