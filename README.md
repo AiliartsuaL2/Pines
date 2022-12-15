@@ -48,24 +48,50 @@
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
       </p>
-  </details 
- - 
-
-- React.js를 감싼 Android(Java) App 개발
-- React.js를 이용하여 검사 3개와 학습 6개에서 진행되는 게임 구현
-    - 게임(검사 + 학습) 상태 관리
-    - 게임 로직 구현
-    - 서버와 RESTful API 연동
-
+  </details> 
+- <details>
+    <summary><b>메뉴 구조도</b></summary>
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      </p>
+  </details> 
+- <details>
+    <summary><b>데이터 모델링</b></summary>
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      </p>
+  </details> 
 <br/>
 
-## 💡 Insights
+## 📖 상세 내용
+  # 전체 메뉴 구성
+  <details>
+    <summary><b>메인 페이지</b></summary>
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      </p>
+      - 상품 검색 : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
+      - 로그인 : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
+      - 회원가입 : 회원가입을 할 수 있습니다. ID중복 체크를 해야 가입이 가능하고, 우편번호에는 Daum(Kakao) PostCode API를 사용하였고,
+        RSA 암호화 방식을 적용하였습니다.
+      - ID / PW찾기 : 개인정보를 이용하여 ID를 찾을 수 있고, PW는 재설정 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
+  </details> 
+  <details>
+    <summary><b>마이 페이지</b></summary>
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      </p>
+  </details> 
+  <details>
+    <summary><b>판매자 페이지</b></summary>
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      </p>
+  </details> 
 
-- 서비스에 대한 프로젝트 기획할 때 제대로된 **사용자 니즈 파악**과 **이에 대한 검증**이 많이 필요하다는 것을 알게 되었습니다.     
-    겉으로 보이는 사용자가 가진 문제점이 아닌 그 안에 **숨겨진 니즈를 파악**하는 데 집중하기 위해 노력하였습니다.
-- 개발자 입장에선 서비스가 완성되었지만, **사용자 입장에서는 많이 부족**할 때가 많다는 것을 알게 되었습니다.      
-   FE 측면에서 완성도를 높이기 위해선 클릭/효과 등 **UX에 집중**해야 하는 것을 깨달았습니다.
+## 💡 느낀점
 
+- 
 
 <br/>
 
