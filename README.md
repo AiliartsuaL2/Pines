@@ -177,9 +177,28 @@
 <details>
    <summary><b>시나리오 3 - 주문이 있는 상품 삭제 불가능 처리</b></summary>
   - A 사용자 상품 등록 > B 사용자 상품 주문 > B 사용자 주문 내역 확인 > A 사용자 상품 삭제 시도
+  
+  - A 사용자 상품 등록
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207810852-197a50dc-224c-4b93-b0fe-32bb969b61ee.JPG">
       </p>
+  
+  - B 사용자 상품 주문
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207810854-2b2e87dd-6158-40fe-bcf3-6c169e5081e6.JPG">
+      </p>
+  
+  - B 사용자 주문 내역 확인
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207810860-71d42995-e74c-462a-b614-18294c91d29c.JPG">
+      </p>
+  
+  - A 사용자 상품 삭제 시도
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207810860-71d42995-e74c-462a-b614-18294c91d29c.JPG">
+      </p>
+  
+  
 </details>
 
 <br/>
