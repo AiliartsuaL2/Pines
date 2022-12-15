@@ -68,13 +68,8 @@
   <details>
     <summary><b>메인 페이지</b></summary>
   
-  ### 메인 페이지
-  
-
-  
-  
   <details>
-    <summary><b>상품 페이지</b></summary>
+    - <summary><b>상품 페이지</b></summary>
     
   - **상품 페이지** : 카테고리별 상품 리스트가 출력되며 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
     
@@ -85,7 +80,7 @@
   </details>
   
   <details>
-    <summary><b>로그인</b></summary>
+    - <summary><b>로그인</b></summary>
     
   - **로그인** : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
     
@@ -97,7 +92,7 @@
   
   
   <details>
-    <summary><b>회원가입</b></summary>
+    - <summary><b>회원가입</b></summary>
     
   - **회원가입** : 카테고리별 상품 리스트가 출력되며 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
     
@@ -108,7 +103,7 @@
   </details>
   
   <details>
-    <summary><b>ID / PW 찾기</b></summary>
+    - <summary><b>ID / PW 찾기</b></summary>
     
   - **ID / PW찾기** : 개인정보를 이용하여 ID를 찾을 수 있고, PW는 재설정 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
     
