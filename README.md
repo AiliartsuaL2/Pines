@@ -104,7 +104,7 @@
 
 ## 🧭 실행 시나리오
 <details>
-   <summary><b>시나리오 1 - 상품 가격 변경시 주문 내역 확인</b></summary>
+   <summary><b>시나리오 1 - 상품 가격 변경시 주문 내역 변경 유무 확인</b></summary>
   - A 사용자 상품 등록 > B 사용자 상품 주문 > B 사용자 주문 내역 확인 > A 사용자 상품 가격 변경 > B 사용자 상품 추가 구매 > B 사용자 주문내역 확인
 
   - A 사용자 상품 등록
@@ -144,7 +144,7 @@
 
 
 <details>
-   <summary><b>시나리오 2</b></summary>
+   <summary><b>시나리오 2 - 재고 없는 상품 상세 확인 시 에러 체크</b></summary>
   - A 사용자 상품 등록(재고 3개) > B 사용자 상품 주문(3개) > B 사용자 상품 상세보기
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
@@ -153,7 +153,7 @@
 
 
 <details>
-   <summary><b>시나리오 3</b></summary>
+   <summary><b>시나리오 3 - 주문이 있는 상품 삭제 불가능 처리</b></summary>
   - A 사용자 상품 등록 > B 사용자 상품 주문 > B 사용자 주문 내역 확인 > A 사용자 상품 삭제 시도
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
