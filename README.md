@@ -195,7 +195,7 @@
   
   - A 사용자 상품 삭제 시도
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207810860-71d42995-e74c-462a-b614-18294c91d29c.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207817031-1adedba5-03fb-4a72-a431-f05d11044cea.JPG">
       </p>
   
   
