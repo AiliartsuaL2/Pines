@@ -138,13 +138,13 @@
         <img src="https://user-images.githubusercontent.com/89395238/207821022-e230460a-8de8-43f7-af77-01faeb1df128.JPG">
   </p>  
       
-      <p align="center">
+  <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821018-7d7d4356-7f4d-4f20-add0-badcb58b50ce.JPG">
-      </p>
+  </p>
       
-      <p align="center">
+  <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821016-1d6522e4-b71b-4c0b-b631-8dbd634e4fad.JPG">
-      </p>
+  </p>
   
   
   
