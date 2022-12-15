@@ -67,36 +67,109 @@
   ### 전체 메뉴 구성
   <details>
     <summary><b>메인 페이지</b></summary>
+      
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
+      </p>
+      
+  - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
+
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207820983-2c50c15f-53ea-42cb-9301-011e70150e44.JPG">
       </p>
   
-  - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
   - **로그인** : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
+
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821037-f84d7780-5f2f-47ce-aaf6-c46e325a5df6.JPG">
+      </p>
+      
   - **회원가입** : 회원가입을 할 수 있습니다. ID중복 체크를 해야 가입이 가능하고, 우편번호에는 Daum(Kakao) PostCode API를 사용하였고, RSA 암호화 방식을 적용하였습니다.
+  
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207820971-fc310a17-04b0-4417-abe1-6130d1b4e8e6.JPG">
+      </p>
+      
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207820978-21a304fc-36fa-4c96-98b5-f14ece3f508f.JPG">
+      </p>
+  
   - **ID / PW찾기** : 개인정보를 이용하여 ID를 찾을 수 있고, PW는 재설정 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
 
 </details> 
 
   <details>
     <summary><b>마이 페이지</b></summary>
+    
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207821008-ca80b858-ca93-4295-8706-0cca88aba3b5.JPG">
       </p>
   
   - **주문 조회** : 사용자의 주문 내역을 조회합니다. 주문번호와 상품 이름을 통해 검색 할 수 있고,기간을 선택하여 조회 할 수 있습니다. (Ajax 적용)
+  
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207820988-3a868229-c27e-431c-8e28-b7d977b6ffbb.JPG">
+      </p>
+      
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207820984-1cf90271-5591-4232-ac59-ec7e53f0d1f7.JPG">
+      </p>
+      
   - **개인정보관리** : 비밀번호를 한번 더 확인하고(RSA 적용) , ID를 제외한 사용자의 개인정보를                                  변경 할 수 있으며 회원 탈퇴도 가능합니다.  
+  
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821035-c1552eea-6eda-48f7-a6f6-140089ff5680.JPG">
+      </p>
+      
   - **결제수단관리** : 포인트 충전을 할 수 있는 화면을 구현하였습니다.
   </details> 
   
   <details>
     <summary><b>판매자 페이지</b></summary>
+    
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207821022-e230460a-8de8-43f7-af77-01faeb1df128.JPG">
+      </p>
+      
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821018-7d7d4356-7f4d-4f20-add0-badcb58b50ce.JPG">
+      </p>
+      
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821016-1d6522e4-b71b-4c0b-b631-8dbd634e4fad.JPG">
       </p>
   
+  
+  
   - **상품** : 등록된 상품 리스트들을 출력합니다. 진열 상태(판매중, 품절)와 상품명, 상품 코드를                    통해 검색조건을 추가하여 조회 할 수 있습니다.(Ajax 적용) 또한 상품의 수정, 등록 또한 할 수 있습니다.
+  
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821011-42a833dc-717c-474a-889d-391b5bc2ae9e.JPG">
+      </p>
+      
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821005-da76408b-1013-4ac0-90da-cb3e25357a64.JPG">
+      </p>
+      
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207820997-7e7b3d99-7ca7-436e-bdf0-b1e21c75868b.JPG">
+      </p>
+      
+  
   - **주문 / 정산** : 판매한 내역들의 리스트를 검색어, 기간을 통해 조회하고(Ajax 적용), 주문의 상세 내역을 확인 할 수 있습니다. 또한 어제까지의 매출을 등록된 본인 계좌에 정산 할 수 있고, 정산 내역을 확인 할 수 있습니다.  
+  
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821023-294a05ef-6cfe-47bc-81fd-8579b25d1d16.JPG">
+      </p>
+  
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821030-f3f5b469-b0a4-47ed-995f-1736681abd6a.JPG">
+      </p>
+      
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821027-7eb3fac4-b409-4fb7-bc60-1ab05e29989c.JPG">
+      </p>
+  
   - **판매자 설정** : 세션을 통해 로그인 여부를 판단하고, 사용자 아이드를 확인하여 판매자 여부를 판단 한 뒤, 판매자라면 판매처 해지를 할 수 있고, 판매자가 아니라면 판매자 등록을 할 수 있습니다. 또한 판매처 정보 수정을 통해 판매처 정보를 수정 할 수 있습니다. (RSA적용)
   </details> 
 
