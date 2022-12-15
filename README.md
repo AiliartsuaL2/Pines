@@ -145,10 +145,36 @@
 
 <details>
    <summary><b>시나리오 2 - 재고 없는 상품 상세 확인 시 에러 체크</b></summary>
-  - A 사용자 상품 등록(재고 3개) > B 사용자 상품 주문(3개) > B 사용자 상품 상세보기
+  - 기등록된 A 사용자 상품 선택(재고 3개) > B 사용자 상품 주문(3개) > B 사용자의 주문내역 중 상품 상세보기
+  
+  - 기등록된 A 사용자 상품 조회(재고 3개)
+  
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="">
       </p>
+  
+  - 3개 이상 주문 시
+      <p align="center">
+        <img src="">
+      </p>
+  
+  - 체크된 옵션보다 적게 구매 시
+      <p align="center">
+        <img src="">
+      </p>
+  
+  - B 사용자 상품 주문(3개)
+  
+      <p align="center">
+        <img src="">
+      </p>
+  
+  - B 사용자의 주문내역 > 상품 상세보기
+  
+      <p align="center">
+        <img src="">
+      </p>
+
 </details>
 
 
