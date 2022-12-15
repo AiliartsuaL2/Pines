@@ -67,6 +67,8 @@
   ### 전체 메뉴 구성
   <details>
     <summary><b>메인 페이지</b></summary>
+  
+  - 
     
     
       <p align="center">
