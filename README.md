@@ -70,12 +70,11 @@
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
       </p>
-  # 기능
-  - 상품 검색 : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
-  - 로그인 : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
-  - 회원가입 : 회원가입을 할 수 있습니다. ID중복 체크를 해야 가입이 가능하고, 우편번호에는 Daum(Kakao) PostCode API를 사용하였고, RSA 암호화 방식을 적용하였습니다.
-  - ID / PW찾기 : 개인정보를 이용하여 ID를 찾을 수 있고, PW는 재설정 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
-  </details> 
+### 특징
+- 한국의 난독증 아동을 위한 서비스입니다.
+- [대한난독증협회](http://www.nandoc.com/)에서 실제 진행되고 있는 검사와 치료법을 바탕으로 커리큘럼 기획을 하였습니다.
+- 3개의 검사와 6개의 학습으로 이루어져 있습니다.
+</details> 
   <details>
     <summary><b>마이 페이지</b></summary>
       <p align="center">
