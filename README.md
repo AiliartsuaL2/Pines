@@ -105,32 +105,39 @@
 ## 🧭 실행 시나리오
 <details>
    <summary><b>시나리오 1</b></summary>
-  - A 사용자 상품 등록 > B 사용자 상품 주문 > B 사용자 주문 내역 확인 > A 사용자 상품 가격 변경 > B 사용자 주문내역 확인
-  
-  
+  - A 사용자 상품 등록 > B 사용자 상품 주문 > B 사용자 주문 내역 확인 > A 사용자 상품 가격 변경 > B 사용자 상품 추가 구매 > B 사용자 주문내역 확인
+
   - A 사용자 상품 등록
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207810852-197a50dc-224c-4b93-b0fe-32bb969b61ee.JPG">
       </p>
   
   - B 사용자 상품 주문
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207810854-2b2e87dd-6158-40fe-bcf3-6c169e5081e6.JPG">
       </p>
   
   - B 사용자 주문 내역 확인
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207810860-71d42995-e74c-462a-b614-18294c91d29c.JPG">
       </p>
   
-  - A 사용자 상품 가격 변경
+  - A 사용자 상품 가격 수정
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207810849-8fe16d16-0b2f-4fee-b0e6-28c182f5c489.JPG">
+      </p>
+  
+  - B 사용자 상품 추가 구매
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207810855-1329900d-d7c5-4e03-90ae-6d544f8f0095.JPG">
       </p>
   
   - B 사용자 주문내역 확인
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      <p align="left">
+        <img src="https://user-images.githubusercontent.com/89395238/207810858-d4cf95df-2eca-4667-8af9-1060d670ed84.JPG">
+      </p>
+      <p align="right">
+        <img src="https://user-images.githubusercontent.com/89395238/207810861-055331dc-7eff-4de6-a0f6-91fa4996238f.JPG">
       </p>
   
 </details>
