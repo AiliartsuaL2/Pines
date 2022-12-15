@@ -2,7 +2,7 @@
 
 
 
-## ✍️ Projects
+## ✍️ 프로젝트
 ### Pines
 🌷 꽃, 묘목 시장의 통합 플랫폼
 <p align="center">
@@ -18,26 +18,38 @@
   <img src="" alt=""/>
 </div>
 
-- Target
+- 타겟
     - 농원 및 꽃집 등 도,소매 상인들
-- Background
+- 배경
     - 농원과 꽃 시장이 개별적으로 스토어가 오픈되어있지만 하나의 통합 플랫폼은 제대로 구축이 되어있지않음.
-- Features
+- 기능
     - 구매자 : 카테고리별로 제품을 조회 할 수 있고, 구매, 주문 내역 확인등을 할 수 있다.  
     - 판매자 : 농원 사용자, 꽃집 사용자로 나누어 각자 상품을 CRUD 할 수 있고, 생성된 주문에 대한 배송처리, 정산, 정산내역 조회등을 
 할 수 있다.  
 
 <br/>
 
-## 🛠 Skills
+## 🛠 사용 기술
 
-- Java, Android
-- React.js
-- Redux
-
+- Java/Spring
+- Ibatis
+- Oracle11g
+- Apache-Tomcat
+- AWS EC2
+- Html
+- JavaScript
+- Css
 <br/>
 
-## 🖥 In charge of
+## 🖥 프로젝트 설계
+
+- <details>
+    <summary><b>업무 흐름도</b></summary>
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      </p>
+  </details 
+ - 
 
 - React.js를 감싼 Android(Java) App 개발
 - React.js를 이용하여 검사 3개와 학습 6개에서 진행되는 게임 구현
