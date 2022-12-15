@@ -104,7 +104,7 @@
   <details>
     <summary><b>마이 페이지</b></summary>
     
-    - 마이
+  - 마이
      
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821008-ca80b858-ca93-4295-8706-0cca88aba3b5.JPG">
@@ -133,7 +133,7 @@
   <details>
     <summary><b>판매자 페이지</b></summary>
     
-    - 판매자 
+  -  
     
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821022-e230460a-8de8-43f7-af77-01faeb1df128.JPG">
