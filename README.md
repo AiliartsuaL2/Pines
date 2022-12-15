@@ -64,17 +64,20 @@
 <br/>
 
 ## 📖 상세 내용
-  # 전체 메뉴 구성
+  ### 전체 메뉴 구성
   <details>
     <summary><b>메인 페이지</b></summary>
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
       </p>
+  
 ### 특징
-- 한국의 난독증 아동을 위한 서비스입니다.
-- [대한난독증협회](http://www.nandoc.com/)에서 실제 진행되고 있는 검사와 치료법을 바탕으로 커리큘럼 기획을 하였습니다.
-- 3개의 검사와 6개의 학습으로 이루어져 있습니다.
+  - 디테일
+  - 디테일2
+  - 디테일3
+
 </details> 
+
   <details>
     <summary><b>마이 페이지</b></summary>
       <p align="center">
