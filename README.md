@@ -65,19 +65,20 @@
 
 ## 📖 상세 내용
   ### 전체 메뉴 구성
+  
   <details>
     <summary><b>메인 페이지</b></summary>
   
-  <details>
-    - <summary><b>상품 페이지</b></summary>
+    <details>
+      <summary><b>상품 페이지</b></summary>
     
-  - **상품 페이지** : 카테고리별 상품 리스트가 출력되며 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
+      - **상품 페이지** : 카테고리별 상품 리스트가 출력되며 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
     
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
-      </p>  
+          <p align="center">
+            <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
+          </p>  
     
-  </details>
+    </details>
   
   <details>
     - <summary><b>로그인</b></summary>
