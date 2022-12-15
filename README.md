@@ -70,6 +70,7 @@
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
       </p>
+  # 기능
   - 상품 검색 : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
   - 로그인 : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
   - 회원가입 : 회원가입을 할 수 있습니다. ID중복 체크를 해야 가입이 가능하고, 우편번호에는 Daum(Kakao) PostCode API를 사용하였고, RSA 암호화 방식을 적용하였습니다.
