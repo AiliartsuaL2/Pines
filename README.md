@@ -121,8 +121,11 @@
 ## 🧭 실행 시나리오
 <details>
    <summary><b>시나리오 1</b></summary>
-</details>
   A 사용자 상품 등록 > B 사용자 상품 주문 > B사용자 주문 내역 확인 > A 사용자 상품 가격 변경 > B 사용자 주문내역 확인
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+      </p>
+</details>
   
 <br/>
 <br/>
