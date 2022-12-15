@@ -105,9 +105,9 @@
   <details>
     <summary><b>마이 페이지</b></summary>
     
-  ## 마이 페이지
+  # 마이 페이지
      
-      <p align="center">
+  <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821008-ca80b858-ca93-4295-8706-0cca88aba3b5.JPG">
       </p>
   
