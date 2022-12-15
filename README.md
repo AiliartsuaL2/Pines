@@ -71,11 +71,10 @@
   
   ## 메인 페이지
   
-  
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
       </p>
-
+  
       
   - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
 
