@@ -67,8 +67,9 @@
   ### 전체 메뉴 구성
   <details>
     <summary><b>메인 페이지</b></summary>
-  - 
   
+    - 메인
+    
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
       </p>
@@ -102,7 +103,8 @@
 
   <details>
     <summary><b>마이 페이지</b></summary>
-  - 
+    
+    - 마이
      
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821008-ca80b858-ca93-4295-8706-0cca88aba3b5.JPG">
@@ -130,8 +132,9 @@
   
   <details>
     <summary><b>판매자 페이지</b></summary>
-  - 
-   
+    
+    - 판매자 
+    
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821022-e230460a-8de8-43f7-af77-01faeb1df128.JPG">
       </p>
