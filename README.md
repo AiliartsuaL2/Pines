@@ -52,28 +52,40 @@
   <p align="center">
      <img src="https://user-images.githubusercontent.com/89395238/207993995-e707f368-b7ab-4770-818b-2d7d6a28a98a.JPG">
   </p>
+  
+  <br/>
 
   - **업무 흐름도_판매자**
   
   <p align="center">
      <img src="https://user-images.githubusercontent.com/89395238/207993996-9cee8f8c-1a3d-4ed8-bd8e-775685fffe7d.JPG">
   </p>
+  
+<br/>
       
   </details> 
 <details>
     <summary><b>메뉴 구조도</b></summary>
   
+<br/>
+  
   <p align="center">
     <img src="https://user-images.githubusercontent.com/89395238/207993990-2c19a20f-6730-497d-b42e-35cfb0f66f24.JPG">
   </p>
+  
+<br/>
       
   </details> 
 <details>
     <summary><b>데이터 모델링</b></summary>
   
+<br/>
+  
   <p align="center">
     <img src="https://user-images.githubusercontent.com/89395238/207993986-594404aa-feac-4abc-88e0-4341cd8c4210.JPG">
   </p>
+  
+<br/>
       
   </details> 
 <br/>
@@ -83,6 +95,8 @@
   <details>
     <summary><b>메인 페이지</b></summary>
   
+<br/>
+  
   ### 메인 페이지
      
   - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.  
@@ -90,28 +104,37 @@
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
       </p>  
+  
+<br/>
         
   - **로그인** : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
 
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820983-2c50c15f-53ea-42cb-9301-011e70150e44.JPG">
       </p>
+  
+<br/>
         
   - **회원가입** : 회원가입을 할 수 있습니다. ID중복 체크를 해야 가입이 가능하고, 우편번호에는 Daum(Kakao) PostCode API를 사용하였고, RSA 암호화 방식을 적용하였습니다.
   
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821037-f84d7780-5f2f-47ce-aaf6-c46e325a5df6.JPG">
       </p>
+  
+<br/>
               
   - **ID / PW찾기** : 개인정보를 이용하여 ID를 찾을 수 있고, PW는 재설정 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
 
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820971-fc310a17-04b0-4417-abe1-6130d1b4e8e6.JPG">
       </p>
+  
       
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820978-21a304fc-36fa-4c96-98b5-f14ece3f508f.JPG">
       </p>
+  
+<br/>
   
   
 </details> 
@@ -129,6 +152,8 @@
         <img src="https://user-images.githubusercontent.com/89395238/207821008-ca80b858-ca93-4295-8706-0cca88aba3b5.JPG">
       </p>
   
+<br/>
+  
       
       
   - **개인정보관리** : 비밀번호를 한번 더 확인하고(RSA 적용) , ID를 제외한 사용자의 개인정보를                                  변경 할 수 있으며 회원 탈퇴도 가능합니다.  
@@ -140,6 +165,8 @@
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820984-1cf90271-5591-4232-ac59-ec7e53f0d1f7.JPG">
       </p>
+  
+<br/>
       
   
       
@@ -149,15 +176,17 @@
         <img src="https://user-images.githubusercontent.com/89395238/207821035-c1552eea-6eda-48f7-a6f6-140089ff5680.JPG">
       </p>
   
+<br/>
+  
   </details> 
   
   <details>
     <summary><b>판매자 페이지</b></summary>
     
   ### 판매자 페이지
+  
+<br/>
      
-  
-  
   
   - **상품** : 등록된 상품 리스트들을 출력합니다. 진열 상태(판매중, 품절)와 상품명, 상품 코드를 통해 검색조건을 추가하여 조회 할 수 있습니다.(Ajax 적용) 또한 상품의 수정, 등록 또한 할 수 있습니다.
   
@@ -172,6 +201,8 @@
   <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821016-1d6522e4-b71b-4c0b-b631-8dbd634e4fad.JPG">
   </p>
+  
+<br/>
   
         
   
@@ -189,6 +220,8 @@
         <img src="https://user-images.githubusercontent.com/89395238/207820997-7e7b3d99-7ca7-436e-bdf0-b1e21c75868b.JPG">
       </p>
   
+<br/>
+  
   - **판매자 설정** : 세션을 통해 로그인 여부를 판단하고, 사용자 아이드를 확인하여 판매자 여부를 판단 한 뒤, 판매자라면 판매처 해지를 할 수 있고, 판매자가 아니라면 판매자 등록을 할 수 있습니다. 또한 판매처 정보 수정을 통해 판매처 정보를 수정 할 수 있습니다. (RSA적용)
 
       <p align="center">
@@ -202,6 +235,8 @@
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821027-7eb3fac4-b409-4fb7-bc60-1ab05e29989c.JPG">
       </p>
+  
+<br/>
 
   
   </details> 
