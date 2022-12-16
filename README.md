@@ -80,9 +80,9 @@
     <summary><b>데이터 모델링</b></summary>
   
 <br/>
-  
+
   <p align="center">
-    <img src="https://user-images.githubusercontent.com/89395238/207993986-594404aa-feac-4abc-88e0-4341cd8c4210.JPG">
+    <img src="https://user-images.githubusercontent.com/89395238/207995925-1ae8161d-bae1-45b1-aa61-71313724fb6f.JPG">
   </p>
   
 <br/>
