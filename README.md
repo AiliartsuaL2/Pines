@@ -70,24 +70,30 @@
   
   ### 메인 페이지
      
-  <p align="center">
+  - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
+  
+  
+      <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
       </p>  
   
-  - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
+      
+      
+  - **로그인** : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
 
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820983-2c50c15f-53ea-42cb-9301-011e70150e44.JPG">
       </p>
   
-  - **로그인** : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
-
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207821037-f84d7780-5f2f-47ce-aaf6-c46e325a5df6.JPG">
-      </p>
       
   - **회원가입** : 회원가입을 할 수 있습니다. ID중복 체크를 해야 가입이 가능하고, 우편번호에는 Daum(Kakao) PostCode API를 사용하였고, RSA 암호화 방식을 적용하였습니다.
   
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207821037-f84d7780-5f2f-47ce-aaf6-c46e325a5df6.JPG">
+      </p>
+              
+  - **ID / PW찾기** : 개인정보를 이용하여 ID를 찾을 수 있고, PW는 재설정 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
+
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820971-fc310a17-04b0-4417-abe1-6130d1b4e8e6.JPG">
       </p>
@@ -96,8 +102,7 @@
         <img src="https://user-images.githubusercontent.com/89395238/207820978-21a304fc-36fa-4c96-98b5-f14ece3f508f.JPG">
       </p>
   
-  - **ID / PW찾기** : 개인정보를 이용하여 ID를 찾을 수 있고, PW는 재설정 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
-
+  
 </details> 
 
   <details>
