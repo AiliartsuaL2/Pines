@@ -45,21 +45,35 @@
 
 <details>
     <summary><b>업무 흐름도</b></summary>
+    
+    - **업무 흐름도_소비자**
+    
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207993995-e707f368-b7ab-4770-818b-2d7d6a28a98a.JPG">
       </p>
+
+    - **업무 흐름도_판매자**
+    
+      <p align="center">
+        <img src="https://user-images.githubusercontent.com/89395238/207993996-9cee8f8c-1a3d-4ed8-bd8e-775685fffe7d.JPG">
+      </p>
+      
   </details> 
 <details>
     <summary><b>메뉴 구조도</b></summary>
+    
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207993990-2c19a20f-6730-497d-b42e-35cfb0f66f24.JPG">
       </p>
+      
   </details> 
 <details>
     <summary><b>데이터 모델링</b></summary>
+    
       <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207784716-cb001c29-eab5-4b89-b31f-e04b7dcc45af.JPG">
+        <img src="https://user-images.githubusercontent.com/89395238/207993986-594404aa-feac-4abc-88e0-4341cd8c4210.JPG">
       </p>
+      
   </details> 
 <br/>
 
@@ -70,22 +84,18 @@
   
   ### 메인 페이지
      
-  - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.
-  
+  - **상품 검색** : 상품명, 판매처 별로 상품을 검색 할 수 있습니다.  
   
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820991-630d9d96-84f3-46e7-bd43-3bfa209a17bf.JPG">
       </p>  
-  
-      
-      
+        
   - **로그인** : 로그인을 할 수 있습니다. RSA 암호화 방식을 적용하였습니다.
 
       <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207820983-2c50c15f-53ea-42cb-9301-011e70150e44.JPG">
       </p>
-  
-      
+        
   - **회원가입** : 회원가입을 할 수 있습니다. ID중복 체크를 해야 가입이 가능하고, 우편번호에는 Daum(Kakao) PostCode API를 사용하였고, RSA 암호화 방식을 적용하였습니다.
   
       <p align="center">
