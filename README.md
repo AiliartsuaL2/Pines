@@ -45,35 +45,34 @@
 
 <details>
     <summary><b>업무 흐름도</b></summary>
-  
+  <br/>
   - **업무 흐름도_소비자**
-  
+
+  <p align="center">
+     <img src="https://user-images.githubusercontent.com/89395238/207993995-e707f368-b7ab-4770-818b-2d7d6a28a98a.JPG">
+  </p>
+
+  - **업무 흐름도_판매자**
   
   <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207993995-e707f368-b7ab-4770-818b-2d7d6a28a98a.JPG">
-      </p>
-
-    - **업무 흐름도_판매자**
-    
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207993996-9cee8f8c-1a3d-4ed8-bd8e-775685fffe7d.JPG">
-      </p>
+     <img src="https://user-images.githubusercontent.com/89395238/207993996-9cee8f8c-1a3d-4ed8-bd8e-775685fffe7d.JPG">
+  </p>
       
   </details> 
 <details>
     <summary><b>메뉴 구조도</b></summary>
-    
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207993990-2c19a20f-6730-497d-b42e-35cfb0f66f24.JPG">
-      </p>
+  
+  <p align="center">
+    <img src="https://user-images.githubusercontent.com/89395238/207993990-2c19a20f-6730-497d-b42e-35cfb0f66f24.JPG">
+  </p>
       
   </details> 
 <details>
     <summary><b>데이터 모델링</b></summary>
-    
-      <p align="center">
-        <img src="https://user-images.githubusercontent.com/89395238/207993986-594404aa-feac-4abc-88e0-4341cd8c4210.JPG">
-      </p>
+  
+  <p align="center">
+    <img src="https://user-images.githubusercontent.com/89395238/207993986-594404aa-feac-4abc-88e0-4341cd8c4210.JPG">
+  </p>
       
   </details> 
 <br/>
