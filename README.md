@@ -45,10 +45,11 @@
 
 <details>
     <summary><b>업무 흐름도</b></summary>
-    
-    - **업무 흐름도_소비자**
-    
-      <p align="center">
+  
+  - **업무 흐름도_소비자**
+  
+  
+  <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207993995-e707f368-b7ab-4770-818b-2d7d6a28a98a.JPG">
       </p>
 
