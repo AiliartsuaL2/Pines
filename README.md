@@ -166,7 +166,7 @@
   
   - **주문 / 정산** : 판매한 내역들의 리스트를 검색어, 기간을 통해 조회하고(Ajax 적용), 주문의 상세 내역을 확인 할 수 있습니다. 또한 어제까지의 매출을 등록된 본인 계좌에 정산 할 수 있고, 정산 내역을 확인 할 수 있습니다.  
   
-        <p align="center">
+      <p align="center">
         <img src="https://user-images.githubusercontent.com/89395238/207821011-42a833dc-717c-474a-889d-391b5bc2ae9e.JPG">
       </p>
       
